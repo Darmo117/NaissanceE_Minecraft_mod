@@ -1,0 +1,52 @@
+{
+  "variants": {
+    "light_level=0": {
+      "model": "naissancee:variable_lamp_0"
+    },
+    "light_level=1": {
+      "model": "naissancee:variable_lamp_1"
+    },
+    "light_level=2": {
+      "model": "naissancee:variable_lamp_2"
+    },
+    "light_level=3": {
+      "model": "naissancee:variable_lamp_3"
+    },
+    "light_level=4": {
+      "model": "naissancee:variable_lamp_4"
+    },
+    "light_level=5": {
+      "model": "naissancee:variable_lamp_5"
+    },
+    "light_level=6": {
+      "model": "naissancee:variable_lamp_6"
+    },
+    "light_level=7": {
+      "model": "naissancee:variable_lamp_7"
+    },
+    "light_level=8": {
+      "model": "naissancee:variable_lamp_8"
+    },
+    "light_level=9": {
+      "model": "naissancee:variable_lamp_9"
+    },
+    "light_level=10": {
+      "model": "naissancee:variable_lamp_10"
+    },
+    "light_level=11": {
+      "model": "naissancee:variable_lamp_11"
+    },
+    "light_level=12": {
+      "model": "naissancee:variable_lamp_12"
+    },
+    "light_level=13": {
+      "model": "naissancee:variable_lamp_13"
+    },
+    "light_level=14": {
+      "model": "naissancee:variable_lamp_14"
+    },
+    "light_level=15": {
+      "model": "naissancee:variable_lamp_15"
+    }
+  }
+}

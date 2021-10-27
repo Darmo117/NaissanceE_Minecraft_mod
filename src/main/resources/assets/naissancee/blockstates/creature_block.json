@@ -1,0 +1,52 @@
+{
+  "variants": {
+    "light_level=0": {
+      "model": "naissancee:creature_block_0"
+    },
+    "light_level=1": {
+      "model": "naissancee:creature_block_1"
+    },
+    "light_level=2": {
+      "model": "naissancee:creature_block_2"
+    },
+    "light_level=3": {
+      "model": "naissancee:creature_block_3"
+    },
+    "light_level=4": {
+      "model": "naissancee:creature_block_4"
+    },
+    "light_level=5": {
+      "model": "naissancee:creature_block_5"
+    },
+    "light_level=6": {
+      "model": "naissancee:creature_block_6"
+    },
+    "light_level=7": {
+      "model": "naissancee:creature_block_7"
+    },
+    "light_level=8": {
+      "model": "naissancee:creature_block_8"
+    },
+    "light_level=9": {
+      "model": "naissancee:creature_block_9"
+    },
+    "light_level=10": {
+      "model": "naissancee:creature_block_10"
+    },
+    "light_level=11": {
+      "model": "naissancee:creature_block_11"
+    },
+    "light_level=12": {
+      "model": "naissancee:creature_block_12"
+    },
+    "light_level=13": {
+      "model": "naissancee:creature_block_13"
+    },
+    "light_level=14": {
+      "model": "naissancee:creature_block_14"
+    },
+    "light_level=15": {
+      "model": "naissancee:creature_block_15"
+    }
+  }
+}

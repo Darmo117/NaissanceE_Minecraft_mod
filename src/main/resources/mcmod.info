@@ -1,0 +1,18 @@
+[
+  {
+    "modid": "naissancee",
+    "name": "NaissanceE",
+    "description": "Mod for NaissanceE custom map.",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "",
+    "updateUrl": "",
+    "authorList": [
+      "Darmo"
+    ],
+    "credits": "",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+  }
+]

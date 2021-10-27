@@ -1,0 +1,100 @@
+###########
+# Vanilla #
+###########
+
+# Blocks #
+
+# Concrete
+tile.concrete.white.name=White Block
+tile.concrete.silver.name=Light Gray Block
+tile.concrete.gray.name=Gray Block
+tile.concrete.black.name=Black Block
+# Glowstone
+tile.lightgem.name=Light Block
+# Stairs
+tile.stairsQuartz.name=White Stairs
+tile.stairsStone.name=Light Gray Stairs
+tile.stairsStoneBrickSmooth.name=Gray Stairs
+# Slabs
+tile.stoneSlab.quartz.name=White Slab
+tile.stoneSlab.cobble.name=Light Gray Slab
+tile.stoneSlab.smoothStoneBrick.name=Gray Slab
+tile.stoneSlab.stone.name=Cracked White Slab
+
+#######
+# Mod #
+#######
+
+# Blocks #
+
+# Lamps
+tile.naissancee.offset_wall_lamp.name=Offset Wall Lamp
+tile.naissancee.wall_lamps.name=Wall Lamps
+tile.naissancee.invisible_light_source.name=Invisible Light Source
+tile.naissancee.variable_lamp.name=Variable Lamp
+tile.naissancee.activator_lamp.name=Activator Lamp
+# Creature Block
+tile.naissancee.creature_block.0.name=Creature Block 0
+tile.naissancee.creature_block.1.name=Creature Block 1
+tile.naissancee.creature_block.2.name=Creature Block 2
+tile.naissancee.creature_block.3.name=Creature Block 3
+tile.naissancee.creature_block.4.name=Creature Block 4
+tile.naissancee.creature_block.5.name=Creature Block 5
+tile.naissancee.creature_block.6.name=Creature Block 6
+tile.naissancee.creature_block.7.name=Creature Block 7
+tile.naissancee.creature_block.8.name=Creature Block 8
+tile.naissancee.creature_block.9.name=Creature Block 9
+tile.naissancee.creature_block.10.name=Creature Block 10
+tile.naissancee.creature_block.11.name=Creature Block 11
+tile.naissancee.creature_block.12.name=Creature Block 12
+tile.naissancee.creature_block.13.name=Creature Block 13
+tile.naissancee.creature_block.14.name=Creature Block 14
+tile.naissancee.creature_block.15.name=Creature Block 15
+# Living Block
+tile.naissancee.living_block.name=Living Block
+# Grates
+tile.naissancee.white_grate.name=White Grate
+tile.naissancee.light_gray_grate.name=Light Gray Grate
+tile.naissancee.gray_grate.name=Gray Grate
+# Wall Grates
+tile.naissancee.white_wall_grate.name=White Wall Grate
+tile.naissancee.light_gray_wall_grate.name=Light Gray Wall Grate
+tile.naissancee.gray_wall_grate.name=Gray Wall Grate
+# Verticale Slabs
+tile.naissancee.white_vertical_slab.name=White Vertical Slab
+tile.naissancee.light_gray_vertical_slab.name=Light Gray Vertical Slab
+tile.naissancee.gray_vertical_slab.name=Gray Vertical Slab
+# Vertical Corners
+tile.naissancee.white_vertical_corner.name=White Vertical Corner
+tile.naissancee.light_gray_vertical_corner.name=Light Gray Vertical Corner
+tile.naissancee.gray_vertical_corner.name=Gray Vertical Corner
+# Horizontal Corners
+tile.naissancee.white_horizontal_corner.name=White Horizontal Corner
+tile.naissancee.light_gray_horizontal_corner.name=Light Gray Horizontal Corner
+tile.naissancee.gray_horizontal_corner.name=Gray Horizontal Corner
+# Barriers
+tile.naissancee.white_light_sensitive_barrier.name=White Light-Sensitive Barrier
+tile.naissancee.light_gray_light_sensitive_barrier.name=Light Gray Light-Sensitive Barrier
+tile.naissancee.gray_light_sensitive_barrier.name=Gray Light-Sensitive Barrier
+
+tile.naissancee.light_orb_controller.name=Light Orb Controller
+
+# Items #
+
+item.naissancee.invisible_light_source_editing_tool.name=Invisible Light Source Editing Tool
+item.naissancee.creative_wand.name=Creative Wand
+item.naissancee.light_orb_tweaker.name=Light Orb Tweaker
+
+# Entities #
+
+entity.naissancee.light_orb.name=Light Orb
+
+# GUI #
+
+# Creative Tabs
+itemGroup.naissancee=Light Orb Controller
+
+# Light Orb Controller
+gui.naissancee.light_orb_controller.title=Light Orb Controller
+gui.naissancee.light_orb_controller.status_button.active=Active
+gui.naissancee.light_orb_controller.status_button.inactive=Inactive

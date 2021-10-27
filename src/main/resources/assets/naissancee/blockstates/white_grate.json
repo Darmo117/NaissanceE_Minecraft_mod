@@ -1,0 +1,40 @@
+{
+  "variants": {
+    "direction=left_right,facing=north": {
+      "model": "naissancee:white_grate"
+    },
+    "direction=left_right,facing=east": {
+      "model": "naissancee:white_grate",
+      "y": 90,
+      "uvlock": true
+    },
+    "direction=left_right,facing=south": {
+      "model": "naissancee:white_grate",
+      "y": 180,
+      "uvlock": true
+    },
+    "direction=left_right,facing=west": {
+      "model": "naissancee:white_grate",
+      "y": 270,
+      "uvlock": true
+    },
+    "direction=right_left,facing=north": {
+      "model": "naissancee:white_grate_mirror"
+    },
+    "direction=right_left,facing=east": {
+      "model": "naissancee:white_grate_mirror",
+      "y": 90,
+      "uvlock": true
+    },
+    "direction=right_left,facing=south": {
+      "model": "naissancee:white_grate_mirror",
+      "y": 180,
+      "uvlock": true
+    },
+    "direction=right_left,facing=west": {
+      "model": "naissancee:white_grate_mirror",
+      "y": 270,
+      "uvlock": true
+    }
+  }
+}

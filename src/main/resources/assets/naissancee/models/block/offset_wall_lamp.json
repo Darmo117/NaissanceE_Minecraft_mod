@@ -1,0 +1,21 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "elements": [
+    {
+      "from": [11, 3, 14],
+      "to": [21, 13, 16],
+      "faces": {
+        "north": {"uv": [3, 3, 13, 13], "texture": "#end"},
+        "south": {"uv": [3, 3, 13, 13], "texture": "#end"},
+        "east": {"uv": [0, 3, 2, 13], "texture": "#side"},
+        "west": {"uv": [0, 3, 2, 13], "rotation": 180, "texture": "#side"},
+        "up": {"uv": [0, 3, 2, 13], "rotation": 270, "texture": "#side"},
+        "down": {"uv": [0, 3, 2, 13], "rotation": 90, "texture": "#side"}
+      }
+    }
+  ],
+	"textures": {
+		"end": "naissancee:blocks/lamp_face_10",
+		"side": "naissancee:blocks/lamp_side_10"
+	}
+}

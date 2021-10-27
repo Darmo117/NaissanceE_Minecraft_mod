@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "passable=false": {
+      "model": "naissancee:white_light_sensitive_barrier"
+    },
+    "passable=true": {
+      "model": "naissancee:white_light_sensitive_barrier_passable"
+    }
+  }
+}

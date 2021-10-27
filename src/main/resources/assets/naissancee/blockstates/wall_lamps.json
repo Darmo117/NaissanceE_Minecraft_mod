@@ -1,0 +1,27 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "naissancee:wall_lamps"
+    },
+    "facing=east": {
+      "model": "naissancee:wall_lamps",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "naissancee:wall_lamps",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "naissancee:wall_lamps",
+      "y": 270
+    },
+    "facing=up": {
+      "model": "naissancee:wall_lamps",
+      "x": 270
+    },
+    "facing=down": {
+      "model": "naissancee:wall_lamps",
+      "x": 90
+    }
+  }
+}

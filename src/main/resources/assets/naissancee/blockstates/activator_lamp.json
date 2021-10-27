@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "powered=false": {
+      "model": "naissancee:activator_lamp"
+    },
+    "powered=true": {
+      "model": "naissancee:activator_lamp"
+    }
+  }
+}

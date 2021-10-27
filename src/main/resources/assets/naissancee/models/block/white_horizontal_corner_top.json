@@ -1,0 +1,6 @@
+{
+  "parent": "naissancee:block/horizontal_corner_top",
+  "textures": {
+    "all": "minecraft:blocks/concrete_white"
+  }
+}

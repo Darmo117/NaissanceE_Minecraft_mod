@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "naissancee:white_vertical_corner"
+    },
+    "facing=east": {
+      "model": "naissancee:white_vertical_corner",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "naissancee:white_vertical_corner",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "naissancee:white_vertical_corner",
+      "y": 270
+    }
+  }
+}

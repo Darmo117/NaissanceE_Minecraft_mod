@@ -1,0 +1,6 @@
+{
+  "parent": "naissancee:block/wall_grate",
+  "textures": {
+    "all": "minecraft:blocks/concrete_silver"
+  }
+}

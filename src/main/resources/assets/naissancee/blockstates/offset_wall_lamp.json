@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "naissancee:offset_wall_lamp"
+    },
+    "facing=east": {
+      "model": "naissancee:offset_wall_lamp",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "naissancee:offset_wall_lamp",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "naissancee:offset_wall_lamp",
+      "y": 270
+    }
+  }
+}

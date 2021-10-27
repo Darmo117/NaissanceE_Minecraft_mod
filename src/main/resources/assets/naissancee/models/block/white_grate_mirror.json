@@ -1,0 +1,6 @@
+{
+  "parent": "naissancee:block/grate_mirror",
+  "textures": {
+    "all": "minecraft:blocks/concrete_white"
+  }
+}

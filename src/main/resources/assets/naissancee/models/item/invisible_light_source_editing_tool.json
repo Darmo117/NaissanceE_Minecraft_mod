@@ -1,0 +1,6 @@
+{
+    "parent": "item/handheld",
+    "textures": {
+        "layer0": "naissancee:items/invisible_light_source_editing_tool"
+    }
+}

@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "normal": {
+      "model": "naissancee:light_orb_controller"
+    }
+  }
+}

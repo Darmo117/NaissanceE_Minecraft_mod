@@ -1,0 +1,12 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "particle": "naissancee:blocks/living_block_no_side_connections",
+    "down": "naissancee:blocks/living_block_right_side_connection",
+    "up": "naissancee:blocks/living_block_right_side_connection",
+    "north": "naissancee:blocks/living_block_left_side_connection",
+    "south": "naissancee:blocks/living_block_right_side_connection",
+    "west": "naissancee:blocks/living_block_left_side_connection",
+    "east": "naissancee:blocks/living_block_right_side_connection"
+  }
+}

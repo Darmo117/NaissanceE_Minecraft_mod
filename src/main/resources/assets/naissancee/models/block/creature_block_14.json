@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "naissancee:blocks/creature_block_14"
+  }
+}

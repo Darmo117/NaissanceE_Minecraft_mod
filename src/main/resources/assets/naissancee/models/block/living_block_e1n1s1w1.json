@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "naissancee:blocks/living_block_both_sides_connections",
+    "side": "naissancee:blocks/living_block_both_sides_connections"
+  }
+}
