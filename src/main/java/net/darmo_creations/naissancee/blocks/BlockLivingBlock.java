@@ -17,14 +17,14 @@ import net.minecraft.world.IBlockAccess;
  * <p>
  * Its texture can connect to other adjacent blocks of the same class.
  */
-public class BlockLiving extends Block {
+public class BlockLivingBlock extends Block {
   // Used for connected textures
   public static final PropertyBool NORTH = PropertyBool.create("north");
   public static final PropertyBool SOUTH = PropertyBool.create("south");
   public static final PropertyBool WEST = PropertyBool.create("west");
   public static final PropertyBool EAST = PropertyBool.create("east");
 
-  public BlockLiving() {
+  public BlockLivingBlock() {
     super(Material.IRON);
     this.setSoundType(SoundType.METAL);
   }
@@ -94,6 +94,6 @@ public class BlockLiving extends Block {
    * Whether a block of this class should connect its textures to the block type at the given position.
    */
   public boolean canConnectTo(IBlockAccess world, BlockPos pos) {
-    return world.getBlockState(pos).getBlock() instanceof BlockLiving;
+    return world.getBlockState(pos).getBlock() instanceof BlockLivingBlock;
   }
 }

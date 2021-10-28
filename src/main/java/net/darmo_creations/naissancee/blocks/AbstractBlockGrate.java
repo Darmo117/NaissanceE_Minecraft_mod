@@ -64,19 +64,35 @@ public abstract class AbstractBlockGrate extends BlockHorizontal implements IMod
 
   @SuppressWarnings("deprecation")
   @Override
-  public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
-    return this.isSideSolid(state, worldIn, pos, face) ? BlockFaceShape.SOLID : BlockFaceShape.UNDEFINED;
+  public BlockFaceShape getBlockFaceShape(IBlockAccess world, IBlockState state, BlockPos pos, EnumFacing face) {
+    return this.isSideSolid(state, world, pos, face) ? BlockFaceShape.SOLID : BlockFaceShape.UNDEFINED;
   }
 
   @SuppressWarnings("deprecation")
   @Override
-  public IBlockState getStateForPlacement(World worldIn, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
-    IBlockState iblockstate = super.getStateForPlacement(worldIn, pos, facing, hitX, hitY, hitZ, meta, placer)
-        .withProperty(FACING, placer.getHorizontalFacing().getOpposite());
-    // TODO revoir le placement avec hitX et hitZ
-    return facing != EnumFacing.DOWN && (facing == EnumFacing.UP || (double) hitY <= 0.5D)
-        ? iblockstate.withProperty(DIRECTION, EnumDirection.LEFT_RIGHT)
-        : iblockstate.withProperty(DIRECTION, EnumDirection.RIGHT_LEFT);
+  public IBlockState getStateForPlacement(World world, BlockPos pos, EnumFacing facing, float hitX, float hitY, float hitZ, int meta, EntityLivingBase placer) {
+    EnumFacing playerFacing = placer.getHorizontalFacing().getOpposite();
+    IBlockState iblockstate = super.getStateForPlacement(world, pos, facing, hitX, hitY, hitZ, meta, placer)
+        .withProperty(FACING, playerFacing);
+    EnumDirection direction;
+    switch (playerFacing) {
+      case NORTH:
+        direction = hitX > 0.5 ? EnumDirection.LEFT_RIGHT : EnumDirection.RIGHT_LEFT;
+        break;
+      case SOUTH:
+        direction = hitX < 0.5 ? EnumDirection.LEFT_RIGHT : EnumDirection.RIGHT_LEFT;
+        break;
+      case WEST:
+        direction = hitZ < 0.5 ? EnumDirection.LEFT_RIGHT : EnumDirection.RIGHT_LEFT;
+        break;
+      case EAST:
+        direction = hitZ > 0.5 ? EnumDirection.LEFT_RIGHT : EnumDirection.RIGHT_LEFT;
+        break;
+      default:
+        // Should not happen
+        throw new IllegalArgumentException("Invalid player facing: " + playerFacing);
+    }
+    return iblockstate.withProperty(DIRECTION, direction);
   }
 
   @Override
@@ -125,7 +141,7 @@ public abstract class AbstractBlockGrate extends BlockHorizontal implements IMod
   }
 
   /**
-   *
+   * This enum defines the two directions of grate blocks.
    */
   public enum EnumDirection implements IStringSerializable {
     LEFT_RIGHT("left_right"),
@@ -133,7 +149,7 @@ public abstract class AbstractBlockGrate extends BlockHorizontal implements IMod
 
     private final String name;
 
-    EnumDirection(String name) {
+    EnumDirection(final String name) {
       this.name = name;
     }
 

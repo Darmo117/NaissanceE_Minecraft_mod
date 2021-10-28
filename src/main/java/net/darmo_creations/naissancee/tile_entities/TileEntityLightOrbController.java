@@ -79,7 +79,7 @@ public class TileEntityLightOrbController extends TileEntity {
    * Light level is set to 15 and speed to 0.25 blocks per second. Path does not loop by default.
    */
   public void init() {
-    this.setActive(true); // TEMP set to false by default once GUI works
+    this.setActive(true); // TODO set to false by default once GUI works
     this.setLightLevel(15);
     this.setLoops(false);
     this.setSpeed(0.25);

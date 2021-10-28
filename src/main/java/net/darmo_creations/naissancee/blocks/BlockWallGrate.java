@@ -17,7 +17,6 @@ import java.util.Map;
 public class BlockWallGrate extends AbstractBlockGrate {
   private static final Map<ImmutablePair<EnumFacing, EnumDirection>, AxisAlignedBB> AABBS;
 
-  // TODO refine AABB
   static {
     AABBS = new HashMap<>();
     AABBS.put(new ImmutablePair<>(EnumFacing.NORTH, EnumDirection.LEFT_RIGHT),

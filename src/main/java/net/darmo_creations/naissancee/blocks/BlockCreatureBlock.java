@@ -11,8 +11,8 @@ import net.minecraft.world.World;
 /**
  * This block represents a part of the kind of luminous “living” creatures/blobs found throughout NaissanceE.
  */
-public class BlockCreature extends BlockVariableLightSource {
-  public BlockCreature() {
+public class BlockCreatureBlock extends BlockVariableLightSource {
+  public BlockCreatureBlock() {
     super(Material.ROCK);
   }
 

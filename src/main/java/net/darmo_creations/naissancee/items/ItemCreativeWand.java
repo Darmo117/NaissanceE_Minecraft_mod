@@ -2,8 +2,8 @@ package net.darmo_creations.naissancee.items;
 
 import net.darmo_creations.naissancee.Utils;
 import net.minecraft.block.Block;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -20,12 +20,9 @@ import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Item used to fill areas with blocks.
@@ -59,9 +56,9 @@ public class ItemCreativeWand extends Item {
       result = EnumActionResult.SUCCESS;
     } else {
       if (data.isReady()) {
-        BlockPos pos1 = data.getFirstPosition();
-        BlockPos pos2 = data.getSecondPosition();
-        IBlockState state = data.getBlockState();
+        BlockPos pos1 = data.firstPosition;
+        BlockPos pos2 = data.secondPosition;
+        IBlockState state = data.blockState;
         BlockPos posMin = new BlockPos(
             Math.min(pos1.getX(), pos2.getX()),
             Math.min(pos1.getY(), pos2.getY()),
@@ -103,13 +100,13 @@ public class ItemCreativeWand extends Item {
             world.notifyNeighborsRespectDebug(blockpos5, block2, false);
           }
 
-          data.setFirstPosition(null);
-          data.setSecondPosition(null);
+          data.firstPosition = null;
+          data.secondPosition = null;
           heldItem.setTagCompound(data.toTag());
           String message = String.format(
               "Filled area with %d %s block%s.",
               areaSize,
-              getBlockID(state.getBlock()),
+              Utils.getBlockID(state.getBlock()),
               areaSize > 1 ? "s" : ""
           );
           Utils.sendMessage(world, player, new TextComponentString(message)
@@ -134,14 +131,16 @@ public class ItemCreativeWand extends Item {
     if (player.isSneaking()) {
       setBlockState(world.getBlockState(pos), data, world, player);
     } else {
-      if (data.getFirstPosition() == null || data.getSecondPosition() != null) {
-        data.setFirstPosition(pos);
-        data.setSecondPosition(null);
-        Utils.sendMessage(world, player, new TextComponentString(String.format("Selected first position: %s", blockPosToString(pos)))
+      if (data.firstPosition == null || data.secondPosition != null) {
+        data.firstPosition = pos;
+        data.secondPosition = null;
+        Utils.sendMessage(world, player, new TextComponentString(
+            "Selected first position: " + Utils.blockPosToString(pos))
             .setStyle(new Style().setColor(TextFormatting.AQUA)));
       } else {
-        data.setSecondPosition(pos);
-        Utils.sendMessage(world, player, new TextComponentString(String.format("Selected second position: %s", blockPosToString(pos)))
+        data.secondPosition = pos;
+        Utils.sendMessage(world, player, new TextComponentString(
+            "Selected second position: " + Utils.blockPosToString(pos))
             .setStyle(new Style().setColor(TextFormatting.DARK_AQUA)));
       }
     }
@@ -157,24 +156,14 @@ public class ItemCreativeWand extends Item {
   }
 
   @Override
-  public String getHighlightTip(ItemStack item, String displayName) {
-    // TODO afficher infos dans popup
-    return super.getHighlightTip(item, displayName);
-  }
-
-  /**
-   * Convert block position to string.
-   */
-  private static String blockPosToString(BlockPos pos) {
-    return String.format("%d %d %d", pos.getX(), pos.getY(), pos.getZ());
-  }
-
-  /**
-   * Return registry ID of a given block.
-   */
-  private static String getBlockID(Block block) {
-    //noinspection ConstantConditions
-    return GameRegistry.findRegistry(Block.class).getKey(block).toString();
+  public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
+    WandData data = WandData.fromTag(stack.getTagCompound());
+    tooltip.add(TextFormatting.AQUA + "First position: "
+        + (data.firstPosition != null ? Utils.blockPosToString(data.firstPosition) : "-"));
+    tooltip.add(TextFormatting.DARK_AQUA + "Second position: "
+        + (data.secondPosition != null ? Utils.blockPosToString(data.secondPosition) : "-"));
+    tooltip.add(TextFormatting.BLUE + "Block state: "
+        + (data.blockState != null ? Utils.blockstateToString(data.blockState) : "-"));
   }
 
   /**
@@ -182,18 +171,13 @@ public class ItemCreativeWand extends Item {
    *
    * @param blockState Block state to use.
    * @param data       Wand data.
-   * @param world      World player is in.
+   * @param world      World the player is in.
    * @param player     Player to send chat message to.
    */
   private static void setBlockState(IBlockState blockState, WandData data, World world, EntityPlayer player) {
-    data.setBlockState(blockState);
-    String message = getBlockID(blockState.getBlock());
-    Map<IProperty<?>, Comparable<?>> properties = blockState.getProperties();
-    if (!properties.isEmpty()) {
-      message += " " + properties.entrySet().stream()
-          .collect(Collectors.toMap(e -> e.getKey().getName(), Map.Entry::getValue));
-    }
-    Utils.sendMessage(world, player, new TextComponentString(String.format("Selected block state: %s", message))
+    data.blockState = blockState;
+    Utils.sendMessage(world, player, new TextComponentString(
+        "Selected block state: " + Utils.blockstateToString(blockState))
         .setStyle(new Style().setColor(TextFormatting.BLUE)));
   }
 
@@ -222,9 +206,9 @@ public class ItemCreativeWand extends Item {
       }
     }
 
-    private BlockPos firstPosition;
-    private BlockPos secondPosition;
-    private IBlockState blockState;
+    BlockPos firstPosition;
+    BlockPos secondPosition;
+    IBlockState blockState;
 
     /**
      * Create an empty object.
@@ -246,31 +230,7 @@ public class ItemCreativeWand extends Item {
      * Data object is considered ready when both positions and blockstate are set.
      */
     boolean isReady() {
-      return this.getFirstPosition() != null && this.getSecondPosition() != null && this.getBlockState() != null;
-    }
-
-    BlockPos getFirstPosition() {
-      return this.firstPosition;
-    }
-
-    void setFirstPosition(BlockPos pos) {
-      this.firstPosition = pos;
-    }
-
-    BlockPos getSecondPosition() {
-      return this.secondPosition;
-    }
-
-    void setSecondPosition(BlockPos pos) {
-      this.secondPosition = pos;
-    }
-
-    IBlockState getBlockState() {
-      return this.blockState;
-    }
-
-    void setBlockState(IBlockState blockState) {
-      this.blockState = blockState;
+      return this.firstPosition != null && this.secondPosition != null && this.blockState != null;
     }
 
     /**

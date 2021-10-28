@@ -44,8 +44,8 @@ public final class ModBlocks {
   public static final Block VARIABLE_LAMP = new BlockVariableLamp().setRegistryName("variable_lamp").setCreativeTab(NaissanceE.CREATIVE_TAB);
   public static final Block ACTIVATOR_LAMP = new BlockActivatorLamp().setRegistryName("activator_lamp").setCreativeTab(NaissanceE.CREATIVE_TAB);
 
-  public static final Block CREATURE_BLOCK = new BlockCreature().setRegistryName("creature_block").setCreativeTab(NaissanceE.CREATIVE_TAB);
-  public static final Block LIVING_BLOCK = new BlockLiving().setRegistryName("living_block").setCreativeTab(NaissanceE.CREATIVE_TAB);
+  public static final Block CREATURE_BLOCK = new BlockCreatureBlock().setRegistryName("creature_block").setCreativeTab(NaissanceE.CREATIVE_TAB);
+  public static final Block LIVING_BLOCK = new BlockLivingBlock().setRegistryName("living_block").setCreativeTab(NaissanceE.CREATIVE_TAB);
 
   public static final Block LIGHT_ORB_SOURCE = new BlockLightOrbSource().setRegistryName("light_orb_source");
   public static final Block LIGHT_ORB_CONTROLLER = new BlockLightOrbController().setRegistryName("light_orb_controller").setCreativeTab(NaissanceE.CREATIVE_TAB);

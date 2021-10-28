@@ -5,6 +5,7 @@ import net.darmo_creations.naissancee.blocks.BlockLightOrbController;
 import net.darmo_creations.naissancee.blocks.ModBlocks;
 import net.darmo_creations.naissancee.entities.IPathCheckpoint;
 import net.darmo_creations.naissancee.tile_entities.TileEntityLightOrbController;
+import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -92,9 +93,9 @@ public class ItemLightOrbTweaker extends Item {
   @Override
   public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) {
     super.onUpdate(stack, world, entity, itemSlot, isSelected);
-    if (world.isRemote && isSelected) {
+    if (world.isRemote) {
       TileEntityLightOrbController te = getControllerTileEntity(stack, world);
-      if (te != null) {
+      if (isSelected && te != null) {
         List<IPathCheckpoint> checkpoints = te.getCheckpoints();
         for (int i = 0, size = checkpoints.size(); i < size; i++) {
           IPathCheckpoint checkpoint = checkpoints.get(i);
@@ -109,14 +110,20 @@ public class ItemLightOrbTweaker extends Item {
           world.spawnParticle(particleType, true, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 0, 0, 0);
           // TODO tracer une ligne entre checkpoint et nextCheckpoint
         }
+      } else if (!isSelected && stack.getTagCompound() != null && stack.getTagCompound().hasKey(CONTROLLER_POS_TAG_KEY)) {
+        stack.getTagCompound().removeTag(CONTROLLER_POS_TAG_KEY);
       }
     }
   }
 
   @Override
-  public String getHighlightTip(ItemStack item, String displayName) {
-    // TODO afficher infos dans popup
-    return super.getHighlightTip(item, displayName);
+  public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
+    TileEntityLightOrbController controller = getControllerTileEntity(stack, world);
+    if (controller != null) {
+      tooltip.add("Selected controller position: " + Utils.blockPosToString(controller.getPos()));
+    } else {
+      tooltip.add(TextFormatting.ITALIC + "No controller selected");
+    }
   }
 
   /**

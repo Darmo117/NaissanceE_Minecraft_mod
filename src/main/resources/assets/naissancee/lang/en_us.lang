@@ -92,7 +92,7 @@ entity.naissancee.light_orb.name=Light Orb
 # GUI #
 
 # Creative Tabs
-itemGroup.naissancee=Light Orb Controller
+itemGroup.naissancee=NaissanceE
 
 # Light Orb Controller
 gui.naissancee.light_orb_controller.title=Light Orb Controller
