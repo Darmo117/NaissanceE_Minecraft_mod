@@ -6,33 +6,45 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A grate that is embedded into a wall.
  */
 public class BlockWallGrate extends AbstractBlockGrate {
+  private static final Map<ImmutablePair<EnumFacing, EnumDirection>, AxisAlignedBB> AABBS;
+
   // TODO refine AABB
-  private static final AxisAlignedBB[] AABBS = {
-      // North LR
-      new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 1.0, 1.0),
-      // South LR
-      new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 1.0, 1.0),
-      // West LR
-      new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 1.0, 1.0),
-      // East LR
-      new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 1.0, 1.0),
-      // North RL
-      new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 1.0, 1.0),
-      // South RL
-      new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 1.0, 1.0),
-      // West RL
-      new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 1.0, 1.0),
-      // East RL
-      new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 1.0, 1.0),
-  };
+  static {
+    AABBS = new HashMap<>();
+    AABBS.put(new ImmutablePair<>(EnumFacing.NORTH, EnumDirection.LEFT_RIGHT),
+        new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 1.0, 1.0));
+    AABBS.put(new ImmutablePair<>(EnumFacing.SOUTH, EnumDirection.LEFT_RIGHT),
+        new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 1.0, 1.0));
+    AABBS.put(new ImmutablePair<>(EnumFacing.WEST, EnumDirection.LEFT_RIGHT),
+        new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 1.0, 1.0));
+    AABBS.put(new ImmutablePair<>(EnumFacing.EAST, EnumDirection.LEFT_RIGHT),
+        new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 1.0, 1.0));
+    AABBS.put(new ImmutablePair<>(EnumFacing.NORTH, EnumDirection.RIGHT_LEFT),
+        new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 1.0, 1.0));
+    AABBS.put(new ImmutablePair<>(EnumFacing.SOUTH, EnumDirection.RIGHT_LEFT),
+        new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 1.0, 1.0));
+    AABBS.put(new ImmutablePair<>(EnumFacing.WEST, EnumDirection.RIGHT_LEFT),
+        new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 1.0, 1.0));
+    AABBS.put(new ImmutablePair<>(EnumFacing.EAST, EnumDirection.RIGHT_LEFT),
+        new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 1.0, 1.0));
+  }
 
   public BlockWallGrate(Material material) {
-    super(material, material.getMaterialMapColor(), AABBS);
+    super(material, material.getMaterialMapColor());
+  }
+
+  @Override
+  protected AxisAlignedBB getBoundingBox(EnumFacing facing, EnumDirection direction) {
+    return AABBS.get(new ImmutablePair<>(facing, direction));
   }
 
   @SuppressWarnings("deprecation")

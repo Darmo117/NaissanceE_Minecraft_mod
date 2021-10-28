@@ -26,20 +26,14 @@ import net.minecraft.world.World;
 public abstract class AbstractBlockGrate extends BlockHorizontal implements IModBlock {
   public static final PropertyEnum<AbstractBlockGrate.EnumDirection> DIRECTION = PropertyEnum.create("direction", AbstractBlockGrate.EnumDirection.class);
 
-  private final AxisAlignedBB[] aabbs;
-
   /**
    * Create a grate block with the given material, color and bounding boxes.
    *
    * @param material Block’s material.
    * @param color    Block’s map color.
-   * @param aabbs    Block’s bounding boxes. Should contain 8 items:
-   *                 2 LSBs of index = facing direction: 0 = North, 1 = South, 2 = East, 3 = West;
-   *                 3rd LSB of index = direction: 0 = left to right, 1 = right to left
    */
-  public AbstractBlockGrate(Material material, MapColor color, AxisAlignedBB[] aabbs) {
+  public AbstractBlockGrate(Material material, MapColor color) {
     super(material, color);
-    this.aabbs = aabbs;
   }
 
   @Override
@@ -50,31 +44,17 @@ public abstract class AbstractBlockGrate extends BlockHorizontal implements IMod
   @SuppressWarnings("deprecation")
   @Override
   public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-    if (state.getValue(DIRECTION) == EnumDirection.LEFT_RIGHT) {
-      switch (state.getValue(FACING)) {
-        case NORTH:
-          return this.aabbs[0];
-        case SOUTH:
-          return this.aabbs[1];
-        case WEST:
-          return this.aabbs[2];
-        case EAST:
-          return this.aabbs[3];
-      }
-    } else {
-      switch (state.getValue(FACING)) {
-        case NORTH:
-          return this.aabbs[4];
-        case SOUTH:
-          return this.aabbs[5];
-        case WEST:
-          return this.aabbs[6];
-        case EAST:
-          return this.aabbs[7];
-      }
-    }
-    return null; // Should never happen
+    return this.getBoundingBox(state.getValue(FACING), state.getValue(DIRECTION));
   }
+
+  /**
+   * Return the bounding box for the given facing and direction.
+   *
+   * @param facing    Facing direction. Will only be either NORTH, SOUTH, WEST or EAST.
+   * @param direction Grate direction.
+   * @return The bounding box.
+   */
+  protected abstract AxisAlignedBB getBoundingBox(EnumFacing facing, EnumDirection direction);
 
   @SuppressWarnings("deprecation")
   @Override
