@@ -12,7 +12,13 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 
+/**
+ * This class reprensents a part of the striped black-and-white blocks that are afraid of light in NaissanceE.
+ * <p>
+ * Its texture can connect to other adjacent blocks of the same class.
+ */
 public class BlockLiving extends Block {
+  // Used for connected textures
   public static final PropertyBool NORTH = PropertyBool.create("north");
   public static final PropertyBool SOUTH = PropertyBool.create("south");
   public static final PropertyBool WEST = PropertyBool.create("west");
@@ -28,18 +34,21 @@ public class BlockLiving extends Block {
     return new BlockStateContainer(this, NORTH, SOUTH, WEST, EAST);
   }
 
+  @Override
   @SuppressWarnings("deprecation")
   public IBlockState getActualState(IBlockState state, IBlockAccess world, BlockPos pos) {
-    return state.withProperty(NORTH, canBlockConnectTo(world, pos, EnumFacing.NORTH))
-        .withProperty(EAST, canBlockConnectTo(world, pos, EnumFacing.EAST))
-        .withProperty(SOUTH, canBlockConnectTo(world, pos, EnumFacing.SOUTH))
-        .withProperty(WEST, canBlockConnectTo(world, pos, EnumFacing.WEST));
+    return state.withProperty(NORTH, this.canBlockConnectTo(world, pos, EnumFacing.NORTH))
+        .withProperty(EAST, this.canBlockConnectTo(world, pos, EnumFacing.EAST))
+        .withProperty(SOUTH, this.canBlockConnectTo(world, pos, EnumFacing.SOUTH))
+        .withProperty(WEST, this.canBlockConnectTo(world, pos, EnumFacing.WEST));
   }
 
+  @Override
   public int getMetaFromState(IBlockState state) {
     return 0;
   }
 
+  @Override
   @SuppressWarnings("deprecation")
   public IBlockState withRotation(IBlockState state, Rotation rot) {
     switch (rot) {
@@ -54,6 +63,7 @@ public class BlockLiving extends Block {
     }
   }
 
+  @Override
   @SuppressWarnings("deprecation")
   public IBlockState withMirror(IBlockState state, Mirror mirror) {
     switch (mirror) {
@@ -68,15 +78,21 @@ public class BlockLiving extends Block {
 
   @Override
   public boolean canBeConnectedTo(IBlockAccess world, BlockPos pos, EnumFacing facing) {
-    return canConnectTo(world, pos.offset(facing));
+    return this.canConnectTo(world, pos.offset(facing));
   }
 
+  /**
+   * Whether the block at the given position should connect its texture to its neighbor on the given side.
+   */
   private boolean canBlockConnectTo(IBlockAccess world, BlockPos pos, EnumFacing facing) {
     BlockPos other = pos.offset(facing);
     Block block = world.getBlockState(other).getBlock();
-    return block.canBeConnectedTo(world, other, facing.getOpposite()) || canConnectTo(world, other);
+    return block.canBeConnectedTo(world, other, facing.getOpposite()) || this.canConnectTo(world, other);
   }
 
+  /**
+   * Whether a block of this class should connect its textures to the block type at the given position.
+   */
   public boolean canConnectTo(IBlockAccess world, BlockPos pos) {
     return world.getBlockState(pos).getBlock() instanceof BlockLiving;
   }

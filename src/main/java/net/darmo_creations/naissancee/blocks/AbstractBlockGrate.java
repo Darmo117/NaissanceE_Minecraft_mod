@@ -17,13 +17,28 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class AbstractBlockGrate extends BlockHorizontal implements IModBlock {
+/**
+ * Base class for grate blocks.
+ * <p>
+ * A grate is a block that features aligned vertical rectangular poles.
+ * It can face any of the four horizontal directions.
+ */
+public abstract class AbstractBlockGrate extends BlockHorizontal implements IModBlock {
   public static final PropertyEnum<AbstractBlockGrate.EnumDirection> DIRECTION = PropertyEnum.create("direction", AbstractBlockGrate.EnumDirection.class);
 
   private final AxisAlignedBB[] aabbs;
 
-  public AbstractBlockGrate(Material material, MapColor colorIn, AxisAlignedBB[] aabbs) {
-    super(material, colorIn);
+  /**
+   * Create a grate block with the given material, color and bounding boxes.
+   *
+   * @param material Block’s material.
+   * @param color    Block’s map color.
+   * @param aabbs    Block’s bounding boxes. Should contain 8 items:
+   *                 2 LSBs of index = facing direction: 0 = North, 1 = South, 2 = East, 3 = West;
+   *                 3rd LSB of index = direction: 0 = left to right, 1 = right to left
+   */
+  public AbstractBlockGrate(Material material, MapColor color, AxisAlignedBB[] aabbs) {
+    super(material, color);
     this.aabbs = aabbs;
   }
 
@@ -129,6 +144,9 @@ public class AbstractBlockGrate extends BlockHorizontal implements IModBlock {
     return state.withProperty(FACING, rot.rotate(state.getValue(FACING)));
   }
 
+  /**
+   *
+   */
   public enum EnumDirection implements IStringSerializable {
     LEFT_RIGHT("left_right"),
     RIGHT_LEFT("right_left");

@@ -1,6 +1,7 @@
 package net.darmo_creations.naissancee.items;
 
 import net.darmo_creations.naissancee.Utils;
+import net.darmo_creations.naissancee.blocks.BlockLightOrbController;
 import net.darmo_creations.naissancee.blocks.ModBlocks;
 import net.darmo_creations.naissancee.entities.IPathCheckpoint;
 import net.darmo_creations.naissancee.tile_entities.TileEntityLightOrbController;
@@ -23,8 +24,22 @@ import net.minecraft.world.World;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Item used to edit light orbs.
+ * This item is not stackable.
+ * <p>
+ * Usage:
+ * <li>Sneak-right-click on a controller block to select it.
+ * Corresponding path checkpoints will then be highlighted while holding this item.
+ * <li>Right-click a controller block to open its configuration GUI.
+ * <li>Right-click on a block to add a checkpoint at the block adjacent to the clicked side.
+ * <li>Right-click while sneaking on a checkpoint to remove it.
+ *
+ * @see BlockLightOrbController
+ * @see TileEntityLightOrbController
+ */
 public class ItemLightOrbTweaker extends Item {
-  public static final String CONTROLLER_POS_TAG_KEY = "ControllerPos";
+  private static final String CONTROLLER_POS_TAG_KEY = "ControllerPos";
 
   public ItemLightOrbTweaker() {
     this.setMaxStackSize(1);
@@ -43,7 +58,7 @@ public class ItemLightOrbTweaker extends Item {
         }
       }
     } else {
-      TileEntityLightOrbController controller = getTileEntity(player.getHeldItem(hand), world);
+      TileEntityLightOrbController controller = getControllerTileEntity(player.getHeldItem(hand), world);
       if (controller != null) {
         boolean success = true;
         if (player.isSneaking()) {
@@ -78,7 +93,7 @@ public class ItemLightOrbTweaker extends Item {
   public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) {
     super.onUpdate(stack, world, entity, itemSlot, isSelected);
     if (world.isRemote && isSelected) {
-      TileEntityLightOrbController te = getTileEntity(stack, world);
+      TileEntityLightOrbController te = getControllerTileEntity(stack, world);
       if (te != null) {
         List<IPathCheckpoint> checkpoints = te.getCheckpoints();
         for (int i = 0, size = checkpoints.size(); i < size; i++) {
@@ -104,7 +119,14 @@ public class ItemLightOrbTweaker extends Item {
     return super.getHighlightTip(item, displayName);
   }
 
-  private static TileEntityLightOrbController getTileEntity(ItemStack stack, World world) {
+  /**
+   * Return the tile entity for the controller block at the given position.
+   *
+   * @param stack Item stack that contains NBT tag with controller’s position.
+   * @param world World to look for block.
+   * @return The tile entity, null if none were found or tile entity is of the wrong type.
+   */
+  private static TileEntityLightOrbController getControllerTileEntity(ItemStack stack, World world) {
     NBTTagCompound tag = stack.getTagCompound();
     if (tag != null) {
       return Utils.getTileEntity(TileEntityLightOrbController.class, world,

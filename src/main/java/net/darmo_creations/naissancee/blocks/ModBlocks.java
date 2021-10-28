@@ -9,6 +9,9 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * This class declares all blocks for this mod.
+ */
 @SuppressWarnings("unused")
 public final class ModBlocks {
   public static final Block WHITE_WALL_GRATE = new BlockWallGrate(Material.ROCK).setRegistryName("white_wall_grate").setCreativeTab(NaissanceE.CREATIVE_TAB);
@@ -38,7 +41,7 @@ public final class ModBlocks {
   public static final Block OFFSET_WALL_LAMP = new BlockOffsetWallLamp().setRegistryName("offset_wall_lamp").setCreativeTab(NaissanceE.CREATIVE_TAB);
   public static final Block WALL_LAMPS = new BlockWallLamps().setRegistryName("wall_lamps");
   public static final Block INVISIBLE_LIGHT_SOURCE = new BlockInvisibleLightSource().setRegistryName("invisible_light_source").setCreativeTab(NaissanceE.CREATIVE_TAB);
-  public static final Block VARIABLE_LAMP = new BlockVariableLamp(true).setRegistryName("variable_lamp").setCreativeTab(NaissanceE.CREATIVE_TAB);
+  public static final Block VARIABLE_LAMP = new BlockVariableLamp().setRegistryName("variable_lamp").setCreativeTab(NaissanceE.CREATIVE_TAB);
   public static final Block ACTIVATOR_LAMP = new BlockActivatorLamp().setRegistryName("activator_lamp").setCreativeTab(NaissanceE.CREATIVE_TAB);
 
   public static final Block CREATURE_BLOCK = new BlockCreature().setRegistryName("creature_block").setCreativeTab(NaissanceE.CREATIVE_TAB);
@@ -47,6 +50,9 @@ public final class ModBlocks {
   public static final Block LIGHT_ORB_SOURCE = new BlockLightOrbSource().setRegistryName("light_orb_source");
   public static final Block LIGHT_ORB_CONTROLLER = new BlockLightOrbController().setRegistryName("light_orb_controller").setCreativeTab(NaissanceE.CREATIVE_TAB);
 
+  /**
+   * The list of all declared blocks for this mod.
+   */
   public static final List<Block> BLOCKS = new LinkedList<>();
 
   static {

@@ -14,11 +14,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+/**
+ * A vertical slab that can face any of the 4 horizontal directions. Unlike usual slabs, they cannot stack.
+ */
 public class BlockVerticalSlab extends BlockHorizontal implements IModBlock {
-  public static final AxisAlignedBB AABB_NORTH = new AxisAlignedBB(0.0, 0.0, 0.5, 1.0, 1.0, 1.0);
-  public static final AxisAlignedBB AABB_SOUTH = new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 1.0, 0.5);
-  public static final AxisAlignedBB AABB_WEST = new AxisAlignedBB(0.5, 0.0, 0.0, 1.0, 1.0, 1.0);
-  public static final AxisAlignedBB AABB_EAST = new AxisAlignedBB(0.0, 0.0, 0.0, 0.5, 1.0, 1.0);
+  private static final AxisAlignedBB AABB_NORTH = new AxisAlignedBB(0.0, 0.0, 0.5, 1.0, 1.0, 1.0);
+  private static final AxisAlignedBB AABB_SOUTH = new AxisAlignedBB(0.0, 0.0, 0.0, 1.0, 1.0, 0.5);
+  private static final AxisAlignedBB AABB_WEST = new AxisAlignedBB(0.5, 0.0, 0.0, 1.0, 1.0, 1.0);
+  private static final AxisAlignedBB AABB_EAST = new AxisAlignedBB(0.0, 0.0, 0.0, 0.5, 1.0, 1.0);
 
   public BlockVerticalSlab(Material material) {
     super(material);

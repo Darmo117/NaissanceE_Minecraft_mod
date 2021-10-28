@@ -13,7 +13,13 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-// TODO rendre sensible à la lumière
+/**
+ * This block represents a light-sensitive block found in NaissanceE.
+ * <p>
+ * When in complete darkness it is transparent and players can walk through it.
+ * When exposed to light it becomes solid and opaque.
+ */
+// TODO make light-sensitive
 public class BlockLightSensitiveBarrier extends Block {
   public static final PropertyBool PASSABLE = PropertyBool.create("passable");
 

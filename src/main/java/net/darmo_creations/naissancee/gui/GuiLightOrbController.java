@@ -10,8 +10,12 @@ import net.minecraft.network.play.client.CPacketCustomPayload;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+/**
+ * GUI for the light orb controller block.
+ */
 @SideOnly(Side.CLIENT)
 public class GuiLightOrbController extends GuiScreen {
+  // Associated tile entity
   private final TileEntityLightOrbController tileEntity;
   private GuiButton doneBtn;
   private GuiButton cancelBtn;
@@ -20,8 +24,14 @@ public class GuiLightOrbController extends GuiScreen {
   public static final int CANCEL_BUTTON_ID = 1;
   public static final int STATUS_BUTTON_ID = 2;
 
+  // Whether the tile entity should be active
   private boolean active;
 
+  /**
+   * Creates a GUI for the given tile entity.
+   *
+   * @param tileEntity The tile entity.
+   */
   public GuiLightOrbController(TileEntityLightOrbController tileEntity) {
     this.tileEntity = tileEntity;
   }

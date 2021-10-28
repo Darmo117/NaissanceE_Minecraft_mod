@@ -1,6 +1,8 @@
 package net.darmo_creations.naissancee.blocks;
 
 import net.darmo_creations.naissancee.Utils;
+import net.darmo_creations.naissancee.items.ItemInvisibleLightSourceTweaker;
+import net.darmo_creations.naissancee.items.ModItems;
 import net.darmo_creations.naissancee.tile_entities.TileEntityInvisibleLightSource;
 import net.darmo_creations.naissancee.tile_entities.TileEntityInvisibleLightSource.EnumMode;
 import net.minecraft.block.ITileEntityProvider;
@@ -15,14 +17,19 @@ import net.minecraft.world.World;
 
 import java.util.Optional;
 
+/**
+ * An invisible, non-tengible block that emits light.
+ * <p>
+ * It has three different settings:
+ * <li>Normal: Light level can be adjusted using the appropriate tool (cf. {@link ModItems#INVISIBLE_LIGHT_SOURCE_EDITING_TOOL}).
+ * <li>Locked: Light level cannot be changed in any way.
+ * <li>Redstone: Light level depends on incoming redstone power.
+ *
+ * @see TileEntityInvisibleLightSource
+ * @see ItemInvisibleLightSourceTweaker
+ */
 public class BlockInvisibleLightSource extends BlockVariableLamp implements ITileEntityProvider {
-  public static final AxisAlignedBB AABB = new AxisAlignedBB(0.25, 0.25, 0.25, 0.75, 0.75, 0.75);
-
-  public BlockInvisibleLightSource() {
-    super(true);
-    this.setLightLevel(1f);
-    this.translucent = true;
-  }
+  private static final AxisAlignedBB AABB = new AxisAlignedBB(0.25, 0.25, 0.25, 0.75, 0.75, 0.75);
 
   @Override
   public void onBlockAdded(World world, BlockPos pos, IBlockState state) {

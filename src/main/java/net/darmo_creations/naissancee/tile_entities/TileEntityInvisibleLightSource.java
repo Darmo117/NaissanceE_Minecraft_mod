@@ -1,6 +1,7 @@
 package net.darmo_creations.naissancee.tile_entities;
 
 import net.darmo_creations.naissancee.blocks.BlockInvisibleLightSource;
+import net.darmo_creations.naissancee.blocks.ModBlocks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
@@ -8,16 +9,26 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
-
+/**
+ * Tile entity for {@link ModBlocks#INVISIBLE_LIGHT_SOURCE}.
+ * <p>
+ * Defines the light level variation behavior of the associated block (cf. {@link EnumMode}).
+ *
+ * @see TileEntityInvisibleLightSourceRenderer
+ * @see BlockInvisibleLightSource
+ * @see ModBlocks#INVISIBLE_LIGHT_SOURCE
+ */
 public class TileEntityInvisibleLightSource extends TileEntity {
   private static final String MODE_KEY = "mode";
 
+  // Current behavior mode
   private EnumMode mode;
 
+  /**
+   * Create a tile entity in edit mode.
+   */
   public TileEntityInvisibleLightSource() {
-    this.mode = EnumMode.EDIT;
-    this.markDirty();
+    this.setMode(EnumMode.EDIT);
   }
 
   public EnumMode getMode() {
@@ -48,7 +59,6 @@ public class TileEntityInvisibleLightSource extends TileEntity {
     this.mode = EnumMode.values()[compound.getInteger(MODE_KEY)];
   }
 
-  @Nullable
   @Override
   public SPacketUpdateTileEntity getUpdatePacket() {
     return new SPacketUpdateTileEntity(this.pos, 1, this.getUpdateTag());
@@ -59,9 +69,21 @@ public class TileEntityInvisibleLightSource extends TileEntity {
     return this.writeToNBT(new NBTTagCompound());
   }
 
+  /**
+   * This enumeration defines behavior modes of the associated block.
+   */
   public enum EnumMode {
+    /**
+     * Light level can be edited.
+     */
     EDIT,
+    /**
+     * Light level is locked to its last value.
+     */
     LOCKED,
+    /**
+     * Light level can only be set by redstone power.
+     */
     REDSTONE
   }
 }

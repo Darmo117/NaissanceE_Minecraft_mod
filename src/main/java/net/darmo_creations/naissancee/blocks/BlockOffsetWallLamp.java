@@ -15,15 +15,18 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+/**
+ * A small thin vertical luminous block that is offset by half a block.
+ */
 public class BlockOffsetWallLamp extends BlockHorizontal implements IModBlock {
-  public static final AxisAlignedBB AABB_NORTH = new AxisAlignedBB(0.6875, 0.1875, 0.875, 1.3125, 0.8125, 1.0);
-  public static final AxisAlignedBB AABB_SOUTH = new AxisAlignedBB(-0.3125, 0.1875, 0.0, 0.3125, 0.8125, 0.125);
-  public static final AxisAlignedBB AABB_WEST = new AxisAlignedBB(0.875, 0.1875, -0.3125, 1.0, 0.8125, 0.3125);
-  public static final AxisAlignedBB AABB_EAST = new AxisAlignedBB(0.0, 0.1875, 0.6875, 0.125, 0.8125, 1.3125);
+  private static final AxisAlignedBB AABB_NORTH = new AxisAlignedBB(0.6875, 0.1875, 0.875, 1.3125, 0.8125, 1.0);
+  private static final AxisAlignedBB AABB_SOUTH = new AxisAlignedBB(-0.3125, 0.1875, 0.0, 0.3125, 0.8125, 0.125);
+  private static final AxisAlignedBB AABB_WEST = new AxisAlignedBB(0.875, 0.1875, -0.3125, 1.0, 0.8125, 0.3125);
+  private static final AxisAlignedBB AABB_EAST = new AxisAlignedBB(0.0, 0.1875, 0.6875, 0.125, 0.8125, 1.3125);
 
   public BlockOffsetWallLamp() {
     super(Material.GLASS);
-    this.setLightLevel(1.0F);
+    this.setLightLevel(1F);
     this.setSoundType(SoundType.GLASS);
   }
 

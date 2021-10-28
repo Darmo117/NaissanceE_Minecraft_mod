@@ -15,13 +15,16 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+/**
+ * This block represents a bunch of small luminous blocks that can be found throughout NaissanceE.
+ */
 public class BlockWallLamps extends BlockDirectional implements IModBlock {
-  public static final AxisAlignedBB AABB_NORTH = new AxisAlignedBB(0.125, 0.0625, 0.9375, 0.875, 0.8125, 1.0);
-  public static final AxisAlignedBB AABB_SOUTH = new AxisAlignedBB(0.125, 0.0625, 0.0, 0.875, 0.8125, 0.0625);
-  public static final AxisAlignedBB AABB_WEST = new AxisAlignedBB(0.9375, 0.0625, 0.125, 1.0, 0.8125, 0.875);
-  public static final AxisAlignedBB AABB_EAST = new AxisAlignedBB(0.0, 0.0625, 0.125, 0.0625, 0.8125, 0.875);
-  public static final AxisAlignedBB AABB_UP = new AxisAlignedBB(0.125, 0.0, 0.0625, 0.875, 0.0625, 0.8125);
-  public static final AxisAlignedBB AABB_DOWN = new AxisAlignedBB(0.125, 0.9375, 0.1875, 0.875, 1.0, 0.9375);
+  private static final AxisAlignedBB AABB_NORTH = new AxisAlignedBB(0.125, 0.0625, 0.9375, 0.875, 0.8125, 1.0);
+  private static final AxisAlignedBB AABB_SOUTH = new AxisAlignedBB(0.125, 0.0625, 0.0, 0.875, 0.8125, 0.0625);
+  private static final AxisAlignedBB AABB_WEST = new AxisAlignedBB(0.9375, 0.0625, 0.125, 1.0, 0.8125, 0.875);
+  private static final AxisAlignedBB AABB_EAST = new AxisAlignedBB(0.0, 0.0625, 0.125, 0.0625, 0.8125, 0.875);
+  private static final AxisAlignedBB AABB_UP = new AxisAlignedBB(0.125, 0.0, 0.0625, 0.875, 0.0625, 0.8125);
+  private static final AxisAlignedBB AABB_DOWN = new AxisAlignedBB(0.125, 0.9375, 0.1875, 0.875, 1.0, 0.9375);
 
   public BlockWallLamps() {
     super(Material.GLASS);

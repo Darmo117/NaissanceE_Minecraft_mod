@@ -11,7 +11,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
-import net.minecraft.util.*;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
@@ -24,12 +27,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Item used to fill areas with blocks.
+ * <p>
+ * Usage:
+ * <li>Right-click on block to select first position.
+ * <li>Right-click on another block to select second position.
+ * <li>Sneak-right-click on block to select filler block. If no block is targetted, air will be selected.
+ */
 public class ItemCreativeWand extends Item {
-  public static final String POS1_TAG_KEY = "Pos1";
-  public static final String POS2_TAG_KEY = "Pos2";
-  public static final String STATE_TAG_KEY = "BlockState";
+  private static final String POS1_TAG_KEY = "Pos1";
+  private static final String POS2_TAG_KEY = "Pos2";
+  private static final String STATE_TAG_KEY = "BlockState";
 
-  public static final int AREA_SIZE_LIMIT = 32768;
+  // Maximum number of blocks that can be filled at the same time
+  private static final int AREA_SIZE_LIMIT = 32768;
 
   public ItemCreativeWand() {
     this.setMaxStackSize(1);
@@ -150,15 +162,29 @@ public class ItemCreativeWand extends Item {
     return super.getHighlightTip(item, displayName);
   }
 
+  /**
+   * Convert block position to string.
+   */
   private static String blockPosToString(BlockPos pos) {
     return String.format("%d %d %d", pos.getX(), pos.getY(), pos.getZ());
   }
 
+  /**
+   * Return registry ID of a given block.
+   */
   private static String getBlockID(Block block) {
     //noinspection ConstantConditions
     return GameRegistry.findRegistry(Block.class).getKey(block).toString();
   }
 
+  /**
+   * Set block state of tool then send a confirmation message to player.
+   *
+   * @param blockState Block state to use.
+   * @param data       Wand data.
+   * @param world      World player is in.
+   * @param player     Player to send chat message to.
+   */
   private static void setBlockState(IBlockState blockState, WandData data, World world, EntityPlayer player) {
     data.setBlockState(blockState);
     String message = getBlockID(blockState.getBlock());
@@ -171,7 +197,17 @@ public class ItemCreativeWand extends Item {
         .setStyle(new Style().setColor(TextFormatting.BLUE)));
   }
 
+  /**
+   * Class holding data for the wand and that can serialize/deserialize NBT tags.
+   */
   private static class WandData {
+    /**
+     * Create a data instance from the given NBT tags.
+     * If tag is null, an empty instance is returned.
+     *
+     * @param data NBT tag to deserialize.
+     * @return The WandData object.
+     */
     static WandData fromTag(NBTTagCompound data) {
       if (data != null) {
         NBTTagCompound tag1 = data.getCompoundTag(POS1_TAG_KEY);
@@ -190,16 +226,25 @@ public class ItemCreativeWand extends Item {
     private BlockPos secondPosition;
     private IBlockState blockState;
 
+    /**
+     * Create an empty object.
+     */
     WandData() {
       this(null, null, null);
     }
 
+    /**
+     * Create an object for the given positions and block state.
+     */
     WandData(BlockPos firstPosition, BlockPos secondPosition, IBlockState blockState) {
       this.firstPosition = firstPosition;
       this.secondPosition = secondPosition;
       this.blockState = blockState;
     }
 
+    /**
+     * Data object is considered ready when both positions and blockstate are set.
+     */
     boolean isReady() {
       return this.getFirstPosition() != null && this.getSecondPosition() != null && this.getBlockState() != null;
     }
@@ -228,6 +273,9 @@ public class ItemCreativeWand extends Item {
       this.blockState = blockState;
     }
 
+    /**
+     * Convert this data object to NBT tags.
+     */
     NBTTagCompound toTag() {
       NBTTagCompound root = new NBTTagCompound();
 

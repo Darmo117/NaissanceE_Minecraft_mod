@@ -1,6 +1,7 @@
 package net.darmo_creations.naissancee.entities;
 
 import net.darmo_creations.naissancee.Utils;
+import net.darmo_creations.naissancee.blocks.BlockLightOrbController;
 import net.darmo_creations.naissancee.blocks.BlockLightOrbSource;
 import net.darmo_creations.naissancee.blocks.ModBlocks;
 import net.darmo_creations.naissancee.tile_entities.TileEntityLightOrbController;
@@ -18,16 +19,38 @@ import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import org.apache.commons.lang3.tuple.Pair;
 
+/**
+ * This class represents the moving light orbs found throughout NaissanceE.
+ * <p>
+ * Orbs place invisible light-emitting blocks wherever they pass through.
+ * If the block an orb is currentry in is not air, no light block is placed.
+ * <p>
+ * Orbs are controlled by controller blocks (one for each) that hold all necessary data.
+ * As such, orb entities do not hold any data except for the next checkpoint they must
+ * go to and the position of their controller block.
+ * <p>
+ * Orbs move in straight lines at constant speed between each checkpoint in their path.
+ * <p>
+ * Light orbs do not have a rendered model but spawn white smoke particles instead.
+ *
+ * @see BlockLightOrbSource
+ * @see BlockLightOrbController
+ * @see TileEntityLightOrbController
+ */
 public class EntityLightOrb extends Entity {
   public static final String CONTROLLER_POS_TAG_KEY = "ControllerPos";
   public static final String NEXT_CP_INDEX_TAG_KEY = "NextCheckpointIndex";
 
+  /**
+   * Position of the associated controller block.
+   */
   private static final DataParameter<BlockPos> CONTROLLER_POS = EntityDataManager.createKey(EntityLightOrb.class, DataSerializers.BLOCK_POS);
   /**
    * Index of the next checkpoint; -1 if there is none.
    */
   private static final DataParameter<Integer> NEXT_CHECKPOINT_INDEX = EntityDataManager.createKey(EntityLightOrb.class, DataSerializers.VARINT);
 
+  // Tile position of this entity, used to place/remove light blocks
   private int tileX;
   private int tileY;
   private int tileZ;
@@ -37,6 +60,12 @@ public class EntityLightOrb extends Entity {
     super(world);
   }
 
+  /**
+   * Create a light orb entity for the given controller’s tile entity.
+   *
+   * @param world      The world this entity belongs to.
+   * @param controller The controller’s tile entity.
+   */
   public EntityLightOrb(World world, TileEntityLightOrbController controller) {
     super(world);
     this.dataManager.set(CONTROLLER_POS, controller.getPos());
@@ -47,11 +76,15 @@ public class EntityLightOrb extends Entity {
     this.setEntityInvulnerable(true);
     this.setSilent(true);
     this.setNoGravity(true);
-    this.setSize(0.5F, 0.5F);
+    this.setSize(0.25F, 0.25F);
     this.dataManager.register(CONTROLLER_POS, new BlockPos(0, 0, 0));
     this.dataManager.register(NEXT_CHECKPOINT_INDEX, 0);
   }
 
+  /**
+   * Initializes this entity.
+   * Actually sets the next checkpoint to the one directly after the start checkpoint if it exists.
+   */
   public void init() {
     TileEntityLightOrbController controller = this.controller();
     if (controller != null) { // Controller block may have been removed while world was unloaded
@@ -72,8 +105,8 @@ public class EntityLightOrb extends Entity {
       return;
     }
 
-    // Negative y speed to compensate for natural rising of particles
-    world.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, posX, posY + 0.5, posZ, 0, -0.025, 0);
+    // Negative y speed to compensate for rising particles
+    this.world.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, this.posX, this.posY + 0.5, this.posZ, 0, -0.025, 0);
 
     BlockPos previousTilePos = this.tilePosToBlockPos();
 
@@ -124,6 +157,11 @@ public class EntityLightOrb extends Entity {
     super.onUpdate();
   }
 
+  /**
+   * Set this entity’s motion vector to point towards the given checkpoint from the entity’s current position.
+   *
+   * @param nextCheckpoint The checkpoint to go to.
+   */
   private void updateMotion(IPathCheckpoint nextCheckpoint) {
     BlockPos currentPos = this.posToBlockPos();
     BlockPos nextCPPos = nextCheckpoint.getPos();
@@ -135,22 +173,37 @@ public class EntityLightOrb extends Entity {
     this.motionZ = speed * vector.getZ() / length;
   }
 
+  /**
+   * Stop this entity.
+   */
   private void stop() {
     this.motionX = this.motionY = this.motionZ = 0;
   }
 
+  /**
+   * Whether this entity is not moving.
+   */
   private boolean isStopped() {
     return this.motionX == 0 && this.motionY == 0 && this.motionZ == 0;
   }
 
+  /**
+   * Convert current position fields to BlockPos.
+   */
   private BlockPos posToBlockPos() {
     return new BlockPos(this.posX, this.posY, this.posZ);
   }
 
+  /**
+   * Convert current tile position fields to BlockPos.
+   */
   private BlockPos tilePosToBlockPos() {
     return new BlockPos(this.tileX, this.tileY, this.tileZ);
   }
 
+  /**
+   * Update tile position fields using current position.
+   */
   private void updateTilePos() {
     // Use Math.floor() to account for negative values
     this.tileX = (int) Math.floor(this.posX);
@@ -158,6 +211,9 @@ public class EntityLightOrb extends Entity {
     this.tileZ = (int) Math.floor(this.posZ);
   }
 
+  /**
+   * Get next checkpoint. Returns null if there is none.
+   */
   private IPathCheckpoint nextCheckpoint() {
     TileEntityLightOrbController controller = this.controller();
     int i = this.dataManager.get(NEXT_CHECKPOINT_INDEX);
@@ -165,6 +221,9 @@ public class EntityLightOrb extends Entity {
         ? controller.getCheckpoints().get(i) : null;
   }
 
+  /**
+   * Get the controller’s tile entity. May be null during entity initialization.
+   */
   private TileEntityLightOrbController controller() {
     return Utils.getTileEntity(TileEntityLightOrbController.class, this.world, this.dataManager.get(CONTROLLER_POS)).orElse(null);
   }
@@ -201,6 +260,9 @@ public class EntityLightOrb extends Entity {
     return false;
   }
 
+  /**
+   * Place a light block at the given position.
+   */
   private void placeLight(BlockPos pos) {
     if (this.world.getBlockState(pos).getBlock() == Blocks.AIR) {
       this.world.setBlockState(pos, ModBlocks.LIGHT_ORB_SOURCE.getDefaultState()
@@ -208,6 +270,9 @@ public class EntityLightOrb extends Entity {
     }
   }
 
+  /**
+   * Remove light block at given position.
+   */
   private void removeLight(BlockPos pos) {
     if (this.world.getBlockState(pos).getBlock() == ModBlocks.LIGHT_ORB_SOURCE) {
       this.world.setBlockState(pos, Blocks.AIR.getDefaultState());

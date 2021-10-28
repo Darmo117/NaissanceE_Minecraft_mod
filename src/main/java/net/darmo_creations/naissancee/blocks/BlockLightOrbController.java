@@ -1,7 +1,9 @@
 package net.darmo_creations.naissancee.blocks;
 
 import net.darmo_creations.naissancee.Utils;
+import net.darmo_creations.naissancee.entities.EntityLightOrb;
 import net.darmo_creations.naissancee.gui.GuiLightOrbController;
+import net.darmo_creations.naissancee.items.ItemLightOrbTweaker;
 import net.darmo_creations.naissancee.items.ModItems;
 import net.darmo_creations.naissancee.tile_entities.TileEntityLightOrbController;
 import net.minecraft.block.BlockContainer;
@@ -19,6 +21,13 @@ import net.minecraft.world.World;
 import java.util.Optional;
 import java.util.Random;
 
+/**
+ * Controller blocks let players configure light orbs through the use of a tool and a configuration GUI.
+ *
+ * @see EntityLightOrb
+ * @see ItemLightOrbTweaker
+ * @see TileEntityLightOrbController
+ */
 public class BlockLightOrbController extends BlockContainer implements IModBlock {
   public BlockLightOrbController() {
     super(Material.IRON);

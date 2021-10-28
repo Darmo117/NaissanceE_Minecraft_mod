@@ -7,6 +7,9 @@ import net.minecraft.item.ItemBlock;
 
 import java.util.*;
 
+/**
+ * This class declares all items for this mod.
+ */
 @SuppressWarnings("unused")
 public final class ModItems {
   public static final Item CREATURE_BLOCK = new ItemCreatureBlock().setRegistryName("creature_block").setCreativeTab(NaissanceE.CREATIVE_TAB);
@@ -20,7 +23,13 @@ public final class ModItems {
   public static final Item LIGHT_ORB_TWEAKER = new ItemLightOrbTweaker().setRegistryName("light_orb_tweaker").setCreativeTab(NaissanceE.CREATIVE_TAB);
   public static final Item CREATIVE_WAND = new ItemCreativeWand().setRegistryName("creative_wand").setCreativeTab(NaissanceE.CREATIVE_TAB);
 
+  /**
+   * The list of all explicitly declared items for this mod.
+   */
   public static final List<Item> ITEMS = new LinkedList<>();
+  /**
+   * The list of all generated items for this mod’s blocks.
+   */
   public static final Map<Block, ItemBlock> ITEM_BLOCKS = new HashMap<>();
 
   static {

@@ -8,6 +8,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
+/**
+ * This class defines a creative tab for this mod.
+ */
 public class NaissanceETab extends CreativeTabs {
   public NaissanceETab() {
     super(NaissanceE.MODID);

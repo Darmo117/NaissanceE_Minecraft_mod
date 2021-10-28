@@ -1,6 +1,7 @@
 package net.darmo_creations.naissancee.tile_entities;
 
 import net.darmo_creations.naissancee.blocks.BlockLightOrbController;
+import net.darmo_creations.naissancee.blocks.ModBlocks;
 import net.darmo_creations.naissancee.entities.EntityLightOrb;
 import net.darmo_creations.naissancee.entities.IPathCheckpoint;
 import net.minecraft.block.state.IBlockState;
@@ -16,32 +17,69 @@ import net.minecraft.world.World;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
+/**
+ * Tile entity for light orb controller.
+ * <p>
+ * Creates a light orb entity when the tile entity is created, specifically when {@link #init()} is called.
+ * It defines the behavior its associated light orb.
+ *
+ * @see BlockLightOrbController
+ * @see ModBlocks#LIGHT_ORB_CONTROLLER
+ */
 public class TileEntityLightOrbController extends TileEntity {
-  public static final String ORB_ID_TAG_KEY = "OrbID";
-  public static final String ACTIVE_TAG_KEY = "Active";
-  public static final String CHECKPOINTS_TAG_KEY = "Checkpoints";
-  public static final String LOOPS_TAG_KEY = "Loops";
-  public static final String LIGHT_LEVEL_TAG_KEY = "LightLevel";
-  public static final String SPEED_TAG_KEY = "Speed";
+  private static final String ORB_ID_TAG_KEY = "OrbID";
+  private static final String ACTIVE_TAG_KEY = "Active";
+  private static final String CHECKPOINTS_TAG_KEY = "Checkpoints";
+  private static final String LOOPS_TAG_KEY = "Loops";
+  private static final String LIGHT_LEVEL_TAG_KEY = "LightLevel";
+  private static final String SPEED_TAG_KEY = "Speed";
 
+  /**
+   * UUID of associated orb.
+   */
   private UUID orbID;
+  /**
+   * Whether the orb is active, i.e. whether the player can interact with it.
+   */
   private boolean active;
+  /**
+   * Path the light orb must follow.
+   */
   private List<PathCheckpoint> checkpoints;
+  /**
+   * Whether the path loops, i.e. whether the orb should go back
+   * to start checkpoint after it has reached the last one.
+   */
   private boolean loops;
+  /**
+   * Light level of the light blocks placed by the entity.
+   */
   private int lightLevel;
   /**
    * Movement speed of orb in blocks per second.
    */
   private double speed;
 
+  /**
+   * Create a tile entity with empty path.
+   */
   public TileEntityLightOrbController() {
     this.checkpoints = new LinkedList<>();
   }
 
+  /**
+   * Initialize this tile entity.
+   * The path is initialized with a single stop checkpoint positionned right above the controller block.
+   * Light level is set to 15 and speed to 0.25 blocks per second. Path does not loop by default.
+   */
   public void init() {
-    this.setActive(true);
+    this.setActive(true); // TEMP set to false by default once GUI works
     this.setLightLevel(15);
     this.setLoops(false);
     this.setSpeed(0.25);
@@ -50,6 +88,10 @@ public class TileEntityLightOrbController extends TileEntity {
     this.spawnOrb();
   }
 
+  /**
+   * Spawns a new light orb after deleting the already existing one if it exists.
+   * Does nothing when called client-side.
+   */
   public void spawnOrb() {
     if (!this.world.isRemote) {
       EntityLightOrb currentOrb = this.getOrb();
@@ -66,6 +108,10 @@ public class TileEntityLightOrbController extends TileEntity {
     }
   }
 
+  /**
+   * Kills the associated light orb.
+   * Does nothing when called client-side.
+   */
   public void killOrb() {
     if (!this.world.isRemote) {
       EntityLightOrb currentOrb = this.getOrb();
@@ -76,11 +122,20 @@ public class TileEntityLightOrbController extends TileEntity {
     }
   }
 
+  /**
+   * Get the associated orb entity, based on its UUID.
+   *
+   * @return The entity object or null if it doesn’t exist.
+   * @see #orbID
+   */
   private EntityLightOrb getOrb() {
     List<EntityLightOrb> orbs = this.world.getEntities(EntityLightOrb.class, e -> e.getUniqueID().equals(this.orbID));
     return !orbs.isEmpty() ? orbs.get(0) : null;
   }
 
+  /**
+   * Whether this controller is active, i.e. the light orb should react to player.
+   */
   public boolean isActive() {
     return this.active;
   }
@@ -162,10 +217,16 @@ public class TileEntityLightOrbController extends TileEntity {
     return Optional.empty();
   }
 
+  /**
+   * Get the list of checkpoints.
+   */
   public List<IPathCheckpoint> getCheckpoints() {
-    return new ArrayList<>(this.checkpoints);
+    return this.checkpoints.stream().map(PathCheckpoint::clone).collect(Collectors.toList());
   }
 
+  /**
+   * Whether the path loops.
+   */
   public boolean loops() {
     return this.loops;
   }
@@ -175,10 +236,19 @@ public class TileEntityLightOrbController extends TileEntity {
     this.markDirty();
   }
 
+  /**
+   * Get the light orb’s light level.
+   */
   public int getLightLevel() {
     return this.lightLevel;
   }
 
+  /**
+   * Sets the orb’s light level.
+   *
+   * @param lightLevel The new light level.
+   * @throws IllegalArgumentException If light level is outside [0, 15] range.
+   */
   public void setLightLevel(int lightLevel) {
     if (lightLevel < 0 || lightLevel > 15) {
       throw new IllegalArgumentException("invalid light value " + lightLevel);
@@ -187,10 +257,19 @@ public class TileEntityLightOrbController extends TileEntity {
     this.markDirty();
   }
 
+  /**
+   * Get light orb’s speed (blocks per second).
+   */
   public double getSpeed() {
     return this.speed;
   }
 
+  /**
+   * Set light orb’s speed (blocks per second).
+   *
+   * @param speed The new speed.
+   * @throws IllegalArgumentException If the speed is negative.
+   */
   public void setSpeed(double speed) {
     if (speed < 0) {
       throw new IllegalArgumentException("negative speed");
@@ -250,17 +329,32 @@ public class TileEntityLightOrbController extends TileEntity {
     return this.writeToNBT(new NBTTagCompound());
   }
 
-  private static final class PathCheckpoint implements IPathCheckpoint {
-    public static final String POS_TAG_KEY = "Pos";
-    public static final String STOP_TAG_KEY = "IsStop";
+  /**
+   * Private mutable implementation of {@link IPathCheckpoint} interface.
+   */
+  private static class PathCheckpoint implements IPathCheckpoint, Cloneable {
+    private static final String POS_TAG_KEY = "Pos";
+    private static final String STOP_TAG_KEY = "IsStop";
 
+    // Non-private for easy access
     public final BlockPos pos;
     public boolean stop;
 
+    /**
+     * Create a checkpoint for the given NBT tag.
+     *
+     * @param tag The tag to deserialize.
+     */
     public PathCheckpoint(NBTTagCompound tag) {
       this(NBTUtil.getPosFromTag(tag.getCompoundTag(POS_TAG_KEY)), tag.getBoolean(STOP_TAG_KEY));
     }
 
+    /**
+     * Create a checkpoint for the given position and stop state.
+     *
+     * @param pos  Block position.
+     * @param stop Whether the light orb should stop at this checkpoint.
+     */
     public PathCheckpoint(final BlockPos pos, boolean stop) {
       this.pos = pos;
       this.stop = stop;
@@ -276,11 +370,23 @@ public class TileEntityLightOrbController extends TileEntity {
       return this.stop;
     }
 
+    /**
+     * Serialize and return this checkpoint as an NBT tag.
+     */
     public NBTTagCompound toNBT() {
       NBTTagCompound tag = new NBTTagCompound();
       tag.setTag(POS_TAG_KEY, NBTUtil.createPosTag(this.pos));
       tag.setBoolean(STOP_TAG_KEY, this.stop);
       return tag;
+    }
+
+    @Override
+    public PathCheckpoint clone() {
+      try {
+        return (PathCheckpoint) super.clone();
+      } catch (CloneNotSupportedException e) {
+        throw new RuntimeException(e);
+      }
     }
 
     @Override

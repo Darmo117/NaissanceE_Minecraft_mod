@@ -37,7 +37,7 @@ public final class Utils {
    * @return a mod b
    */
   public static int trueModulo(int a, int b) {
-    return (((-a) % b) + b) % b;
+    return ((a % b) + b) % b;
   }
 
   /**

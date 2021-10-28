@@ -5,7 +5,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
@@ -16,7 +15,11 @@ import net.minecraft.world.World;
 
 import java.util.Random;
 
+/**
+ * A light-emitting block that emits a redstone signal when a player enters in contact with it.
+ */
 public class BlockActivatorLamp extends Block implements IModBlock {
+  // Bounding boxes are slightly smaller/bigger than a full block to enable player detection.
   private static final AxisAlignedBB COLLISION_AABB = new AxisAlignedBB(0.002, 0.002, 0.002, 0.998, 0.998, 0.998);
   private static final AxisAlignedBB DETECTION_AABB = new AxisAlignedBB(-0.002, -0.002, -0.002, 1.002, 1.002, 1.002);
 
@@ -42,34 +45,18 @@ public class BlockActivatorLamp extends Block implements IModBlock {
   }
 
   @Override
-  public void updateTick(World worldIn, BlockPos pos, IBlockState state, Random rand) {
-    if (!worldIn.isRemote) {
-      int strength = this.getRedstoneStrength(state);
-      if (strength != 0) {
-        this.updateState(worldIn, pos, state, strength);
-      }
-    }
+  public void updateTick(World world, BlockPos pos, IBlockState state, Random rand) {
+    this.updateState(world, pos, state);
   }
 
   @Override
-  public void onEntityWalk(World worldIn, BlockPos pos, Entity entityIn) {
-    if (!worldIn.isRemote) {
-      IBlockState state = worldIn.getBlockState(pos);
-      int strength = this.getRedstoneStrength(state);
-      if (strength == 0) {
-        this.updateState(worldIn, pos, state, strength);
-      }
-    }
+  public void onEntityWalk(World world, BlockPos pos, Entity entity) {
+    this.updateState(world, pos, world.getBlockState(pos));
   }
 
   @Override
-  public void onEntityCollidedWithBlock(World worldIn, BlockPos pos, IBlockState state, Entity entityIn) {
-    if (!worldIn.isRemote) {
-      int strength = this.getRedstoneStrength(state);
-      if (strength == 0) {
-        this.updateState(worldIn, pos, state, strength);
-      }
-    }
+  public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
+    this.updateState(world, pos, state);
   }
 
   @Override
@@ -115,36 +102,63 @@ public class BlockActivatorLamp extends Block implements IModBlock {
   }
 
   @Override
-  public int tickRate(World worldIn) {
+  public int tickRate(World world) {
     return 10;
   }
 
-  protected void updateState(World worldIn, BlockPos pos, IBlockState state, int oldRedstoneStrength) {
-    int strength = this.computeRedstoneStrength(worldIn, pos, state);
+  /**
+   * Update redstone power state.
+   *
+   * @param world World the block is in.
+   * @param pos   Block’s position.
+   * @param state Block’s current state.
+   */
+  private void updateState(World world, BlockPos pos, IBlockState state) {
+    if (!world.isRemote) {
+      int currentRedstoneStrength = this.getRedstoneStrength(state);
+      int strength = this.computeRedstoneStrength(world, pos, state);
 
-    if (oldRedstoneStrength != strength) {
-      worldIn.setBlockState(pos, state.withProperty(POWERED, strength != 0), 2);
-      this.updateNeighbors(worldIn, pos);
-      worldIn.markBlockRangeForRenderUpdate(pos, pos);
-    }
+      if (currentRedstoneStrength != strength) {
+        world.setBlockState(pos, state.withProperty(POWERED, strength != 0), 2);
+        this.updateNeighbors(world, pos);
+        world.markBlockRangeForRenderUpdate(pos, pos);
+      }
 
-    if (strength != 0) {
-      worldIn.scheduleUpdate(new BlockPos(pos), this, this.tickRate(worldIn));
+      if (strength != 0) {
+        world.scheduleUpdate(pos, this, this.tickRate(world));
+      }
     }
   }
 
-  protected int computeRedstoneStrength(World worldIn, BlockPos pos, IBlockState state) {
-    return worldIn.getEntitiesWithinAABB(EntityPlayer.class, state.getBoundingBox(worldIn, pos).offset(pos)).isEmpty() ? 0 : 15;
+  /**
+   * Compute redstone signal strength.
+   *
+   * @param world Current world.
+   * @param pos   Block’s position.
+   * @param state Current block state.
+   * @return Redstone signal strength.
+   */
+  private int computeRedstoneStrength(World world, BlockPos pos, IBlockState state) {
+    return world.getEntitiesWithinAABB(EntityPlayer.class, state.getBoundingBox(world, pos).offset(pos)).isEmpty() ? 0 : 15;
   }
 
-  protected void updateNeighbors(World worldIn, BlockPos pos) {
-    worldIn.notifyNeighborsOfStateChange(pos, this, true);
+  /**
+   * Update all neighboring blocks.
+   *
+   * @param world Current world.
+   * @param pos   Block’s position.
+   */
+  private void updateNeighbors(World world, BlockPos pos) {
+    world.notifyNeighborsOfStateChange(pos, this, true);
     for (EnumFacing side : EnumFacing.values()) {
-      worldIn.notifyNeighborsOfStateChange(pos.offset(side), this, false);
+      world.notifyNeighborsOfStateChange(pos.offset(side), this, false);
     }
   }
 
-  protected int getRedstoneStrength(IBlockState state) {
+  /**
+   * Get redstone signal strength for block state.
+   */
+  private int getRedstoneStrength(IBlockState state) {
     return state.getValue(POWERED) ? 15 : 0;
   }
 }

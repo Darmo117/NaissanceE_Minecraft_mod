@@ -16,6 +16,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+/**
+ * A half normal slab. It can face any of the horizontal directions and be placed on the bottom or top half.
+ *
+ * @see BlockSlab
+ */
 public class BlockHorizontalCorner extends BlockHorizontal implements IModBlock {
   public static final PropertyEnum<BlockSlab.EnumBlockHalf> HALF = PropertyEnum.create("half", BlockSlab.EnumBlockHalf.class);
 

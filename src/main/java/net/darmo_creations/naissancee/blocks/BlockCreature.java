@@ -1,5 +1,6 @@
 package net.darmo_creations.naissancee.blocks;
 
+import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
@@ -7,9 +8,12 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class BlockCreature extends BlockVariableLamp {
+/**
+ * This block represents a part of the kind of luminous “living” creatures/blobs found throughout NaissanceE.
+ */
+public class BlockCreature extends BlockVariableLightSource {
   public BlockCreature() {
-    super(false);
+    super(Material.ROCK);
   }
 
   @Override
@@ -29,13 +33,9 @@ public class BlockCreature extends BlockVariableLamp {
     }
   }
 
-  @Override
   @SuppressWarnings("deprecation")
+  @Override
   public ItemStack getItem(World worldIn, BlockPos pos, IBlockState state) {
     return new ItemStack(this, 1, state.getValue(LIGHT_LEVEL));
-  }
-
-  public String getUnlocalizedName(int meta) {
-    return super.getUnlocalizedName() + "." + meta;
   }
 }

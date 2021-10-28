@@ -19,6 +19,15 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
+/**
+ * Renderer for the tile entity associated to invisible light sources.
+ * <p>
+ * Renders a rotating item that indicates the mode for the tile entity and the block’s light level value.
+ *
+ * @see TileEntityInvisibleLightSource
+ * @see BlockInvisibleLightSource
+ * @see ModBlocks#INVISIBLE_LIGHT_SOURCE
+ */
 @SideOnly(Side.CLIENT)
 public class TileEntityInvisibleLightSourceRenderer extends TileEntitySpecialRenderer<TileEntityInvisibleLightSource> {
   @Override
@@ -59,7 +68,7 @@ public class TileEntityInvisibleLightSourceRenderer extends TileEntitySpecialRen
         } else if (i == 3) {
           GlStateManager.translate(0.0, 0, inverseScale * -0.5);
         }
-        this.renderText(te);
+        this.renderLightValueText(te);
         GlStateManager.popMatrix();
       }
       GlStateManager.popMatrix();
@@ -68,6 +77,9 @@ public class TileEntityInvisibleLightSourceRenderer extends TileEntitySpecialRen
     }
   }
 
+  /**
+   * Render an item depending on the given tile entity’s mode.
+   */
   private void renderItem(TileEntityInvisibleLightSource te) {
     Item item = null;
     switch (te.getMode()) {
@@ -92,7 +104,10 @@ public class TileEntityInvisibleLightSourceRenderer extends TileEntitySpecialRen
     }
   }
 
-  private void renderText(TileEntityInvisibleLightSource te) {
+  /**
+   * Render light level value using the given tile entity.
+   */
+  private void renderLightValueText(TileEntityInvisibleLightSource te) {
     FontRenderer fontrenderer = this.getFontRenderer();
     String s = "" + te.getWorld().getBlockState(te.getPos()).getValue(BlockInvisibleLightSource.LIGHT_LEVEL);
     fontrenderer.drawString(s, 0, 0, 0);

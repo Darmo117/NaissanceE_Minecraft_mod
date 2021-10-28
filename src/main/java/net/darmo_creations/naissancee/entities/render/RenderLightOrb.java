@@ -1,4 +1,4 @@
-package net.darmo_creations.naissancee.entities.models;
+package net.darmo_creations.naissancee.entities.render;
 
 import net.darmo_creations.naissancee.entities.EntityLightOrb;
 import net.minecraft.client.renderer.entity.Render;
@@ -6,7 +6,7 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.util.ResourceLocation;
 
 /**
- * Renders nothing as light orb generates particles instead of having a model.
+ * Renders nothing as light orbs generate particles instead of having a model.
  */
 public class RenderLightOrb extends Render<EntityLightOrb> {
   public RenderLightOrb(RenderManager renderManager) {
@@ -15,6 +15,6 @@ public class RenderLightOrb extends Render<EntityLightOrb> {
 
   @Override
   protected ResourceLocation getEntityTexture(EntityLightOrb entity) {
-    return null;
+    return null; // No texture as orbs use particles
   }
 }

@@ -4,7 +4,7 @@ import net.darmo_creations.naissancee.blocks.IModBlock;
 import net.darmo_creations.naissancee.blocks.ModBlocks;
 import net.darmo_creations.naissancee.entities.EntityLightOrb;
 import net.darmo_creations.naissancee.entities.ModEntities;
-import net.darmo_creations.naissancee.entities.models.RenderLightOrb;
+import net.darmo_creations.naissancee.entities.render.RenderLightOrb;
 import net.darmo_creations.naissancee.gui.NaissanceETab;
 import net.darmo_creations.naissancee.items.ModItems;
 import net.darmo_creations.naissancee.tile_entities.TileEntityInvisibleLightSource;
@@ -30,17 +30,29 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * This mod adds blocks, items and entities that mimic some features from the game NaissanceE.
+ *
+ * @author Damien Vergnet (Darmo)
+ */
 @Mod(modid = NaissanceE.MODID, name = NaissanceE.NAME, version = NaissanceE.VERSION)
 public class NaissanceE {
   public static final String MODID = "naissancee";
   public static final String NAME = "NaissanceE";
   public static final String VERSION = "1.0";
 
+  /**
+   * This mod’s creative tab.
+   */
   public static final CreativeTabs CREATIVE_TAB = new NaissanceETab();
 
+  /**
+   * This mod’s logger.
+   */
   public static Logger logger;
 
-  private int entitiesID;
+  // Global entities ID.
+  private int entitiesID = 0;
 
   @Mod.EventHandler
   public void preInit(FMLPreInitializationEvent event) {

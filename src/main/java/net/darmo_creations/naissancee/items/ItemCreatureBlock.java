@@ -6,6 +6,9 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 
+/**
+ * Item for {@link ModBlocks#CREATURE_BLOCK}.
+ */
 public class ItemCreatureBlock extends ItemBlock {
   public ItemCreatureBlock() {
     super(ModBlocks.CREATURE_BLOCK);
@@ -23,6 +26,7 @@ public class ItemCreatureBlock extends ItemBlock {
     return this.block.getUnlocalizedName() + "." + stack.getMetadata();
   }
 
+  @Override
   public void getSubItems(CreativeTabs tab, NonNullList<ItemStack> items) {
     if (this.isInCreativeTab(tab)) {
       for (int i = 0; i < 16; ++i) {

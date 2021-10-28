@@ -7,10 +7,16 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * This class declares all entities for this mod.
+ */
 @SuppressWarnings("unused")
 public final class ModEntities {
   public static final EntityEntry MOVING_LIGHT = new EntityEntry(EntityLightOrb.class, NaissanceE.MODID + ".light_orb").setRegistryName("light_orb");
 
+  /**
+   * The list of all declared entities for this mod.
+   */
   public static final List<EntityEntry> ENTITIES = new LinkedList<>();
 
   static {

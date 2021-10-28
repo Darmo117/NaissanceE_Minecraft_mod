@@ -14,6 +14,11 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
+/**
+ * A half vertical slab. It can face any of the horizontal directions.
+ *
+ * @see BlockVerticalSlab
+ */
 public class BlockVerticalCorner extends BlockHorizontal implements IModBlock {
   private static final AxisAlignedBB[] AABBS = {
       // North (North-West)
@@ -87,8 +92,8 @@ public class BlockVerticalCorner extends BlockHorizontal implements IModBlock {
     return false;
   }
 
-  @Override
   @SuppressWarnings("deprecation")
+  @Override
   public IBlockState getStateFromMeta(int meta) {
     return this.getDefaultState().withProperty(FACING, EnumFacing.getHorizontal(meta & 3));
   }

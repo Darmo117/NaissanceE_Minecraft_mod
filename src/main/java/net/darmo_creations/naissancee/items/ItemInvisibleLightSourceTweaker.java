@@ -17,8 +17,17 @@ import net.minecraft.world.World;
 
 import java.util.Optional;
 
+/**
+ * Item used to edit invisible light sources.
+ * This item is not stackable.
+ * <p>
+ * Usage:
+ * <li>Right-click while sneaking: toggle tool mode between set block and set light level.
+ * <li>Right-click on light source: cycle through mode or light levels depending on tool’s mode;
+ * sneak to cycle the other way around.
+ */
 public class ItemInvisibleLightSourceTweaker extends Item {
-  public static final String MODE_ID_TAG_KEY = "ModeID";
+  private static final String MODE_ID_TAG_KEY = "ModeID";
 
   public ItemInvisibleLightSourceTweaker() {
     this.setMaxStackSize(1);
@@ -69,11 +78,13 @@ public class ItemInvisibleLightSourceTweaker extends Item {
         case SET_BLOCK_MODE:
           int l = TileEntityInvisibleLightSource.EnumMode.values().length;
           int modeID = te.get().getMode().ordinal();
+          System.out.println(modeID);
           if (player.isSneaking()) {
             modeID = Utils.trueModulo(modeID - 1, l);
           } else {
             modeID = Utils.trueModulo(modeID + 1, l);
           }
+          System.out.println(modeID);
           te.get().setMode(TileEntityInvisibleLightSource.EnumMode.values()[modeID]);
           result = EnumActionResult.SUCCESS;
           break;
