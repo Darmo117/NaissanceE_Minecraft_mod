@@ -207,6 +207,7 @@ public class GuiLightOrbController extends GuiScreen {
    * GuiResponder with default empty implemention for {@link #setEntryValue(int, boolean)}
    * and {@link #setEntryValue(int, String)}.
    */
+  @SideOnly(Side.CLIENT)
   private interface FloatGuiResponder extends GuiPageButtonList.GuiResponder {
     @Override
     default void setEntryValue(int id, String value) {
