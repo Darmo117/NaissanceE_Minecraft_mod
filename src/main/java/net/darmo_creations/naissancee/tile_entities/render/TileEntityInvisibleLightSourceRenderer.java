@@ -1,8 +1,9 @@
-package net.darmo_creations.naissancee.tile_entities;
+package net.darmo_creations.naissancee.tile_entities.render;
 
 import net.darmo_creations.naissancee.blocks.BlockInvisibleLightSource;
 import net.darmo_creations.naissancee.blocks.ModBlocks;
 import net.darmo_creations.naissancee.items.ModItems;
+import net.darmo_creations.naissancee.tile_entities.TileEntityInvisibleLightSource;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.GlStateManager;

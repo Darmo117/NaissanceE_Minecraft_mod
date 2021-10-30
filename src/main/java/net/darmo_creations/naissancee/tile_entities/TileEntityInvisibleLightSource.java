@@ -2,6 +2,7 @@ package net.darmo_creations.naissancee.tile_entities;
 
 import net.darmo_creations.naissancee.blocks.BlockInvisibleLightSource;
 import net.darmo_creations.naissancee.blocks.ModBlocks;
+import net.darmo_creations.naissancee.tile_entities.render.TileEntityInvisibleLightSourceRenderer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.play.server.SPacketUpdateTileEntity;
