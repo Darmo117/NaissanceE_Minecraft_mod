@@ -9,7 +9,7 @@ import net.darmo_creations.naissancee.gui.NaissanceETab;
 import net.darmo_creations.naissancee.items.ModItems;
 import net.darmo_creations.naissancee.network.PacketLightOrbControllerData;
 import net.darmo_creations.naissancee.tile_entities.TileEntityInvisibleLightSource;
-import net.darmo_creations.naissancee.tile_entities.TileEntityInvisibleLightSourceRenderer;
+import net.darmo_creations.naissancee.tile_entities.render.TileEntityInvisibleLightSourceRenderer;
 import net.darmo_creations.naissancee.tile_entities.TileEntityLightOrbController;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;

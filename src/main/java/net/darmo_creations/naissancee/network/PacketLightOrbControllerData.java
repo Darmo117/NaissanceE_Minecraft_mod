@@ -1,6 +1,7 @@
 package net.darmo_creations.naissancee.network;
 
 import io.netty.buffer.ByteBuf;
+import net.darmo_creations.naissancee.NaissanceE;
 import net.darmo_creations.naissancee.Utils;
 import net.darmo_creations.naissancee.tile_entities.PathCheckpoint;
 import net.darmo_creations.naissancee.tile_entities.TileEntityLightOrbController;
@@ -13,8 +14,10 @@ import net.minecraftforge.fml.common.network.simpleimpl.MessageContext;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 
+/**
+ * Data packet used to send new light orb controller settings to server from client.
+ */
 public class PacketLightOrbControllerData implements IMessage {
   private BlockPos tileEntityPos;
   private boolean active;
@@ -23,9 +26,22 @@ public class PacketLightOrbControllerData implements IMessage {
   private double speed;
   private List<PathCheckpoint> checkpoints;
 
+  /**
+   * Default constructor for server.
+   */
   public PacketLightOrbControllerData() {
   }
 
+  /**
+   * Create a packet.
+   *
+   * @param tileEntityPos Position of the tile entity to update.
+   * @param active        Whether it should be active.
+   * @param loops         Whether the orb should loop.
+   * @param lightLevel    Orb’s light level.
+   * @param speed         Orbs movement speed in blocks per second.
+   * @param checkpoints   List of checkpoints.
+   */
   public PacketLightOrbControllerData(BlockPos tileEntityPos, boolean active, boolean loops,
                                       int lightLevel, double speed, List<PathCheckpoint> checkpoints) {
     this.tileEntityPos = tileEntityPos;
@@ -50,8 +66,6 @@ public class PacketLightOrbControllerData implements IMessage {
       //noinspection ConstantConditions
       this.checkpoints.add(new PathCheckpoint(ByteBufUtils.readTag(buf)));
     }
-    // DEBUG
-    System.out.printf("%s %b %b %d %f %s%n", this.tileEntityPos, this.active, this.loops, this.lightLevel, this.speed, this.checkpoints);
   }
 
   @Override
@@ -65,23 +79,27 @@ public class PacketLightOrbControllerData implements IMessage {
     for (PathCheckpoint checkpoint : this.checkpoints) {
       ByteBufUtils.writeTag(buf, checkpoint.toNBT());
     }
-    // DEBUG
-    System.out.printf("%s %b %b %d %f %s%n", this.tileEntityPos, this.active, this.loops, this.lightLevel, this.speed, this.checkpoints);
   }
 
+  /**
+   * Server-side handler for {@link PacketLightOrbControllerData} message type.
+   */
   public static class Handler implements IMessageHandler<PacketLightOrbControllerData, IMessage> {
     @Override
     public PacketLightOrbControllerData onMessage(PacketLightOrbControllerData message, MessageContext ctx) {
-      Optional<TileEntityLightOrbController> te =
-          Utils.getTileEntity(TileEntityLightOrbController.class, ctx.getServerHandler().player.world, message.tileEntityPos);
-      te.ifPresent(controller -> {
-        controller.setActive(message.active);
-        controller.setLoops(message.loops);
-        controller.setLightLevel(message.lightLevel);
-        controller.setSpeed(message.speed);
-        controller.setCheckpoints(message.checkpoints);
-        controller.spawnOrb();
-      });
+      Utils.getTileEntity(TileEntityLightOrbController.class, ctx.getServerHandler().player.world, message.tileEntityPos)
+          .ifPresent(controller -> {
+            try {
+              controller.setActive(message.active);
+              controller.setLoops(message.loops);
+              controller.setLightLevel(message.lightLevel);
+              controller.setSpeed(message.speed);
+              controller.setCheckpoints(message.checkpoints);
+              controller.spawnOrb();
+            } catch (IllegalArgumentException e) {
+              NaissanceE.logger.catching(e);
+            }
+          });
       return null;
     }
   }
