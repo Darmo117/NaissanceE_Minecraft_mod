@@ -45,6 +45,11 @@ public class GuiLightOrbController extends GuiScreen {
   private double speed;
   private List<PathCheckpoint> checkpoints;
 
+  public static final int TITLE_MARGIN = 30;
+  public static final int MARGIN = 4;
+  public static final int BUTTON_WIDTH = 150;
+  public static final int BUTTON_HEIGHT = 20;
+
   /**
    * Creates a GUI for the given tile entity.
    *
@@ -61,62 +66,79 @@ public class GuiLightOrbController extends GuiScreen {
 
   @Override
   public void initGui() {
+    final int middle = this.width / 2;
+    final int leftButtonX = middle - BUTTON_WIDTH - MARGIN;
+    final int rightButtonX = middle + MARGIN;
+    final int fontHeight = this.mc.fontRenderer.FONT_HEIGHT;
+
+    int topY = TITLE_MARGIN;
+
     this.statusBtn = this.addButton(new GuiButton(
         STATUS_BUTTON_ID,
-        this.width / 2 - 154, 30,
-        150, 20,
+        leftButtonX, topY,
+        BUTTON_WIDTH, BUTTON_HEIGHT,
         I18n.format("gui.naissancee.light_orb_controller.status_button.label."
             + (this.active ? "active" : "inactive"))
     ));
 
     this.loopBtn = this.addButton(new GuiButton(
         LOOP_BUTTON_ID,
-        this.width / 2 + 4, 30,
-        150, 20,
+        rightButtonX, topY,
+        BUTTON_WIDTH, BUTTON_HEIGHT,
         I18n.format("gui.naissancee.light_orb_controller.loop_button.label."
             + (this.loops ? "active" : "inactive"))
     ));
 
-    this.addButton(new GuiSlider(
+    topY += BUTTON_HEIGHT + MARGIN;
+
+    GuiSlider lightSlider = this.addButton(new GuiSlider(
         (FloatGuiResponder) (id, value) -> this.lightLevel = this.getTrueLightValue(value),
         LIGHT_VALUE_SLIDER_ID,
-        this.width / 2 - 154, 54,
+        leftButtonX, topY,
         "gui.naissancee.light_orb_controller.light_level_slider.label",
         0, 15, this.lightLevel,
         (id, name, value) -> name + ": " + this.getTrueLightValue(value)
     ));
+    lightSlider.width = BUTTON_WIDTH;
+    lightSlider.height = BUTTON_HEIGHT;
 
-    this.addButton(new GuiSlider(
+    GuiSlider speedSlider = this.addButton(new GuiSlider(
         (FloatGuiResponder) (id, value) -> this.speed = this.getTrueSpeedValue(value),
         SPEED_INPUT_ID,
-        this.width / 2 + 4, 54,
+        rightButtonX, topY,
         "gui.naissancee.light_orb_controller.speed_slider.label",
         0, 1, (float) this.speed,
         (id, name, value) -> String.format("%s: %.2f blocks/s", name, this.getTrueSpeedValue(value))
     ));
+    speedSlider.width = BUTTON_WIDTH;
+    speedSlider.height = BUTTON_HEIGHT;
 
-    this.checkpointList = new GuiPathCheckpointList(
-        this.mc,
-        this.width, this.height,
-        78, this.height - 45,
-        30
-    );
-    this.checkpointList.populateEntries(this.checkpoints);
+    topY += BUTTON_HEIGHT + 2 * MARGIN + fontHeight;
+    int bottomY = this.height - BUTTON_HEIGHT - MARGIN;
 
     this.doneBtn = this.addButton(new GuiButton(
         DONE_BUTTON_ID,
-        this.width / 2 - 154, this.height - 40,
-        150, 20,
+        leftButtonX, bottomY,
+        BUTTON_WIDTH, BUTTON_HEIGHT,
         I18n.format("gui.done")
     ));
 
     this.cancelBtn = this.addButton(new GuiButton(
         CANCEL_BUTTON_ID,
-        this.width / 2 + 4,
-        this.height - 40,
-        150, 20,
+        rightButtonX, bottomY,
+        BUTTON_WIDTH, BUTTON_HEIGHT,
         I18n.format("gui.cancel")
     ));
+
+    bottomY -= MARGIN;
+
+    this.checkpointList = new GuiPathCheckpointList(
+        this.mc,
+        this.width, this.height,
+        topY, bottomY,
+        BUTTON_HEIGHT + 4
+    );
+    this.checkpointList.populateEntries(this.checkpoints);
   }
 
   /**
@@ -197,8 +219,15 @@ public class GuiLightOrbController extends GuiScreen {
 
   @Override
   public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+    final int fontHeight = this.mc.fontRenderer.FONT_HEIGHT;
+    final int middle = this.width / 2;
+
     this.checkpointList.drawScreen(mouseX, mouseY, partialTicks);
-    this.drawCenteredString(this.fontRenderer, I18n.format("gui.naissancee.light_orb_controller.title"), this.width / 2, 12, 0xffffff);
+    this.drawCenteredString(this.fontRenderer, I18n.format("gui.naissancee.light_orb_controller.title"),
+        middle, (TITLE_MARGIN - fontHeight) / 2, 0xffffff);
+    this.drawCenteredString(this.fontRenderer, I18n.format("gui.naissancee.light_orb_controller.checkpoint_list.title", checkpointList.getSize()),
+        middle, this.checkpointList.top - MARGIN - fontHeight, 0xffffff);
+
     super.drawScreen(mouseX, mouseY, partialTicks);
   }
 
