@@ -197,9 +197,8 @@ public class GuiLightOrbController extends GuiScreen {
 
   @Override
   public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-    this.drawDefaultBackground();
-    this.drawCenteredString(this.fontRenderer, I18n.format("gui.naissancee.light_orb_controller.title"), this.width / 2, 12, 16777215);
     this.checkpointList.drawScreen(mouseX, mouseY, partialTicks);
+    this.drawCenteredString(this.fontRenderer, I18n.format("gui.naissancee.light_orb_controller.title"), this.width / 2, 12, 0xffffff);
     super.drawScreen(mouseX, mouseY, partialTicks);
   }
 

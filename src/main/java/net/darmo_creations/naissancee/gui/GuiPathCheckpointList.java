@@ -5,7 +5,6 @@ import net.darmo_creations.naissancee.tile_entities.PathCheckpoint;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiListExtended;
-import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.resources.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -14,6 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Custom list GUI component that displays a list of checkpoints with buttons to edit/delete/reorder them.
+ */
 @SideOnly(Side.CLIENT)
 public class GuiPathCheckpointList extends GuiListExtended {
   private List<GuiEntry> entries;
@@ -23,11 +25,17 @@ public class GuiPathCheckpointList extends GuiListExtended {
     this.entries = new ArrayList<>();
   }
 
+  /**
+   * Set the entries of this list.
+   */
   public void populateEntries(List<PathCheckpoint> entries) {
     this.entries = entries.stream().map(GuiEntry::new).collect(Collectors.toList());
     this.updateEntriesButtons();
   }
 
+  /**
+   * Get all entries as they have been updated by player.
+   */
   public List<PathCheckpoint> getEntries() {
     List<PathCheckpoint> list = new ArrayList<>();
     for (int i = 0; i < this.entries.size(); i++) {
@@ -51,25 +59,24 @@ public class GuiPathCheckpointList extends GuiListExtended {
     return super.getScrollBarX() + 35;
   }
 
-  // Disable default background
-  @Override
-  protected void overlayBackground(int startY, int endY, int startAlpha, int endAlpha) {
-  }
-
-  // Disable default background
-  @Override
-  protected void drawContainerBackground(Tessellator tessellator) {
-  }
-
+  /**
+   * Called when the "stop" button is clicked on an entry.
+   */
   protected void onStopButtonClicked() {
     this.updateEntriesButtons();
   }
 
+  /**
+   * Called when the "delete" button is clicked on an entry.
+   */
   protected void onDeleteButtonClicked(int entryIndex) {
     this.entries.remove(entryIndex);
     this.updateEntriesButtons();
   }
 
+  /**
+   * Called when the "move up" button is clicked on an entry.
+   */
   protected void onMoveUpButtonClicked(int entryIndex) {
     GuiEntry entry = this.entries.get(entryIndex);
     this.entries.set(entryIndex, this.entries.get(entryIndex - 1));
@@ -77,6 +84,9 @@ public class GuiPathCheckpointList extends GuiListExtended {
     this.updateEntriesButtons();
   }
 
+  /**
+   * Called when the "move down" button is clicked on an entry.
+   */
   protected void onMoveDownButtonClicked(int entryIndex) {
     GuiEntry entry = this.entries.get(entryIndex);
     this.entries.set(entryIndex, this.entries.get(entryIndex + 1));
@@ -84,6 +94,9 @@ public class GuiPathCheckpointList extends GuiListExtended {
     this.updateEntriesButtons();
   }
 
+  /**
+   * Updates buttons states of all entries.
+   */
   private void updateEntriesButtons() {
     boolean onlyOneStop = this.entries.stream().filter(e -> e.getCheckpoint().isStop()).count() == 1;
     int size = this.entries.size();
@@ -97,6 +110,9 @@ public class GuiPathCheckpointList extends GuiListExtended {
     }
   }
 
+  /**
+   * A list entry for a single checkpoint. It displays its coordinates and buttons to edit it.
+   */
   @SideOnly(Side.CLIENT)
   private class GuiEntry implements IGuiListEntry {
     // Buttons
@@ -108,6 +124,9 @@ public class GuiPathCheckpointList extends GuiListExtended {
     // Data
     private final PathCheckpoint checkpoint;
 
+    /**
+     * Create an entry for the given checkpoint.
+     */
     public GuiEntry(PathCheckpoint checkpoint) {
       this.checkpoint = checkpoint;
       this.stopBtn = new GuiButton(0, 0, 0, 50, 20,
