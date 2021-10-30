@@ -3,7 +3,6 @@ package net.darmo_creations.naissancee.tile_entities;
 import net.darmo_creations.naissancee.blocks.BlockLightOrbController;
 import net.darmo_creations.naissancee.blocks.ModBlocks;
 import net.darmo_creations.naissancee.entities.EntityLightOrb;
-import net.darmo_creations.naissancee.entities.IPathCheckpoint;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -79,7 +78,7 @@ public class TileEntityLightOrbController extends TileEntity {
    * Light level is set to 15 and speed to 0.25 blocks per second. Path does not loop by default.
    */
   public void init() {
-    this.setActive(true); // TODO set to false by default once GUI works
+    this.setActive(false);
     this.setLightLevel(15);
     this.setLoops(false);
     this.setSpeed(0.25);
@@ -140,6 +139,11 @@ public class TileEntityLightOrbController extends TileEntity {
     return this.active;
   }
 
+  /**
+   * Set active state.
+   *
+   * @param active Whether the orb should interact with the player.
+   */
   public void setActive(boolean active) {
     this.active = active;
     this.markDirty();
@@ -177,18 +181,24 @@ public class TileEntityLightOrbController extends TileEntity {
   }
 
   /**
-   * Removes the checkpoint at the given index.
-   *
-   * @param index Index of checkpoint to remove.
-   * @return True if the checkpoint was removed,
-   * false if the index is invalid or the list contains only one element.
+   * Get the list of checkpoints.
    */
-  public boolean removeCheckpoint(int index) {
-    if (index >= 0 && index < this.checkpoints.size() && this.checkpoints.size() > 1) {
-      this.checkpoints.remove(index);
-      return true;
+  public List<PathCheckpoint> getCheckpoints() {
+    return this.checkpoints.stream().map(PathCheckpoint::clone).collect(Collectors.toList());
+  }
+
+  /**
+   * Set the list of checkpoints. Should only be used for syncing.
+   *
+   * @param checkpoints The checkpoints.
+   * @see net.darmo_creations.naissancee.network.PacketLightOrbControllerData
+   */
+  public void setCheckpoints(List<PathCheckpoint> checkpoints) {
+    if (checkpoints.size() == 0) {
+      throw new IllegalArgumentException("checkpoints list is empty");
     }
-    return false;
+    this.checkpoints = checkpoints.stream().map(PathCheckpoint::clone).collect(Collectors.toCollection(LinkedList::new));
+    this.markDirty();
   }
 
   /**
@@ -208,20 +218,13 @@ public class TileEntityLightOrbController extends TileEntity {
    * @return The next checkpoint with its index; an empty value if the checkpoint
    * at the given index is the last one and the path does not loop.
    */
-  public Optional<Pair<Integer, IPathCheckpoint>> getNextCheckpoint(int index) {
+  public Optional<Pair<Integer, PathCheckpoint>> getNextCheckpoint(int index) {
     if (index < this.checkpoints.size() - 1) {
-      return Optional.of(new ImmutablePair<>(index + 1, this.checkpoints.get(index + 1)));
+      return Optional.of(new ImmutablePair<>(index + 1, this.checkpoints.get(index + 1).clone()));
     } else if (this.loops) {
-      return Optional.of(new ImmutablePair<>(0, this.checkpoints.get(0)));
+      return Optional.of(new ImmutablePair<>(0, this.checkpoints.get(0).clone()));
     }
     return Optional.empty();
-  }
-
-  /**
-   * Get the list of checkpoints.
-   */
-  public List<IPathCheckpoint> getCheckpoints() {
-    return this.checkpoints.stream().map(PathCheckpoint::clone).collect(Collectors.toList());
   }
 
   /**
@@ -329,69 +332,4 @@ public class TileEntityLightOrbController extends TileEntity {
     return this.writeToNBT(new NBTTagCompound());
   }
 
-  /**
-   * Private mutable implementation of {@link IPathCheckpoint} interface.
-   */
-  private static class PathCheckpoint implements IPathCheckpoint, Cloneable {
-    private static final String POS_TAG_KEY = "Pos";
-    private static final String STOP_TAG_KEY = "IsStop";
-
-    // Non-private for easy access
-    public final BlockPos pos;
-    public boolean stop;
-
-    /**
-     * Create a checkpoint for the given NBT tag.
-     *
-     * @param tag The tag to deserialize.
-     */
-    public PathCheckpoint(NBTTagCompound tag) {
-      this(NBTUtil.getPosFromTag(tag.getCompoundTag(POS_TAG_KEY)), tag.getBoolean(STOP_TAG_KEY));
-    }
-
-    /**
-     * Create a checkpoint for the given position and stop state.
-     *
-     * @param pos  Block position.
-     * @param stop Whether the light orb should stop at this checkpoint.
-     */
-    public PathCheckpoint(final BlockPos pos, boolean stop) {
-      this.pos = pos;
-      this.stop = stop;
-    }
-
-    @Override
-    public BlockPos getPos() {
-      return this.pos;
-    }
-
-    @Override
-    public boolean isStop() {
-      return this.stop;
-    }
-
-    /**
-     * Serialize and return this checkpoint as an NBT tag.
-     */
-    public NBTTagCompound toNBT() {
-      NBTTagCompound tag = new NBTTagCompound();
-      tag.setTag(POS_TAG_KEY, NBTUtil.createPosTag(this.pos));
-      tag.setBoolean(STOP_TAG_KEY, this.stop);
-      return tag;
-    }
-
-    @Override
-    public PathCheckpoint clone() {
-      try {
-        return (PathCheckpoint) super.clone();
-      } catch (CloneNotSupportedException e) {
-        throw new RuntimeException(e);
-      }
-    }
-
-    @Override
-    public String toString() {
-      return String.format("PathCheckpoint{pos=%s,stop=%b}", this.pos, this.stop);
-    }
-  }
 }

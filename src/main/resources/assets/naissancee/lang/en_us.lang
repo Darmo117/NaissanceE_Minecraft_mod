@@ -98,3 +98,5 @@ itemGroup.naissancee=NaissanceE
 gui.naissancee.light_orb_controller.title=Light Orb Controller
 gui.naissancee.light_orb_controller.status_button.active=Active
 gui.naissancee.light_orb_controller.status_button.inactive=Inactive
+gui.naissancee.light_orb_controller.loop_button.active=Loops
+gui.naissancee.light_orb_controller.loop_button.inactive=No Loop

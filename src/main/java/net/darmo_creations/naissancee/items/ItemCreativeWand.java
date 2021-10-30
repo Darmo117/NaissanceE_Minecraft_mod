@@ -4,7 +4,6 @@ import net.darmo_creations.naissancee.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.util.ITooltipFlag;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
@@ -147,12 +146,6 @@ public class ItemCreativeWand extends Item {
 
     heldItem.setTagCompound(data.toTag());
     return EnumActionResult.SUCCESS;
-  }
-
-  @Override
-  public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) {
-    super.onUpdate(stack, world, entity, itemSlot, isSelected);
-    // TODO encadrer blocs et zone sélectionnées
   }
 
   @Override

@@ -7,6 +7,7 @@ import net.darmo_creations.naissancee.entities.ModEntities;
 import net.darmo_creations.naissancee.entities.render.RenderLightOrb;
 import net.darmo_creations.naissancee.gui.NaissanceETab;
 import net.darmo_creations.naissancee.items.ModItems;
+import net.darmo_creations.naissancee.network.PacketLightOrbControllerData;
 import net.darmo_creations.naissancee.tile_entities.TileEntityInvisibleLightSource;
 import net.darmo_creations.naissancee.tile_entities.TileEntityInvisibleLightSourceRenderer;
 import net.darmo_creations.naissancee.tile_entities.TileEntityLightOrbController;
@@ -24,6 +25,8 @@ import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import net.minecraftforge.fml.common.registry.EntityEntry;
 import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -41,6 +44,8 @@ public class NaissanceE {
   public static final String NAME = "NaissanceE";
   public static final String VERSION = "1.0";
 
+  public static SimpleNetworkWrapper network;
+
   /**
    * This mod’s creative tab.
    */
@@ -57,9 +62,14 @@ public class NaissanceE {
   @Mod.EventHandler
   public void preInit(FMLPreInitializationEvent event) {
     logger = event.getModLog();
+
+    network = NetworkRegistry.INSTANCE.newSimpleChannel(MODID);
+    network.registerMessage(PacketLightOrbControllerData.Handler.class, PacketLightOrbControllerData.class, 0, Side.SERVER);
+
     for (EntityEntry e : ModEntities.ENTITIES) {
       EntityRegistry.registerModEntity(e.getRegistryName(), e.getEntityClass(), e.getName(), this.entitiesID++, this, 100, 3, true, 0xffffff, 0xffffff);
     }
+
     if (event.getSide() == Side.CLIENT) {
       ClientRegistry.bindTileEntitySpecialRenderer(TileEntityInvisibleLightSource.class, new TileEntityInvisibleLightSourceRenderer());
       RenderingRegistry.registerEntityRenderingHandler(EntityLightOrb.class, RenderLightOrb::new); // Does not actually render anything

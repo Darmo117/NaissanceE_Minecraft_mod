@@ -4,6 +4,7 @@ import net.darmo_creations.naissancee.Utils;
 import net.darmo_creations.naissancee.blocks.BlockLightOrbController;
 import net.darmo_creations.naissancee.blocks.BlockLightOrbSource;
 import net.darmo_creations.naissancee.blocks.ModBlocks;
+import net.darmo_creations.naissancee.tile_entities.PathCheckpoint;
 import net.darmo_creations.naissancee.tile_entities.TileEntityLightOrbController;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -111,7 +112,7 @@ public class EntityLightOrb extends Entity {
     BlockPos previousTilePos = this.tilePosToBlockPos();
 
     if (controller.isActive()) {
-      IPathCheckpoint nextCheckpoint = this.nextCheckpoint();
+      PathCheckpoint nextCheckpoint = this.nextCheckpoint();
       if (nextCheckpoint == null) {
         this.stop();
       } else if (!this.isStopped()) {
@@ -162,7 +163,7 @@ public class EntityLightOrb extends Entity {
    *
    * @param nextCheckpoint The checkpoint to go to.
    */
-  private void updateMotion(IPathCheckpoint nextCheckpoint) {
+  private void updateMotion(PathCheckpoint nextCheckpoint) {
     BlockPos currentPos = this.posToBlockPos();
     BlockPos nextCPPos = nextCheckpoint.getPos();
     Vec3i vector = nextCPPos.subtract(currentPos);
@@ -214,7 +215,7 @@ public class EntityLightOrb extends Entity {
   /**
    * Get next checkpoint. Returns null if there is none.
    */
-  private IPathCheckpoint nextCheckpoint() {
+  private PathCheckpoint nextCheckpoint() {
     TileEntityLightOrbController controller = this.controller();
     int i = this.dataManager.get(NEXT_CHECKPOINT_INDEX);
     return controller != null && i != -1 && i < controller.getCheckpoints().size()
@@ -231,7 +232,7 @@ public class EntityLightOrb extends Entity {
   @Override
   public void onCollideWithPlayer(EntityPlayer entity) {
     super.onCollideWithPlayer(entity);
-    IPathCheckpoint nextCheckpoint = this.nextCheckpoint();
+    PathCheckpoint nextCheckpoint = this.nextCheckpoint();
     if (nextCheckpoint != null && this.controller().isActive() && this.isStopped()) {
       this.updateMotion(nextCheckpoint);
     }

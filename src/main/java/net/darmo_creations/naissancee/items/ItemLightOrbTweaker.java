@@ -3,7 +3,7 @@ package net.darmo_creations.naissancee.items;
 import net.darmo_creations.naissancee.Utils;
 import net.darmo_creations.naissancee.blocks.BlockLightOrbController;
 import net.darmo_creations.naissancee.blocks.ModBlocks;
-import net.darmo_creations.naissancee.entities.IPathCheckpoint;
+import net.darmo_creations.naissancee.tile_entities.PathCheckpoint;
 import net.darmo_creations.naissancee.tile_entities.TileEntityLightOrbController;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
@@ -96,21 +96,12 @@ public class ItemLightOrbTweaker extends Item {
     if (world.isRemote) {
       TileEntityLightOrbController te = getControllerTileEntity(stack, world);
       if (isSelected && te != null) {
-        List<IPathCheckpoint> checkpoints = te.getCheckpoints();
-        for (int i = 0, size = checkpoints.size(); i < size; i++) {
-          IPathCheckpoint checkpoint = checkpoints.get(i);
-          IPathCheckpoint nextCheckpoint = null;
-          if (i < size - 1) {
-            nextCheckpoint = checkpoints.get(i + 1);
-          } else if (te.loops()) {
-            nextCheckpoint = checkpoints.get(0);
-          }
+        for (PathCheckpoint checkpoint : te.getCheckpoints()) {
           BlockPos pos = checkpoint.getPos();
           EnumParticleTypes particleType = checkpoint.isStop() ? EnumParticleTypes.REDSTONE : EnumParticleTypes.DRAGON_BREATH;
           world.spawnParticle(particleType, true, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 0, 0, 0);
-          // TODO tracer une ligne entre checkpoint et nextCheckpoint
         }
-      } else if (!isSelected && stack.getTagCompound() != null && stack.getTagCompound().hasKey(CONTROLLER_POS_TAG_KEY)) {
+      } else if (te == null && stack.getTagCompound() != null && stack.getTagCompound().hasKey(CONTROLLER_POS_TAG_KEY)) {
         stack.getTagCompound().removeTag(CONTROLLER_POS_TAG_KEY);
       }
     }
