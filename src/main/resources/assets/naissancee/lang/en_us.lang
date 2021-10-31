@@ -73,9 +73,12 @@ tile.naissancee.white_horizontal_corner.name=White Horizontal Corner
 tile.naissancee.light_gray_horizontal_corner.name=Light Gray Horizontal Corner
 tile.naissancee.gray_horizontal_corner.name=Gray Horizontal Corner
 # Barriers
-tile.naissancee.white_light_sensitive_barrier.name=White Light-Sensitive Barrier
-tile.naissancee.light_gray_light_sensitive_barrier.name=Light Gray Light-Sensitive Barrier
-tile.naissancee.gray_light_sensitive_barrier.name=Gray Light-Sensitive Barrier
+tile.naissancee.white_light_sensitive_barrier.name=White Light-Sensitive Barrier (Solid)
+tile.naissancee.white_light_sensitive_barrier_passable.name=White Light-Sensitive Barrier (Passable)
+tile.naissancee.light_gray_light_sensitive_barrier.name=Light Gray Light-Sensitive Barrier (Solid)
+tile.naissancee.light_gray_light_sensitive_barrier_passable.name=Light Gray Light-Sensitive Barrier (Passable)
+tile.naissancee.gray_light_sensitive_barrier.name=Gray Light-Sensitive Barrier (Solid)
+tile.naissancee.gray_light_sensitive_barrier_passable.name=Gray Light-Sensitive Barrier (Passable)
 
 tile.naissancee.light_orb_controller.name=Light Orb Controller
 

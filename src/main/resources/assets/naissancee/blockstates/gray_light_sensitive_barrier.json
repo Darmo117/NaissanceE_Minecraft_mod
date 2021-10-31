@@ -1,10 +1,7 @@
 {
   "variants": {
-    "passable=false": {
+    "normal": {
       "model": "naissancee:gray_light_sensitive_barrier"
-    },
-    "passable=true": {
-      "model": "naissancee:gray_light_sensitive_barrier_passable"
     }
   }
 }

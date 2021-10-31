@@ -35,8 +35,11 @@ public final class ModBlocks {
   public static final Block GRAY_VERTICAL_VERTICAL_CORNER = new BlockVerticalCorner(Material.ROCK).setRegistryName("gray_vertical_corner").setCreativeTab(NaissanceE.CREATIVE_TAB);
 
   public static final Block WHITE_LIGHT_SENSITIVE_BARRIER = new BlockLightSensitiveBarrier().setRegistryName("white_light_sensitive_barrier").setCreativeTab(NaissanceE.CREATIVE_TAB);
+  public static final Block WHITE_LIGHT_SENSITIVE_BARRIER_PASSABLE = new BlockLightSensitiveBarrierPassable().setRegistryName("white_light_sensitive_barrier_passable").setCreativeTab(NaissanceE.CREATIVE_TAB);
   public static final Block LIGHT_GRAY_LIGHT_SENSITIVE_BARRIER = new BlockLightSensitiveBarrier().setRegistryName("light_gray_light_sensitive_barrier").setCreativeTab(NaissanceE.CREATIVE_TAB);
+  public static final Block LIGHT_GRAY_LIGHT_SENSITIVE_BARRIER_PASSABLE = new BlockLightSensitiveBarrierPassable().setRegistryName("light_gray_light_sensitive_barrier_passable").setCreativeTab(NaissanceE.CREATIVE_TAB);
   public static final Block GRAY_LIGHT_SENSITIVE_BARRIER = new BlockLightSensitiveBarrier().setRegistryName("gray_light_sensitive_barrier").setCreativeTab(NaissanceE.CREATIVE_TAB);
+  public static final Block GRAY_LIGHT_SENSITIVE_BARRIER_PASSABLE = new BlockLightSensitiveBarrierPassable().setRegistryName("gray_light_sensitive_barrier_passable").setCreativeTab(NaissanceE.CREATIVE_TAB);
 
   public static final Block OFFSET_WALL_LAMP = new BlockOffsetWallLamp().setRegistryName("offset_wall_lamp").setCreativeTab(NaissanceE.CREATIVE_TAB);
   public static final Block WALL_LAMPS = new BlockWallLamps().setRegistryName("wall_lamps");
