@@ -19,7 +19,6 @@ import net.minecraft.world.World;
 public class BlockLightOrbSource extends BlockVariableLightSource {
   public BlockLightOrbSource() {
     super(Material.AIR);
-    this.translucent = true;
   }
 
   @Override

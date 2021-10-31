@@ -15,7 +15,6 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 /**
  * This block represents a light-sensitive block in its passable state.
  */
-// TODO (animated?) textures for passable mode
 public class BlockLightSensitiveBarrierPassable extends Block {
   public BlockLightSensitiveBarrierPassable() {
     super(Material.ROCK);
