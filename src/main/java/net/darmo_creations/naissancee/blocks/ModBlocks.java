@@ -42,6 +42,7 @@ public final class ModBlocks {
   public static final Block GRAY_LIGHT_SENSITIVE_BARRIER_PASSABLE = new BlockLightSensitiveBarrierPassable().setRegistryName("gray_light_sensitive_barrier_passable").setCreativeTab(NaissanceE.CREATIVE_TAB);
 
   public static final Block OFFSET_WALL_LAMP = new BlockOffsetWallLamp().setRegistryName("offset_wall_lamp").setCreativeTab(NaissanceE.CREATIVE_TAB);
+  public static final Block LIGHT_GRAY_SMALL_WALL_LAMP = new BlockSmallWallLamp().setRegistryName("light_gray_small_wall_lamp").setCreativeTab(NaissanceE.CREATIVE_TAB);
   public static final Block WALL_LAMPS = new BlockWallLamps().setRegistryName("wall_lamps");
   public static final Block INVISIBLE_LIGHT_SOURCE = new BlockInvisibleLightSource().setRegistryName("invisible_light_source").setCreativeTab(NaissanceE.CREATIVE_TAB);
   public static final Block VARIABLE_LAMP = new BlockVariableLamp().setRegistryName("variable_lamp").setCreativeTab(NaissanceE.CREATIVE_TAB);
