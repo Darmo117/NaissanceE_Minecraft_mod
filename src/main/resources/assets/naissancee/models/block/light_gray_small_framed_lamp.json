@@ -1,5 +1,5 @@
 {
-  "parent": "naissancee:block/small_wall_lamp",
+  "parent": "naissancee:block/small_framed_lamp",
   "textures": {
     "frame": "minecraft:blocks/concrete_silver",
     "lamp": "minecraft:blocks/glowstone"

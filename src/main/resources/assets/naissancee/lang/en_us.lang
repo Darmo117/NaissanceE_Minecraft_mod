@@ -29,7 +29,7 @@ tile.stoneSlab.stone.name=Cracked White Slab
 
 # Lamps
 tile.naissancee.offset_wall_lamp.name=Offset Wall Lamp
-tile.naissancee.light_gray_small_wall_lamp.name=Small Wall Lamp
+tile.naissancee.light_gray_small_framed_lamp.name=Small Framed Lamp
 tile.naissancee.wall_lamps.name=Wall Lamps
 tile.naissancee.invisible_light_source.name=Invisible Light Source
 tile.naissancee.variable_lamp.name=Variable Lamp
