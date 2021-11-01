@@ -276,7 +276,7 @@ public class EntityLightOrb extends Entity {
    */
   private void removeLight(BlockPos pos) {
     if (this.world.getBlockState(pos).getBlock() == ModBlocks.LIGHT_ORB_SOURCE) {
-      this.world.setBlockState(pos, Blocks.AIR.getDefaultState());
+      this.world.setBlockToAir(pos);
     }
   }
 }
