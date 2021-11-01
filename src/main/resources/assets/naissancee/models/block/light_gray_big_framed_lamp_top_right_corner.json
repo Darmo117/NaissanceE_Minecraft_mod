@@ -1,0 +1,7 @@
+{
+  "parent": "naissancee:block/big_framed_lamp_top_right_corner",
+  "textures": {
+    "frame": "minecraft:blocks/concrete_silver",
+    "lamp": "minecraft:blocks/glowstone"
+  }
+}

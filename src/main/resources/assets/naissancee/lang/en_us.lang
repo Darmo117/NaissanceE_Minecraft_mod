@@ -30,6 +30,10 @@ tile.stoneSlab.stone.name=Cracked White Slab
 # Lamps
 tile.naissancee.offset_wall_lamp.name=Offset Wall Lamp
 tile.naissancee.light_gray_small_framed_lamp.name=Small Framed Lamp
+tile.naissancee.light_gray_big_framed_lamp_top_left_corner.name=Light Gray Big Framed Lamp Top Left Corner
+tile.naissancee.light_gray_big_framed_lamp_top_right_corner.name=Light Gray Big Framed Lamp Top Right Corner
+tile.naissancee.light_gray_big_framed_lamp_bottom_right_corner.name=Light Gray Big Framed Lamp Bottom Right Corner
+tile.naissancee.light_gray_big_framed_lamp_bottom_left_corner.name=Light Gray Big Framed Lamp Bottom Left Corner
 tile.naissancee.wall_lamps.name=Wall Lamps
 tile.naissancee.invisible_light_source.name=Invisible Light Source
 tile.naissancee.variable_lamp.name=Variable Lamp

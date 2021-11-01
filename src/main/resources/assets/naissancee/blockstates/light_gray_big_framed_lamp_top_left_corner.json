@@ -1,0 +1,27 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "naissancee:light_gray_big_framed_lamp_top_left_corner"
+    },
+    "facing=east": {
+      "model": "naissancee:light_gray_big_framed_lamp_top_left_corner",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "naissancee:light_gray_big_framed_lamp_top_left_corner",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "naissancee:light_gray_big_framed_lamp_top_left_corner",
+      "y": 270
+    },
+    "facing=up": {
+      "model": "naissancee:light_gray_big_framed_lamp_top_left_corner",
+      "x": 270
+    },
+    "facing=down": {
+      "model": "naissancee:light_gray_big_framed_lamp_top_left_corner",
+      "x": 90
+    }
+  }
+}

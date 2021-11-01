@@ -43,6 +43,10 @@ public final class ModBlocks {
 
   public static final Block OFFSET_WALL_LAMP = new BlockOffsetWallLamp().setRegistryName("offset_wall_lamp").setCreativeTab(NaissanceE.CREATIVE_TAB);
   public static final Block LIGHT_GRAY_SMALL_FRAMED_LAMP = new BlockSmallFramedLamp().setRegistryName("light_gray_small_framed_lamp").setCreativeTab(NaissanceE.CREATIVE_TAB);
+  public static final Block LIGHT_GRAY_BIG_FRAMED_LAMP_TL_CORNER = new BlockBigFramedLampCorner(BlockBigFramedLampCorner.EnumCorner.TOP_LEFT).setRegistryName("light_gray_big_framed_lamp_top_left_corner").setCreativeTab(NaissanceE.CREATIVE_TAB);
+  public static final Block LIGHT_GRAY_BIG_FRAMED_LAMP_TR_CORNER = new BlockBigFramedLampCorner(BlockBigFramedLampCorner.EnumCorner.TOP_RIGHT).setRegistryName("light_gray_big_framed_lamp_top_right_corner").setCreativeTab(NaissanceE.CREATIVE_TAB);
+  public static final Block LIGHT_GRAY_BIG_FRAMED_LAMP_BR_CORNER = new BlockBigFramedLampCorner(BlockBigFramedLampCorner.EnumCorner.BOTTOM_RIGHT).setRegistryName("light_gray_big_framed_lamp_bottom_right_corner").setCreativeTab(NaissanceE.CREATIVE_TAB);
+  public static final Block LIGHT_GRAY_BIG_FRAMED_LAMP_BL_CORNER = new BlockBigFramedLampCorner(BlockBigFramedLampCorner.EnumCorner.BOTTOM_LEFT).setRegistryName("light_gray_big_framed_lamp_bottom_left_corner").setCreativeTab(NaissanceE.CREATIVE_TAB);
   public static final Block WALL_LAMPS = new BlockWallLamps().setRegistryName("wall_lamps");
   public static final Block INVISIBLE_LIGHT_SOURCE = new BlockInvisibleLightSource().setRegistryName("invisible_light_source").setCreativeTab(NaissanceE.CREATIVE_TAB);
   public static final Block VARIABLE_LAMP = new BlockVariableLamp().setRegistryName("variable_lamp").setCreativeTab(NaissanceE.CREATIVE_TAB);
