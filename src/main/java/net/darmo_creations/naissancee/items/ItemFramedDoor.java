@@ -52,7 +52,15 @@ public class ItemFramedDoor extends Item {
     }
   }
 
-  public static void placeDoor(World world, BlockPos pos, BlockFramedDoor.EnumDirection direction, Block door) {
+  /**
+   * Places the associated door block.
+   *
+   * @param world     World to place block in.
+   * @param pos       Position to place at.
+   * @param direction Door’s direction.
+   * @param door      Door block.
+   */
+  private static void placeDoor(World world, BlockPos pos, BlockFramedDoor.EnumDirection direction, Block door) {
     BlockPos posUp = pos.up();
     boolean powered = world.isBlockPowered(pos) || world.isBlockPowered(posUp);
     IBlockState state = door.getDefaultState()

@@ -131,14 +131,6 @@ public class BlockFramedDoor extends Block implements IModBlock {
     return false;
   }
 
-  private int getCloseSound() {
-    return 1011;
-  }
-
-  private int getOpenSound() {
-    return 1005;
-  }
-
   @SuppressWarnings("deprecation")
   @Override
   public void neighborChanged(IBlockState state, World world, BlockPos pos, Block block, BlockPos fromPos) {
@@ -182,7 +174,7 @@ public class BlockFramedDoor extends Block implements IModBlock {
           if (powered != state.getValue(OPEN)) {
             world.setBlockState(pos, state.withProperty(OPEN, powered), 2);
             world.markBlockRangeForRenderUpdate(pos, pos);
-            world.playEvent(null, powered ? this.getOpenSound() : this.getCloseSound(), pos, 0);
+            world.playEvent(null, powered ? 1005 : 1011, pos, 0);
           }
         }
       }
@@ -215,7 +207,11 @@ public class BlockFramedDoor extends Block implements IModBlock {
   @SuppressWarnings("deprecation")
   @Override
   public ItemStack getItem(World world, BlockPos pos, IBlockState state) {
-    return new ItemStack(ModItems.LIGHT_GRAY_FRAMED_DOOR);
+    if (this == ModBlocks.LIGHT_GRAY_FRAMED_DOOR) {
+      return new ItemStack(ModItems.LIGHT_GRAY_FRAMED_DOOR);
+    } else {
+      return null;
+    }
   }
 
   @Override
@@ -308,6 +304,10 @@ public class BlockFramedDoor extends Block implements IModBlock {
     return false;
   }
 
+  /**
+   * Enumeration for the door direction.
+   * Not using {@link EnumFacing.Axis} as it features the Y axis we do not want here.
+   */
   public enum EnumDirection implements IStringSerializable {
     NORTH_SOUTH("north_south"),
     EAST_WEST("east_west");
@@ -318,6 +318,9 @@ public class BlockFramedDoor extends Block implements IModBlock {
       this.name = name;
     }
 
+    /**
+     * Get the direction after rotating this one.
+     */
     public EnumDirection withRotation(Rotation rotation) {
       if (this == NORTH_SOUTH) {
         return rotation == Rotation.NONE || rotation == Rotation.CLOCKWISE_180 ? NORTH_SOUTH : EAST_WEST;
@@ -336,6 +339,9 @@ public class BlockFramedDoor extends Block implements IModBlock {
       return this.getName();
     }
 
+    /**
+     * Get direction from the given rotation angle.
+     */
     public static EnumDirection fromAngle(double angle) {
       return values()[MathHelper.floor(angle / 90 + 0.5) & 1];
     }
