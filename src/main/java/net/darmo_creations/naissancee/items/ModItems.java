@@ -1,6 +1,7 @@
 package net.darmo_creations.naissancee.items;
 
 import net.darmo_creations.naissancee.NaissanceE;
+import net.darmo_creations.naissancee.blocks.ModBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -22,6 +23,8 @@ public final class ModItems {
   public static final Item INVISIBLE_LIGHT_SOURCE_EDITING_TOOL = new ItemInvisibleLightSourceTweaker().setRegistryName("invisible_light_source_editing_tool").setCreativeTab(NaissanceE.CREATIVE_TAB);
   public static final Item LIGHT_ORB_TWEAKER = new ItemLightOrbTweaker().setRegistryName("light_orb_tweaker").setCreativeTab(NaissanceE.CREATIVE_TAB);
   public static final Item CREATIVE_WAND = new ItemCreativeWand().setRegistryName("creative_wand").setCreativeTab(NaissanceE.CREATIVE_TAB);
+
+  public static final Item LIGHT_GRAY_FRAMED_DOOR = new ItemFramedDoor(ModBlocks.LIGHT_GRAY_FRAMED_DOOR).setRegistryName("light_gray_framed_door").setCreativeTab(NaissanceE.CREATIVE_TAB);
 
   /**
    * The list of all explicitly declared items for this mod.

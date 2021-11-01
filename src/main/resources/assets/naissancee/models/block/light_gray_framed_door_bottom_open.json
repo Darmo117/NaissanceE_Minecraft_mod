@@ -1,0 +1,6 @@
+{
+  "parent": "naissancee:block/framed_door_bottom_open",
+  "textures": {
+    "all": "minecraft:blocks/concrete_silver"
+  }
+}

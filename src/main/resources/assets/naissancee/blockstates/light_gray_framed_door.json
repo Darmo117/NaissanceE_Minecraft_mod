@@ -1,0 +1,68 @@
+{
+  "variants": {
+    "direction=north_south,half=lower,open=false,powered=false": {
+      "model": "naissancee:light_gray_framed_door_bottom_closed"
+    },
+    "direction=north_south,half=lower,open=false,powered=true": {
+      "model": "naissancee:light_gray_framed_door_bottom_closed"
+    },
+    "direction=north_south,half=lower,open=true,powered=false": {
+      "model": "naissancee:light_gray_framed_door_bottom_open"
+    },
+    "direction=north_south,half=lower,open=true,powered=true": {
+      "model": "naissancee:light_gray_framed_door_bottom_open"
+    },
+    "direction=north_south,half=upper,open=false,powered=false": {
+      "model": "naissancee:light_gray_framed_door_top_closed"
+    },
+    "direction=north_south,half=upper,open=false,powered=true": {
+      "model": "naissancee:light_gray_framed_door_top_closed"
+    },
+    "direction=north_south,half=upper,open=true,powered=false": {
+      "model": "naissancee:light_gray_framed_door_top_open"
+    },
+    "direction=north_south,half=upper,open=true,powered=true": {
+      "model": "naissancee:light_gray_framed_door_top_open"
+    },
+    "direction=east_west,half=lower,open=false,powered=false": {
+      "model": "naissancee:light_gray_framed_door_bottom_closed",
+      "y": 90,
+      "uvlock": true
+    },
+    "direction=east_west,half=lower,open=false,powered=true": {
+      "model": "naissancee:light_gray_framed_door_bottom_closed",
+      "y": 90,
+      "uvlock": true
+    },
+    "direction=east_west,half=lower,open=true,powered=false": {
+      "model": "naissancee:light_gray_framed_door_bottom_open",
+      "y": 90,
+      "uvlock": true
+    },
+    "direction=east_west,half=lower,open=true,powered=true": {
+      "model": "naissancee:light_gray_framed_door_bottom_open",
+      "y": 90,
+      "uvlock": true
+    },
+    "direction=east_west,half=upper,open=false,powered=false": {
+      "model": "naissancee:light_gray_framed_door_top_closed",
+      "y": 90,
+      "uvlock": true
+    },
+    "direction=east_west,half=upper,open=false,powered=true": {
+      "model": "naissancee:light_gray_framed_door_top_closed",
+      "y": 90,
+      "uvlock": true
+    },
+    "direction=east_west,half=upper,open=true,powered=false": {
+      "model": "naissancee:light_gray_framed_door_top_open",
+      "y": 90,
+      "uvlock": true
+    },
+    "direction=east_west,half=upper,open=true,powered=true": {
+      "model": "naissancee:light_gray_framed_door_top_open",
+      "y": 90,
+      "uvlock": true
+    }
+  }
+}

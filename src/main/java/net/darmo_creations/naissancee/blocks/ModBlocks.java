@@ -53,6 +53,8 @@ public final class ModBlocks {
   public static final Block LIGHT_ORB_SOURCE = new BlockLightOrbSource().setRegistryName("light_orb_source");
   public static final Block LIGHT_ORB_CONTROLLER = new BlockLightOrbController().setRegistryName("light_orb_controller").setCreativeTab(NaissanceE.CREATIVE_TAB);
 
+  public static final Block LIGHT_GRAY_FRAMED_DOOR = new BlockFramedDoor().setRegistryName("light_gray_framed_door").setCreativeTab(NaissanceE.CREATIVE_TAB);
+
   /**
    * The list of all declared blocks for this mod.
    */
