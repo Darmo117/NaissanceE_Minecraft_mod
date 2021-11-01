@@ -98,20 +98,17 @@ public class GuiPathCheckpointList extends GuiListExtended {
    * Updates buttons states of all entries.
    */
   private void updateEntriesButtons() {
-    boolean onlyOneStop = this.entries.stream().filter(e -> e.getCheckpoint().isStop()).count() == 1;
     int size = this.entries.size();
     for (int i = 0; i < size; i++) {
       GuiEntry entry = this.entries.get(i);
-      boolean b = !onlyOneStop || !entry.getCheckpoint().isStop();
-      entry.setStopButtonEnabled(b);
-      entry.setDeleteButtonEnabled(b);
+      entry.setDeleteButtonEnabled(size > 1);
       entry.setMoveUpButtonEnabled(i > 0);
       entry.setMoveDownButtonEnabled(i < size - 1);
     }
   }
 
   /**
-   * A list entry for a single checkpoint. It displays its coordinates and buttons to edit it.
+   * A list entry for a single checkpoint. Displays its coordinates and buttons to edit it.
    */
   @SideOnly(Side.CLIENT)
   private class GuiEntry implements IGuiListEntry {
@@ -142,10 +139,6 @@ public class GuiPathCheckpointList extends GuiListExtended {
 
     public PathCheckpoint getCheckpoint() {
       return this.checkpoint;
-    }
-
-    public void setStopButtonEnabled(boolean enabled) {
-      this.stopBtn.enabled = enabled;
     }
 
     public void setDeleteButtonEnabled(boolean enabled) {

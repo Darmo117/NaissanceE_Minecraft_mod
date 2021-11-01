@@ -190,16 +190,13 @@ public class TileEntityLightOrbController extends TileEntity {
   /**
    * Set the list of checkpoints. Should only be used for syncing.
    *
-   * @param checkpoints The checkpoints.
-   * @throws IllegalArgumentException If the list is empty or it contains no checkpoint with stop.
+   * @param checkpoints The list of checkpoints.
+   * @throws IllegalArgumentException If the list is empty.
    * @see net.darmo_creations.naissancee.network.PacketLightOrbControllerData
    */
   public void setCheckpoints(List<PathCheckpoint> checkpoints) {
     if (checkpoints.size() == 0) {
       throw new IllegalArgumentException("checkpoints list is empty");
-    }
-    if (checkpoints.stream().noneMatch(PathCheckpoint::isStop)) {
-      throw new IllegalArgumentException("no checkpoint with stop detected");
     }
     this.checkpoints = checkpoints.stream().map(PathCheckpoint::clone).collect(Collectors.toCollection(LinkedList::new));
     this.markDirty();
