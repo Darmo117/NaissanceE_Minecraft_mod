@@ -51,6 +51,7 @@ public final class ModBlocks {
   public static final Block INVISIBLE_LIGHT_SOURCE = new BlockInvisibleLightSource().setRegistryName("invisible_light_source").setCreativeTab(NaissanceE.CREATIVE_TAB);
   public static final Block VARIABLE_LAMP = new BlockVariableLamp().setRegistryName("variable_lamp").setCreativeTab(NaissanceE.CREATIVE_TAB);
   public static final Block ACTIVATOR_LAMP = new BlockActivatorLamp().setRegistryName("activator_lamp").setCreativeTab(NaissanceE.CREATIVE_TAB);
+  public static final Block FLOATING_VARIABLE_LIGHT_BLOCK = new BlockFloatingVariableLightBlock().setRegistryName("floating_variable_light_block").setCreativeTab(NaissanceE.CREATIVE_TAB);
 
   public static final Block CREATURE_BLOCK = new BlockCreatureBlock().setRegistryName("creature_block").setCreativeTab(NaissanceE.CREATIVE_TAB);
   public static final Block LIVING_BLOCK = new BlockLivingBlock().setRegistryName("living_block").setCreativeTab(NaissanceE.CREATIVE_TAB);

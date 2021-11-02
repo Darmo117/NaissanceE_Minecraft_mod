@@ -8,6 +8,7 @@ import net.darmo_creations.naissancee.entities.render.RenderLightOrb;
 import net.darmo_creations.naissancee.gui.NaissanceETab;
 import net.darmo_creations.naissancee.items.ModItems;
 import net.darmo_creations.naissancee.network.PacketLightOrbControllerData;
+import net.darmo_creations.naissancee.tile_entities.TileEntityFloatingVariableLightBlock;
 import net.darmo_creations.naissancee.tile_entities.TileEntityInvisibleLightSource;
 import net.darmo_creations.naissancee.tile_entities.render.TileEntityInvisibleLightSourceRenderer;
 import net.darmo_creations.naissancee.tile_entities.TileEntityLightOrbController;
@@ -83,6 +84,7 @@ public class NaissanceE {
       event.getRegistry().registerAll(ModBlocks.BLOCKS.toArray(new Block[0]));
       GameRegistry.registerTileEntity(TileEntityInvisibleLightSource.class, new ResourceLocation(MODID, "invisible_light_source"));
       GameRegistry.registerTileEntity(TileEntityLightOrbController.class, new ResourceLocation(MODID, "light_orb_controller"));
+      GameRegistry.registerTileEntity(TileEntityFloatingVariableLightBlock.class, new ResourceLocation(MODID, "floating_variable_light_block"));
     }
 
     @SubscribeEvent
