@@ -64,6 +64,10 @@ public class TileEntityLightOrbController extends TileEntity {
    * Movement speed of orb in blocks per second.
    */
   private double speed;
+  /**
+   * Whether the orb should be invisible, i.e. not emit any particles.
+   */
+  private boolean invisible;
 
   /**
    * Create a tile entity with empty path.
@@ -280,6 +284,22 @@ public class TileEntityLightOrbController extends TileEntity {
     }
     this.speed = speed;
     this.markDirty();
+  }
+
+  /**
+   * Whether the orb is invisible, i.e. should not emit any particles.
+   */
+  public boolean isEntityInvisible() {
+    return this.invisible;
+  }
+
+  /**
+   * Set light orb’s visibility.
+   *
+   * @param invisible True to make it invisible, false to make it visible.
+   */
+  public void setEntityInvisible(boolean invisible) {
+    this.invisible = invisible;
   }
 
   // Prevent TE from being reset on block state change.

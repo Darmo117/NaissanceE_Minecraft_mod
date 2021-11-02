@@ -27,24 +27,28 @@ public class GuiLightOrbController extends GuiScreen {
   public static final int CANCEL_BUTTON_ID = 1;
   public static final int STATUS_BUTTON_ID = 2;
   public static final int LOOP_BUTTON_ID = 3;
-  public static final int LIGHT_VALUE_SLIDER_ID = 4;
-  public static final int SPEED_INPUT_ID = 5;
+  public static final int INVIS_BUTTON_ID = 4;
+  public static final int LIGHT_VALUE_SLIDER_ID = 5;
+  public static final int SPEED_INPUT_ID = 6;
 
   // Buttons
   private GuiButton doneBtn;
   private GuiButton cancelBtn;
   private GuiButton statusBtn;
   private GuiButton loopBtn;
+  private GuiButton invisibilityBtn;
   private GuiPathCheckpointList checkpointList;
 
   // Data
   private final TileEntityLightOrbController tileEntity;
   private boolean active;
   private boolean loops;
+  private boolean invisible;
   private int lightLevel;
   private double speed;
   private List<PathCheckpoint> checkpoints;
 
+  // Layout
   public static final int TITLE_MARGIN = 30;
   public static final int MARGIN = 4;
   public static final int BUTTON_WIDTH = 150;
@@ -59,6 +63,7 @@ public class GuiLightOrbController extends GuiScreen {
     this.tileEntity = tileEntity;
     this.active = tileEntity.isActive();
     this.loops = tileEntity.loops();
+    this.invisible = tileEntity.isEntityInvisible();
     this.lightLevel = tileEntity.getLightLevel();
     this.speed = tileEntity.getSpeed();
     this.checkpoints = tileEntity.getCheckpoints();
@@ -73,20 +78,29 @@ public class GuiLightOrbController extends GuiScreen {
 
     int topY = TITLE_MARGIN;
 
+    int btnW = (int) (BUTTON_WIDTH * 2.0 / 3);
     this.statusBtn = this.addButton(new GuiButton(
         STATUS_BUTTON_ID,
         leftButtonX, topY,
-        BUTTON_WIDTH, BUTTON_HEIGHT,
+        btnW, BUTTON_HEIGHT,
         I18n.format("gui.naissancee.light_orb_controller.status_button.label."
             + (this.active ? "active" : "inactive"))
     ));
 
     this.loopBtn = this.addButton(new GuiButton(
         LOOP_BUTTON_ID,
-        rightButtonX, topY,
-        BUTTON_WIDTH, BUTTON_HEIGHT,
+        middle - btnW / 2, topY,
+        btnW, BUTTON_HEIGHT,
         I18n.format("gui.naissancee.light_orb_controller.loop_button.label."
             + (this.loops ? "active" : "inactive"))
+    ));
+
+    this.invisibilityBtn = this.addButton(new GuiButton(
+        INVIS_BUTTON_ID,
+        rightButtonX + BUTTON_WIDTH - btnW, topY,
+        btnW, BUTTON_HEIGHT,
+        I18n.format("gui.naissancee.light_orb_controller.invisibility_button.label."
+            + (this.invisible ? "active" : "inactive"))
     ));
 
     topY += BUTTON_HEIGHT + MARGIN;
@@ -192,12 +206,13 @@ public class GuiLightOrbController extends GuiScreen {
       case DONE_BUTTON_ID:
         this.tileEntity.setActive(this.active);
         this.tileEntity.setLoops(this.loops);
+        this.tileEntity.setEntityInvisible(this.invisible);
         this.tileEntity.setLightLevel(this.lightLevel);
         this.tileEntity.setSpeed(this.speed);
         this.checkpoints = this.checkpointList.getEntries();
         this.tileEntity.setCheckpoints(this.checkpoints);
         NaissanceE.network.sendToServer(new PacketLightOrbControllerData(
-            this.tileEntity.getPos(), this.active, this.loops, this.lightLevel, this.speed, this.checkpoints));
+            this.tileEntity.getPos(), this.active, this.loops, this.invisible, this.lightLevel, this.speed, this.checkpoints));
 
       case CANCEL_BUTTON_ID:
         this.mc.displayGuiScreen(null);
@@ -214,6 +229,12 @@ public class GuiLightOrbController extends GuiScreen {
         String label2 = this.loops ? "active" : "inactive";
         this.loopBtn.displayString = I18n.format("gui.naissancee.light_orb_controller.loop_button.label." + label2);
         break;
+
+      case INVIS_BUTTON_ID:
+        this.invisible = !this.invisible;
+        String label3 = this.invisible ? "active" : "inactive";
+        this.invisibilityBtn.displayString = I18n.format("gui.naissancee.light_orb_controller.invisibility_button.label." + label3);
+        break;
     }
   }
 
@@ -225,7 +246,7 @@ public class GuiLightOrbController extends GuiScreen {
     this.checkpointList.drawScreen(mouseX, mouseY, partialTicks);
     this.drawCenteredString(this.fontRenderer, I18n.format("gui.naissancee.light_orb_controller.title"),
         middle, (TITLE_MARGIN - fontHeight) / 2, 0xffffff);
-    this.drawCenteredString(this.fontRenderer, I18n.format("gui.naissancee.light_orb_controller.checkpoint_list.title", checkpointList.getSize()),
+    this.drawCenteredString(this.fontRenderer, I18n.format("gui.naissancee.light_orb_controller.checkpoint_list.title", this.checkpointList.getSize()),
         middle, this.checkpointList.top - MARGIN - fontHeight, 0xffffff);
 
     super.drawScreen(mouseX, mouseY, partialTicks);

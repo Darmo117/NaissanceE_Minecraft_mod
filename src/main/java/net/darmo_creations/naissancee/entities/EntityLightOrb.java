@@ -106,8 +106,10 @@ public class EntityLightOrb extends Entity {
       return;
     }
 
-    // Negative y speed to compensate for rising particles
-    this.world.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, this.posX, this.posY + 0.5, this.posZ, 0, -0.025, 0);
+    if (!controller.isEntityInvisible()) {
+      // Negative y speed to compensate for rising particles
+      this.world.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, this.posX, this.posY + 0.5, this.posZ, 0, -0.025, 0);
+    }
 
     BlockPos previousTilePos = this.tilePosToBlockPos();
 

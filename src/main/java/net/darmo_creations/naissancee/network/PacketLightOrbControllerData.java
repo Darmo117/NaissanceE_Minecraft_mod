@@ -22,6 +22,7 @@ public class PacketLightOrbControllerData implements IMessage {
   private BlockPos tileEntityPos;
   private boolean active;
   private boolean loops;
+  private boolean invisible;
   private int lightLevel;
   private double speed;
   private List<PathCheckpoint> checkpoints;
@@ -42,11 +43,12 @@ public class PacketLightOrbControllerData implements IMessage {
    * @param speed         Orbs movement speed in blocks per second.
    * @param checkpoints   List of checkpoints.
    */
-  public PacketLightOrbControllerData(BlockPos tileEntityPos, boolean active, boolean loops,
+  public PacketLightOrbControllerData(BlockPos tileEntityPos, boolean active, boolean loops, boolean invisible,
                                       int lightLevel, double speed, List<PathCheckpoint> checkpoints) {
     this.tileEntityPos = tileEntityPos;
     this.active = active;
     this.loops = loops;
+    this.invisible = invisible;
     this.lightLevel = lightLevel;
     this.speed = speed;
     this.checkpoints = checkpoints;
@@ -58,11 +60,12 @@ public class PacketLightOrbControllerData implements IMessage {
     this.tileEntityPos = NBTUtil.getPosFromTag(ByteBufUtils.readTag(buf));
     this.active = buf.readBoolean();
     this.loops = buf.readBoolean();
+    this.invisible = buf.readBoolean();
     this.lightLevel = buf.readInt();
     this.speed = buf.readDouble();
     int listSize = buf.readInt();
     this.checkpoints = new LinkedList<>();
-    for (int j = 0; j < listSize; j++) {
+    for (int i = 0; i < listSize; i++) {
       //noinspection ConstantConditions
       this.checkpoints.add(new PathCheckpoint(ByteBufUtils.readTag(buf)));
     }
@@ -73,6 +76,7 @@ public class PacketLightOrbControllerData implements IMessage {
     ByteBufUtils.writeTag(buf, NBTUtil.createPosTag(this.tileEntityPos));
     buf.writeBoolean(this.active);
     buf.writeBoolean(this.loops);
+    buf.writeBoolean(this.invisible);
     buf.writeInt(this.lightLevel);
     buf.writeDouble(this.speed);
     buf.writeInt(this.checkpoints.size());
@@ -92,6 +96,7 @@ public class PacketLightOrbControllerData implements IMessage {
             try {
               controller.setActive(message.active);
               controller.setLoops(message.loops);
+              controller.setEntityInvisible(message.invisible);
               controller.setLightLevel(message.lightLevel);
               controller.setSpeed(message.speed);
               controller.setCheckpoints(message.checkpoints);
