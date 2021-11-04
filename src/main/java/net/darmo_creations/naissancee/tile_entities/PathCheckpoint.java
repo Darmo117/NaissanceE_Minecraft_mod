@@ -12,9 +12,11 @@ import java.util.Objects;
 public class PathCheckpoint implements Cloneable {
   private static final String POS_TAG_KEY = "Pos";
   private static final String STOP_TAG_KEY = "IsStop";
+  private static final String TICKS_TAG_KEY = "TicksToWait";
 
   private final BlockPos pos;
   private boolean stop;
+  private int ticksToWait;
 
   /**
    * Create a checkpoint for the given NBT tag.
@@ -22,18 +24,24 @@ public class PathCheckpoint implements Cloneable {
    * @param tag The tag to deserialize.
    */
   public PathCheckpoint(NBTTagCompound tag) {
-    this(NBTUtil.getPosFromTag(tag.getCompoundTag(POS_TAG_KEY)), tag.getBoolean(STOP_TAG_KEY));
+    this(
+        NBTUtil.getPosFromTag(tag.getCompoundTag(POS_TAG_KEY)),
+        tag.getBoolean(STOP_TAG_KEY),
+        tag.getInteger(TICKS_TAG_KEY)
+    );
   }
 
   /**
    * Create a checkpoint for the given position and stop state.
    *
-   * @param pos  Block position.
-   * @param stop Whether the light orb should stop at this checkpoint.
+   * @param pos         Block position.
+   * @param stop        Whether the light orb should stop at this checkpoint.
+   * @param ticksToWait Number of ticks the entity has to wait for before moving again.
    */
-  public PathCheckpoint(final BlockPos pos, boolean stop) {
-    this.pos = pos;
+  public PathCheckpoint(final BlockPos pos, boolean stop, int ticksToWait) {
+    this.pos = Objects.requireNonNull(pos);
     this.stop = stop;
+    this.ticksToWait = ticksToWait;
   }
 
   /**
@@ -58,12 +66,30 @@ public class PathCheckpoint implements Cloneable {
   }
 
   /**
+   * Get the number of ticks the orb has to wait for before moving again.
+   */
+  public int getTicksToWait() {
+    return this.ticksToWait;
+  }
+
+  /**
+   * Set the number of ticks the orb has to wait for before moving again.
+   */
+  public void setTicksToWait(int ticksToWait) {
+    if (ticksToWait < 0) {
+      throw new IllegalArgumentException("wait time should be >= 0");
+    }
+    this.ticksToWait = ticksToWait;
+  }
+
+  /**
    * Convert this checkpoint to an NBT tag.
    */
   public NBTTagCompound toNBT() {
     NBTTagCompound tag = new NBTTagCompound();
     tag.setTag(POS_TAG_KEY, NBTUtil.createPosTag(this.pos));
     tag.setBoolean(STOP_TAG_KEY, this.stop);
+    tag.setInteger(TICKS_TAG_KEY, this.ticksToWait);
     return tag;
   }
 
@@ -76,12 +102,12 @@ public class PathCheckpoint implements Cloneable {
       return false;
     }
     PathCheckpoint that = (PathCheckpoint) o;
-    return this.stop == that.stop && Objects.equals(this.pos, that.pos);
+    return this.stop == that.stop && this.ticksToWait == that.ticksToWait && this.pos.equals(that.pos);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(this.pos, this.stop);
+    return Objects.hash(this.pos, this.stop, this.ticksToWait);
   }
 
   @Override
@@ -95,6 +121,6 @@ public class PathCheckpoint implements Cloneable {
 
   @Override
   public String toString() {
-    return String.format("PathCheckpoint{pos=%s, stop=%b}", this.pos, this.stop);
+    return String.format("PathCheckpoint{pos=%s, stop=%b, wait=%d}", this.pos, this.stop, this.ticksToWait);
   }
 }

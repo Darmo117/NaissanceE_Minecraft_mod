@@ -80,7 +80,7 @@ public class ItemLightOrbTweaker extends Item {
             success = false;
           }
         } else {
-          controller.addCheckpoint(pos.offset(facing), true);
+          controller.addCheckpoint(pos.offset(facing), true, 0);
         }
         if (success) {
           return EnumActionResult.SUCCESS;

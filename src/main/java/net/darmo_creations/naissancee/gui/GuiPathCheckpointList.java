@@ -5,6 +5,7 @@ import net.darmo_creations.naissancee.tile_entities.PathCheckpoint;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiListExtended;
+import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.resources.I18n;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -57,6 +58,16 @@ public class GuiPathCheckpointList extends GuiListExtended {
   @Override
   protected int getScrollBarX() {
     return super.getScrollBarX() + 35;
+  }
+
+  /**
+   * Called when a key is typed.
+   *
+   * @param typedChar Typed character.
+   * @param keyCode   Code of typed key.
+   */
+  public void keyTyped(char typedChar, int keyCode) {
+    this.entries.forEach(e -> e.keyTyped(typedChar, keyCode));
   }
 
   /**
@@ -113,6 +124,7 @@ public class GuiPathCheckpointList extends GuiListExtended {
   @SideOnly(Side.CLIENT)
   private class GuiEntry implements IGuiListEntry {
     // Buttons
+    private final GuiTextField ticksTextField;
     private final GuiButton stopBtn;
     private final GuiButton deleteBtn;
     private final GuiButton moveUpBtn;
@@ -126,6 +138,9 @@ public class GuiPathCheckpointList extends GuiListExtended {
      */
     public GuiEntry(PathCheckpoint checkpoint) {
       this.checkpoint = checkpoint;
+      this.ticksTextField = new GuiTextField(0, GuiPathCheckpointList.this.mc.fontRenderer,
+          0, 0, 30, 20);
+      this.ticksTextField.setText("" + checkpoint.getTicksToWait());
       this.stopBtn = new GuiButton(0, 0, 0, 50, 20,
           I18n.format("gui.naissancee.light_orb_controller.checkpoint_list.entry.stop_button.label."
               + (checkpoint.isStop() ? "active" : "inactive")));
@@ -156,8 +171,6 @@ public class GuiPathCheckpointList extends GuiListExtended {
     @Override
     public void drawEntry(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY, boolean isSelected, float partialTicks) {
       Minecraft mc = GuiPathCheckpointList.this.mc;
-      mc.fontRenderer.drawString(
-          Utils.blockPosToString(this.checkpoint.getPos()), x, y + (slotHeight - mc.fontRenderer.FONT_HEIGHT) / 2, 0xffffff);
 
       int xOffset = listWidth - this.deleteBtn.width;
       this.deleteBtn.x = x + xOffset;
@@ -178,6 +191,40 @@ public class GuiPathCheckpointList extends GuiListExtended {
       this.stopBtn.x = x + xOffset;
       this.stopBtn.y = y + (slotHeight - this.stopBtn.height) / 2;
       this.stopBtn.drawButton(mc, mouseX, mouseY, partialTicks);
+
+      xOffset -= this.ticksTextField.width + 6;
+      this.ticksTextField.x = x + xOffset;
+      this.ticksTextField.y = y + (slotHeight - this.ticksTextField.height) / 2;
+      this.ticksTextField.drawTextBox();
+
+      int textY = y + (slotHeight - mc.fontRenderer.FONT_HEIGHT) / 2;
+      int textColor = 0xffffff;
+      String text = Utils.blockPosToString(this.checkpoint.getPos()) + " » "
+          + I18n.format("gui.naissancee.light_orb_controller.checkpoint_list.entry.wait_field.label");
+      xOffset -= mc.fontRenderer.getStringWidth(text) + 4;
+      mc.fontRenderer.drawString(text, x + xOffset, textY, textColor);
+    }
+
+    /**
+     * Called when a key is typed.
+     *
+     * @param typedChar Typed character.
+     * @param keyCode   Code of typed key.
+     */
+    public void keyTyped(char typedChar, int keyCode) {
+      if (this.ticksTextField.textboxKeyTyped(typedChar, keyCode)) {
+        int i = -1;
+        try {
+          i = Integer.parseInt(this.ticksTextField.getText());
+        } catch (NumberFormatException ignored) {
+        }
+        if (i < 0) {
+          this.ticksTextField.setTextColor(0xff0000);
+        } else {
+          this.checkpoint.setTicksToWait(i);
+          this.ticksTextField.setTextColor(0xffffff);
+        }
+      }
     }
 
     @Override
@@ -199,8 +246,9 @@ public class GuiPathCheckpointList extends GuiListExtended {
       } else if (this.moveDownBtn.mousePressed(mc, mouseX, mouseY)) {
         GuiPathCheckpointList.this.onMoveDownButtonClicked(slotIndex);
         return true;
+      } else {
+        return this.ticksTextField.mouseClicked(mouseX, mouseY, mouseEvent);
       }
-      return false;
     }
 
     @Override

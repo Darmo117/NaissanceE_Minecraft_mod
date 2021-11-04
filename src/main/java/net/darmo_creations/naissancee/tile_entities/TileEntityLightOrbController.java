@@ -87,7 +87,7 @@ public class TileEntityLightOrbController extends TileEntity {
     this.setLoops(false);
     this.setSpeed(0.25);
     this.checkpoints = new LinkedList<>();
-    this.addCheckpoint(this.pos.up(), true);
+    this.addCheckpoint(this.pos.up(), true, 0);
     this.spawnOrb();
   }
 
@@ -156,11 +156,12 @@ public class TileEntityLightOrbController extends TileEntity {
   /**
    * Adds a new checkpoint for the given position at the end of the path.
    *
-   * @param pos  Checkpoint’s position.
-   * @param stop Whether the orb should stop at this checkpoint.
+   * @param pos         Checkpoint’s position.
+   * @param stop        Whether the orb should stop at this checkpoint.
+   * @param ticksToWait Number of ticks the entity has to wait for before moving again.
    */
-  public void addCheckpoint(BlockPos pos, boolean stop) {
-    this.checkpoints.add(new PathCheckpoint(pos, stop));
+  public void addCheckpoint(BlockPos pos, boolean stop, int ticksToWait) {
+    this.checkpoints.add(new PathCheckpoint(pos, stop, ticksToWait));
     this.spawnOrb();
   }
 

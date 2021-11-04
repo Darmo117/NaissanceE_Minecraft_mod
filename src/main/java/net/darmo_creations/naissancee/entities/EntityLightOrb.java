@@ -20,6 +20,8 @@ import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.util.Optional;
+
 /**
  * This class represents the moving light orbs found throughout NaissanceE.
  * <p>
@@ -50,11 +52,17 @@ public class EntityLightOrb extends Entity {
    * Index of the next checkpoint; -1 if there is none.
    */
   private static final DataParameter<Integer> NEXT_CHECKPOINT_INDEX = EntityDataManager.createKey(EntityLightOrb.class, DataSerializers.VARINT);
+  /**
+   * Whether the orb should wait for player collision to move again while stopped.
+   */
+  private static final DataParameter<Boolean> WAIT_FOR_PLAYER = EntityDataManager.createKey(EntityLightOrb.class, DataSerializers.BOOLEAN);
 
   // Tile position of this entity, used to place/remove light blocks
   private int tileX;
   private int tileY;
   private int tileZ;
+
+  private int timeToWait;
 
   @SuppressWarnings("unused")
   public EntityLightOrb(World world) { // Required by Minecraft, invoked on client
@@ -80,6 +88,7 @@ public class EntityLightOrb extends Entity {
     this.setSize(0.25F, 0.25F);
     this.dataManager.register(CONTROLLER_POS, new BlockPos(0, 0, 0));
     this.dataManager.register(NEXT_CHECKPOINT_INDEX, 0);
+    this.dataManager.register(WAIT_FOR_PLAYER, true);
   }
 
   /**
@@ -107,17 +116,17 @@ public class EntityLightOrb extends Entity {
     }
 
     if (!controller.isEntityInvisible()) {
-      // Negative y speed to compensate for rising particles
-      this.world.spawnParticle(EnumParticleTypes.EXPLOSION_NORMAL, this.posX, this.posY + 0.5, this.posZ, 0, -0.025, 0);
+      this.world.spawnParticle(EnumParticleTypes.END_ROD, this.posX, this.posY + 0.5, this.posZ, 0, 0, 0);
     }
 
     BlockPos previousTilePos = this.tilePosToBlockPos();
 
     if (controller.isActive()) {
-      PathCheckpoint nextCheckpoint = this.nextCheckpoint();
-      if (nextCheckpoint == null) {
+      Optional<PathCheckpoint> next = this.nextCheckpoint();
+      if (!next.isPresent()) {
         this.stop();
       } else if (!this.isStopped()) {
+        PathCheckpoint nextCheckpoint = next.get();
         double nextX = this.posX + this.motionX;
         double nextY = this.posY + this.motionY;
         double nextZ = this.posZ + this.motionZ;
@@ -135,17 +144,28 @@ public class EntityLightOrb extends Entity {
 
         if (reachedNextCP) {
           if (nextCheckpoint.isStop()) {
+            this.dataManager.set(WAIT_FOR_PLAYER, true);
             this.stop();
           }
+          this.timeToWait = nextCheckpoint.getTicksToWait();
           controller.getNextCheckpoint(this.dataManager.get(NEXT_CHECKPOINT_INDEX)).ifPresent(p -> {
             this.dataManager.set(NEXT_CHECKPOINT_INDEX, p.getKey());
             if (!nextCheckpoint.isStop()) {
-              this.updateMotion(p.getValue());
+              if (this.timeToWait == 0) {
+                this.updateMotion(p.getValue());
+              } else {
+                this.stop();
+              }
             }
           });
         }
 
         this.updateTilePos();
+      } else if (this.timeToWait > 0) {
+        this.timeToWait--;
+        if (this.timeToWait == 0 && !this.dataManager.get(WAIT_FOR_PLAYER)) {
+          this.nextCheckpoint().ifPresent(this::updateMotion);
+        }
       }
     } else {
       this.stop();
@@ -217,11 +237,11 @@ public class EntityLightOrb extends Entity {
   /**
    * Get next checkpoint. Returns null if there is none.
    */
-  private PathCheckpoint nextCheckpoint() {
+  private Optional<PathCheckpoint> nextCheckpoint() {
     TileEntityLightOrbController controller = this.controller();
     int i = this.dataManager.get(NEXT_CHECKPOINT_INDEX);
     return controller != null && i != -1 && i < controller.getCheckpoints().size()
-        ? controller.getCheckpoints().get(i) : null;
+        ? Optional.of(controller.getCheckpoints().get(i)) : Optional.empty();
   }
 
   /**
@@ -234,10 +254,12 @@ public class EntityLightOrb extends Entity {
   @Override
   public void onCollideWithPlayer(EntityPlayer entity) {
     super.onCollideWithPlayer(entity);
-    PathCheckpoint nextCheckpoint = this.nextCheckpoint();
-    if (nextCheckpoint != null && this.controller().isActive() && this.isStopped()) {
-      this.updateMotion(nextCheckpoint);
-    }
+    this.nextCheckpoint().ifPresent(nextCheckpoint -> {
+      if (this.dataManager.get(WAIT_FOR_PLAYER) && this.controller().isActive() && this.isStopped() && this.timeToWait == 0) {
+        this.updateMotion(nextCheckpoint);
+        this.dataManager.set(WAIT_FOR_PLAYER, false);
+      }
+    });
   }
 
   @Override

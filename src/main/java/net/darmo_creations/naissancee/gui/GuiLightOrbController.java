@@ -171,12 +171,12 @@ public class GuiLightOrbController extends GuiScreen {
 
   @Override
   protected void keyTyped(char typedChar, int keyCode) {
-    if (keyCode != 28 && keyCode != 156) {
-      if (keyCode == 1) {
-        this.actionPerformed(this.cancelBtn);
-      }
-    } else {
+    if (keyCode == 28 || keyCode == 156) {
       this.actionPerformed(this.doneBtn);
+    } else if (keyCode == 1) {
+      this.actionPerformed(this.cancelBtn);
+    } else {
+      this.checkpointList.keyTyped(typedChar, keyCode);
     }
   }
 
