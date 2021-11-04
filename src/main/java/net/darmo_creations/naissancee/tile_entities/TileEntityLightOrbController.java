@@ -34,10 +34,11 @@ import java.util.stream.Collectors;
 public class TileEntityLightOrbController extends TileEntity {
   private static final String ORB_ID_TAG_KEY = "OrbID";
   private static final String ACTIVE_TAG_KEY = "Active";
-  private static final String CHECKPOINTS_TAG_KEY = "Checkpoints";
   private static final String LOOPS_TAG_KEY = "Loops";
+  private static final String INVISIBLE_TAG_KEY = "Invisible";
   private static final String LIGHT_LEVEL_TAG_KEY = "LightLevel";
   private static final String SPEED_TAG_KEY = "Speed";
+  private static final String CHECKPOINTS_TAG_KEY = "Checkpoints";
 
   /**
    * UUID of associated orb.
@@ -315,6 +316,7 @@ public class TileEntityLightOrbController extends TileEntity {
     compound.setTag(ORB_ID_TAG_KEY, NBTUtil.createUUIDTag(this.orbID));
     compound.setBoolean(ACTIVE_TAG_KEY, this.active);
     compound.setBoolean(LOOPS_TAG_KEY, this.loops);
+    compound.setBoolean(INVISIBLE_TAG_KEY, this.invisible);
     compound.setInteger(LIGHT_LEVEL_TAG_KEY, this.lightLevel);
     compound.setDouble(SPEED_TAG_KEY, this.speed);
     NBTTagList list = new NBTTagList();
@@ -331,6 +333,7 @@ public class TileEntityLightOrbController extends TileEntity {
     this.orbID = NBTUtil.getUUIDFromTag(compound.getCompoundTag(ORB_ID_TAG_KEY));
     this.active = compound.getBoolean(ACTIVE_TAG_KEY);
     this.loops = compound.getBoolean(LOOPS_TAG_KEY);
+    this.invisible = compound.getBoolean(INVISIBLE_TAG_KEY);
     this.lightLevel = compound.getInteger(LIGHT_LEVEL_TAG_KEY);
     this.speed = compound.getDouble(SPEED_TAG_KEY);
     this.checkpoints = new LinkedList<>();
