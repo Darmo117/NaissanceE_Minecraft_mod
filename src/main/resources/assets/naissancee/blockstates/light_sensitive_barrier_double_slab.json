@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "variant=white": {
+      "model": "naissancee:white_light_sensitive_barrier"
+    },
+    "variant=light_gray": {
+      "model": "naissancee:light_gray_light_sensitive_barrier"
+    },
+    "variant=gray": {
+      "model": "naissancee:gray_light_sensitive_barrier"
+    }
+  }
+}

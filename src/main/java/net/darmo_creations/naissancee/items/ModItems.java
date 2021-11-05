@@ -5,6 +5,7 @@ import net.darmo_creations.naissancee.blocks.ModBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemSlab;
 
 import java.util.*;
 
@@ -25,6 +26,13 @@ public final class ModItems {
   public static final Item CREATIVE_WAND = new ItemCreativeWand().setRegistryName("creative_wand").setCreativeTab(NaissanceE.CREATIVE_TAB);
 
   public static final Item LIGHT_GRAY_FRAMED_DOOR = new ItemFramedDoor(ModBlocks.LIGHT_GRAY_FRAMED_DOOR).setRegistryName("light_gray_framed_door").setCreativeTab(NaissanceE.CREATIVE_TAB);
+
+  @SuppressWarnings("ConstantConditions")
+  public static final Item LIGHT_SENSITIVE_BARRIER_SLAB = new ItemSlab(ModBlocks.LIGHT_SENSITIVE_BARRIER_SLAB, ModBlocks.LIGHT_SENSITIVE_BARRIER_SLAB, ModBlocks.LIGHT_SENSITIVE_BARRIER_DOUBLE_SLAB)
+      .setRegistryName(ModBlocks.LIGHT_SENSITIVE_BARRIER_SLAB.getRegistryName().getResourcePath());
+  @SuppressWarnings("ConstantConditions")
+  public static final Item LIGHT_SENSITIVE_BARRIER_SLAB_PASSABLE = new ItemSlab(ModBlocks.LIGHT_SENSITIVE_BARRIER_SLAB_PASSABLE, ModBlocks.LIGHT_SENSITIVE_BARRIER_SLAB_PASSABLE, ModBlocks.LIGHT_SENSITIVE_BARRIER_DOUBLE_SLAB_PASSABLE)
+      .setRegistryName(ModBlocks.LIGHT_SENSITIVE_BARRIER_SLAB_PASSABLE.getRegistryName().getResourcePath());
 
   /**
    * The list of all explicitly declared items for this mod.

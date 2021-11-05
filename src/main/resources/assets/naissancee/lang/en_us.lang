@@ -84,6 +84,13 @@ tile.naissancee.light_gray_light_sensitive_barrier.name=Light Gray Light-Sensiti
 tile.naissancee.light_gray_light_sensitive_barrier_passable.name=Light Gray Light-Sensitive Barrier (Passable)
 tile.naissancee.gray_light_sensitive_barrier.name=Gray Light-Sensitive Barrier (Solid)
 tile.naissancee.gray_light_sensitive_barrier_passable.name=Gray Light-Sensitive Barrier (Passable)
+# Barrier Slabs
+tile.naissancee.light_sensitive_barrier_slab.white.name=White Light Sensitive Barrier Slab (Solid)
+tile.naissancee.light_sensitive_barrier_slab.light_gray.name=Light Gray Light Sensitive Barrier Slab (Solid)
+tile.naissancee.light_sensitive_barrier_slab.gray.name=Gray Light Sensitive Barrier Slab (Solid)
+tile.naissancee.light_sensitive_barrier_slab_passable.white.name=White Light Sensitive Barrier Slab (Passable)
+tile.naissancee.light_sensitive_barrier_slab_passable.light_gray.name=Light Gray Light Sensitive Barrier Slab (Passable)
+tile.naissancee.light_sensitive_barrier_slab_passable.gray.name=Gray Light Sensitive Barrier Slab (Passable)
 # Ladder
 tile.naissancee.light_gray_ladder.name=Light Gray Ladder
 tile.naissancee.light_gray_half_ladder.name=Light Gray Half Ladder
@@ -92,9 +99,11 @@ tile.naissancee.light_orb_controller.name=Light Orb Controller
 
 # Items #
 
+# Tools
 item.naissancee.invisible_light_source_editing_tool.name=Invisible Light Source Editing Tool
 item.naissancee.creative_wand.name=Creative Wand
 item.naissancee.light_orb_tweaker.name=Light Orb Tweaker
+
 item.naissancee.light_gray_framed_door.name=Light Gray Framed Door
 
 # Entities #

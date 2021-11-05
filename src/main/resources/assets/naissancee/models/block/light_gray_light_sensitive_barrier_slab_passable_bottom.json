@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/half_slab",
+  "textures": {
+    "side": "naissancee:blocks/light_gray_light_sensitive_barrier_passable",
+    "top": "naissancee:blocks/light_gray_light_sensitive_barrier_passable",
+    "bottom": "naissancee:blocks/light_gray_light_sensitive_barrier_passable"
+  }
+}

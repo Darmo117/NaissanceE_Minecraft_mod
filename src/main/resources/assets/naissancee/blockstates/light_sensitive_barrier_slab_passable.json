@@ -1,0 +1,22 @@
+{
+  "variants": {
+    "half=bottom,variant=white": {
+      "model": "naissancee:white_light_sensitive_barrier_slab_passable_bottom"
+    },
+    "half=bottom,variant=light_gray": {
+      "model": "naissancee:light_gray_light_sensitive_barrier_slab_passable_bottom"
+    },
+    "half=bottom,variant=gray": {
+      "model": "naissancee:gray_light_sensitive_barrier_slab_passable_bottom"
+    },
+    "half=top,variant=white": {
+      "model": "naissancee:white_light_sensitive_barrier_slab_passable_top"
+    },
+    "half=top,variant=light_gray": {
+      "model": "naissancee:light_gray_light_sensitive_barrier_slab_passable_top"
+    },
+    "half=top,variant=gray": {
+      "model": "naissancee:gray_light_sensitive_barrier_slab_passable_top"
+    }
+  }
+}

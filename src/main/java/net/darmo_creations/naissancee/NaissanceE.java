@@ -10,13 +10,15 @@ import net.darmo_creations.naissancee.items.ModItems;
 import net.darmo_creations.naissancee.network.PacketLightOrbControllerData;
 import net.darmo_creations.naissancee.tile_entities.TileEntityFloatingVariableLightBlock;
 import net.darmo_creations.naissancee.tile_entities.TileEntityInvisibleLightSource;
-import net.darmo_creations.naissancee.tile_entities.render.TileEntityInvisibleLightSourceRenderer;
 import net.darmo_creations.naissancee.tile_entities.TileEntityLightOrbController;
+import net.darmo_creations.naissancee.tile_entities.render.TileEntityInvisibleLightSourceRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
@@ -115,9 +117,12 @@ public class NaissanceE {
           ModelLoader.setCustomModelResourceLocation(item, 0,
               new ModelResourceLocation(item.getRegistryName(), "inventory"));
         } else {
-          for (int i = 0; i < 16; i++) {
-            ModelLoader.setCustomModelResourceLocation(item, i,
-                new ModelResourceLocation(item.getRegistryName() + "_" + i, "inventory"));
+          NonNullList<ItemStack> list = NonNullList.create();
+          item.getSubItems(CreativeTabs.SEARCH, list);
+          for (ItemStack stack : list) {
+            String variantName = stack.getUnlocalizedName().substring(stack.getUnlocalizedName().lastIndexOf('.') + 1);
+            ModelLoader.setCustomModelResourceLocation(item, stack.getMetadata(),
+                new ModelResourceLocation(item.getRegistryName() + "." + variantName, "inventory"));
           }
         }
       });

@@ -2,6 +2,7 @@ package net.darmo_creations.naissancee.blocks;
 
 import net.darmo_creations.naissancee.NaissanceE;
 import net.minecraft.block.Block;
+import net.minecraft.block.BlockSlab;
 import net.minecraft.block.material.Material;
 import net.minecraftforge.common.MinecraftForge;
 
@@ -34,12 +35,17 @@ public final class ModBlocks {
   public static final Block LIGHT_GRAY_VERTICAL_CORNER = new BlockVerticalCorner(Material.ROCK).setRegistryName("light_gray_vertical_corner").setCreativeTab(NaissanceE.CREATIVE_TAB);
   public static final Block GRAY_VERTICAL_VERTICAL_CORNER = new BlockVerticalCorner(Material.ROCK).setRegistryName("gray_vertical_corner").setCreativeTab(NaissanceE.CREATIVE_TAB);
 
-  public static final Block WHITE_LIGHT_SENSITIVE_BARRIER = new BlockLightSensitiveBarrier().setRegistryName("white_light_sensitive_barrier").setCreativeTab(NaissanceE.CREATIVE_TAB);
-  public static final Block WHITE_LIGHT_SENSITIVE_BARRIER_PASSABLE = new BlockLightSensitiveBarrierPassable().setRegistryName("white_light_sensitive_barrier_passable").setCreativeTab(NaissanceE.CREATIVE_TAB);
-  public static final Block LIGHT_GRAY_LIGHT_SENSITIVE_BARRIER = new BlockLightSensitiveBarrier().setRegistryName("light_gray_light_sensitive_barrier").setCreativeTab(NaissanceE.CREATIVE_TAB);
-  public static final Block LIGHT_GRAY_LIGHT_SENSITIVE_BARRIER_PASSABLE = new BlockLightSensitiveBarrierPassable().setRegistryName("light_gray_light_sensitive_barrier_passable").setCreativeTab(NaissanceE.CREATIVE_TAB);
-  public static final Block GRAY_LIGHT_SENSITIVE_BARRIER = new BlockLightSensitiveBarrier().setRegistryName("gray_light_sensitive_barrier").setCreativeTab(NaissanceE.CREATIVE_TAB);
-  public static final Block GRAY_LIGHT_SENSITIVE_BARRIER_PASSABLE = new BlockLightSensitiveBarrierPassable().setRegistryName("gray_light_sensitive_barrier_passable").setCreativeTab(NaissanceE.CREATIVE_TAB);
+  public static final Block WHITE_LIGHT_SENSITIVE_BARRIER = new BlockLightSensitiveBarrier(false).setRegistryName("white_light_sensitive_barrier").setCreativeTab(NaissanceE.CREATIVE_TAB);
+  public static final Block WHITE_LIGHT_SENSITIVE_BARRIER_PASSABLE = new BlockLightSensitiveBarrier(true).setRegistryName("white_light_sensitive_barrier_passable").setCreativeTab(NaissanceE.CREATIVE_TAB);
+  public static final Block LIGHT_GRAY_LIGHT_SENSITIVE_BARRIER = new BlockLightSensitiveBarrier(false).setRegistryName("light_gray_light_sensitive_barrier").setCreativeTab(NaissanceE.CREATIVE_TAB);
+  public static final Block LIGHT_GRAY_LIGHT_SENSITIVE_BARRIER_PASSABLE = new BlockLightSensitiveBarrier(true).setRegistryName("light_gray_light_sensitive_barrier_passable").setCreativeTab(NaissanceE.CREATIVE_TAB);
+  public static final Block GRAY_LIGHT_SENSITIVE_BARRIER = new BlockLightSensitiveBarrier(false).setRegistryName("gray_light_sensitive_barrier").setCreativeTab(NaissanceE.CREATIVE_TAB);
+  public static final Block GRAY_LIGHT_SENSITIVE_BARRIER_PASSABLE = new BlockLightSensitiveBarrier(true).setRegistryName("gray_light_sensitive_barrier_passable").setCreativeTab(NaissanceE.CREATIVE_TAB);
+
+  public static final BlockSlab LIGHT_SENSITIVE_BARRIER_SLAB = (BlockSlab) new BlockSlabLightSensitiveBarrier.BlockHalfSlabLightSensitiveBarrier(false).setRegistryName("light_sensitive_barrier_slab").setCreativeTab(NaissanceE.CREATIVE_TAB);
+  public static final BlockSlab LIGHT_SENSITIVE_BARRIER_DOUBLE_SLAB = (BlockSlab) new BlockSlabLightSensitiveBarrier.BlockDoubleSlabLightSensitiveBarrier(false).setRegistryName("light_sensitive_barrier_double_slab");
+  public static final BlockSlab LIGHT_SENSITIVE_BARRIER_SLAB_PASSABLE = (BlockSlab) new BlockSlabLightSensitiveBarrier.BlockHalfSlabLightSensitiveBarrier(true).setRegistryName("light_sensitive_barrier_slab_passable").setCreativeTab(NaissanceE.CREATIVE_TAB);
+  public static final BlockSlab LIGHT_SENSITIVE_BARRIER_DOUBLE_SLAB_PASSABLE = (BlockSlab) new BlockSlabLightSensitiveBarrier.BlockDoubleSlabLightSensitiveBarrier(true).setRegistryName("light_sensitive_barrier_double_slab_passable");
 
   public static final Block OFFSET_WALL_LAMP = new BlockOffsetWallLamp().setRegistryName("offset_wall_lamp").setCreativeTab(NaissanceE.CREATIVE_TAB);
   public static final Block LIGHT_GRAY_SMALL_FRAMED_LAMP = new BlockSmallFramedLamp().setRegistryName("light_gray_small_framed_lamp").setCreativeTab(NaissanceE.CREATIVE_TAB);

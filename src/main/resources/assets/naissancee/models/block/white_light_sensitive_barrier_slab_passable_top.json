@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/upper_slab",
+  "textures": {
+    "side": "naissancee:blocks/white_light_sensitive_barrier_passable",
+    "top": "naissancee:blocks/white_light_sensitive_barrier_passable",
+    "bottom": "naissancee:blocks/white_light_sensitive_barrier_passable"
+  }
+}
