@@ -61,6 +61,9 @@ public final class ModBlocks {
 
   public static final Block LIGHT_GRAY_FRAMED_DOOR = new BlockFramedDoor().setRegistryName("light_gray_framed_door").setCreativeTab(NaissanceE.CREATIVE_TAB);
 
+  public static final Block LIGHT_GRAY_LADDER = new BlockTwoPartLadder().setRegistryName("light_gray_ladder").setCreativeTab(NaissanceE.CREATIVE_TAB);
+  public static final Block LIGHT_GRAY_HALF_LADDER = new BlockHalfLadder().setRegistryName("light_gray_half_ladder").setCreativeTab(NaissanceE.CREATIVE_TAB);
+
   /**
    * The list of all declared blocks for this mod.
    */

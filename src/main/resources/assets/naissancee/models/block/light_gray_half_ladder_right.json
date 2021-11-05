@@ -1,0 +1,6 @@
+{
+  "parent": "naissancee:block/half_ladder_right",
+  "textures": {
+    "all": "minecraft:blocks/concrete_silver"
+  }
+}

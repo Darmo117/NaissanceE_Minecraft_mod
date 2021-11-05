@@ -84,7 +84,10 @@ tile.naissancee.light_gray_light_sensitive_barrier.name=Light Gray Light-Sensiti
 tile.naissancee.light_gray_light_sensitive_barrier_passable.name=Light Gray Light-Sensitive Barrier (Passable)
 tile.naissancee.gray_light_sensitive_barrier.name=Gray Light-Sensitive Barrier (Solid)
 tile.naissancee.gray_light_sensitive_barrier_passable.name=Gray Light-Sensitive Barrier (Passable)
-
+# Ladder
+tile.naissancee.light_gray_ladder.name=Light Gray Ladder
+tile.naissancee.light_gray_half_ladder.name=Light Gray Half Ladder
+# Technical
 tile.naissancee.light_orb_controller.name=Light Orb Controller
 
 # Items #
