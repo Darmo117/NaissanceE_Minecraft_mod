@@ -38,6 +38,7 @@ tile.naissancee.wall_lamps.name=Wall Lamps
 tile.naissancee.invisible_light_source.name=Invisible Light Source
 tile.naissancee.variable_lamp.name=Variable Lamp
 tile.naissancee.activator_lamp.name=Activator Lamp
+tile.naissancee.floating_variable_light_block.name=Floating Variable Light Block
 # Creature Block
 tile.naissancee.creature_block.0.name=Creature Block 0
 tile.naissancee.creature_block.1.name=Creature Block 1
