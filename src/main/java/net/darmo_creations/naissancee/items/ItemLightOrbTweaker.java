@@ -3,7 +3,6 @@ package net.darmo_creations.naissancee.items;
 import net.darmo_creations.naissancee.Utils;
 import net.darmo_creations.naissancee.blocks.BlockLightOrbController;
 import net.darmo_creations.naissancee.blocks.ModBlocks;
-import net.darmo_creations.naissancee.tile_entities.PathCheckpoint;
 import net.darmo_creations.naissancee.tile_entities.TileEntityLightOrbController;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.Entity;
@@ -15,7 +14,6 @@ import net.minecraft.nbt.NBTUtil;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
@@ -60,13 +58,13 @@ public class ItemLightOrbTweaker extends Item {
           }
         }
       } else {
-        TileEntityLightOrbController controller = getControllerTileEntity(player.getHeldItem(hand), world);
-        if (controller != null) {
+        Optional<TileEntityLightOrbController> controller = getControllerTileEntity(player.getHeldItem(hand), world);
+        if (controller.isPresent()) {
           boolean success = true;
           if (player.isSneaking()) {
             BlockPos p = pos.offset(facing);
-            if (controller.hasCheckpointAt(p)) {
-              int nbRemoved = controller.removeCheckpoint(p);
+            if (controller.get().hasCheckpointAt(p)) {
+              int nbRemoved = controller.get().removeCheckpoint(p);
               success = nbRemoved != 0;
               String s = nbRemoved > 1 ? "s" : "";
               if (nbRemoved == 0) {
@@ -81,7 +79,7 @@ public class ItemLightOrbTweaker extends Item {
               success = false;
             }
           } else {
-            controller.addCheckpoint(pos.offset(facing), true, 0);
+            controller.get().addCheckpoint(pos.offset(facing), true, 0);
           }
           if (success) {
             return EnumActionResult.SUCCESS;
@@ -96,15 +94,8 @@ public class ItemLightOrbTweaker extends Item {
   public void onUpdate(ItemStack stack, World world, Entity entity, int itemSlot, boolean isSelected) {
     super.onUpdate(stack, world, entity, itemSlot, isSelected);
     if (world.isRemote) {
-      TileEntityLightOrbController te = getControllerTileEntity(stack, world);
-      if (isSelected && te != null) {
-        for (PathCheckpoint checkpoint : te.getCheckpoints()) {
-          BlockPos pos = checkpoint.getPos();
-          EnumParticleTypes particleType = checkpoint.isStop() ? EnumParticleTypes.REDSTONE : EnumParticleTypes.DRAGON_BREATH;
-          // TODO remove once tile entity renderer is operational
-          world.spawnParticle(particleType, true, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 0, 0, 0);
-        }
-      } else if (te == null && stack.getTagCompound() != null && stack.getTagCompound().hasKey(CONTROLLER_POS_TAG_KEY)) {
+      Optional<TileEntityLightOrbController> te = getControllerTileEntity(stack, world);
+      if (!te.isPresent() && stack.getTagCompound() != null && stack.getTagCompound().hasKey(CONTROLLER_POS_TAG_KEY)) {
         stack.getTagCompound().removeTag(CONTROLLER_POS_TAG_KEY);
       }
     }
@@ -112,9 +103,9 @@ public class ItemLightOrbTweaker extends Item {
 
   @Override
   public void addInformation(ItemStack stack, World world, List<String> tooltip, ITooltipFlag flag) {
-    TileEntityLightOrbController controller = getControllerTileEntity(stack, world);
-    if (controller != null) {
-      tooltip.add("Selected controller position: " + Utils.blockPosToString(controller.getPos()));
+    Optional<TileEntityLightOrbController> controller = getControllerTileEntity(stack, world);
+    if (controller.isPresent()) {
+      tooltip.add("Selected controller position: " + Utils.blockPosToString(controller.get().getPos()));
     } else {
       tooltip.add(TextFormatting.ITALIC + "No controller selected");
     }
@@ -127,12 +118,12 @@ public class ItemLightOrbTweaker extends Item {
    * @param world World to look for block.
    * @return The tile entity, null if none were found or tile entity is of the wrong type.
    */
-  private static TileEntityLightOrbController getControllerTileEntity(ItemStack stack, World world) {
+  public static Optional<TileEntityLightOrbController> getControllerTileEntity(ItemStack stack, World world) {
     NBTTagCompound tag = stack.getTagCompound();
     if (tag != null) {
       return Utils.getTileEntity(TileEntityLightOrbController.class, world,
-          NBTUtil.getPosFromTag(tag.getCompoundTag(CONTROLLER_POS_TAG_KEY))).orElse(null);
+          NBTUtil.getPosFromTag(tag.getCompoundTag(CONTROLLER_POS_TAG_KEY)));
     }
-    return null;
+    return Optional.empty();
   }
 }
