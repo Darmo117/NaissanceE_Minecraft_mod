@@ -48,42 +48,44 @@ public class ItemLightOrbTweaker extends Item {
 
   @Override
   public EnumActionResult onItemUse(EntityPlayer player, World world, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-    if (world.getBlockState(pos).getBlock() == ModBlocks.LIGHT_ORB_CONTROLLER) {
-      if (player.isSneaking()) {
-        Optional<TileEntityLightOrbController> te = Utils.getTileEntity(TileEntityLightOrbController.class, world, pos);
-        if (te.isPresent()) {
-          NBTTagCompound tag = new NBTTagCompound();
-          tag.setTag(CONTROLLER_POS_TAG_KEY, NBTUtil.createPosTag(te.get().getPos()));
-          player.getHeldItem(hand).setTagCompound(tag);
-          return EnumActionResult.SUCCESS;
-        }
-      }
-    } else {
-      TileEntityLightOrbController controller = getControllerTileEntity(player.getHeldItem(hand), world);
-      if (controller != null) {
-        boolean success = true;
+    if (player.canUseCommandBlock()) {
+      if (world.getBlockState(pos).getBlock() == ModBlocks.LIGHT_ORB_CONTROLLER) {
         if (player.isSneaking()) {
-          BlockPos p = pos.offset(facing);
-          if (controller.hasCheckpointAt(p)) {
-            int nbRemoved = controller.removeCheckpoint(p);
-            success = nbRemoved != 0;
-            String s = nbRemoved > 1 ? "s" : "";
-            if (nbRemoved == 0) {
-              Utils.sendMessage(world, player, new TextComponentString("Cannot remove this checkpoint!")
-                  .setStyle(new Style().setColor(TextFormatting.RED)));
+          Optional<TileEntityLightOrbController> te = Utils.getTileEntity(TileEntityLightOrbController.class, world, pos);
+          if (te.isPresent()) {
+            NBTTagCompound tag = new NBTTagCompound();
+            tag.setTag(CONTROLLER_POS_TAG_KEY, NBTUtil.createPosTag(te.get().getPos()));
+            player.getHeldItem(hand).setTagCompound(tag);
+            return EnumActionResult.SUCCESS;
+          }
+        }
+      } else {
+        TileEntityLightOrbController controller = getControllerTileEntity(player.getHeldItem(hand), world);
+        if (controller != null) {
+          boolean success = true;
+          if (player.isSneaking()) {
+            BlockPos p = pos.offset(facing);
+            if (controller.hasCheckpointAt(p)) {
+              int nbRemoved = controller.removeCheckpoint(p);
+              success = nbRemoved != 0;
+              String s = nbRemoved > 1 ? "s" : "";
+              if (nbRemoved == 0) {
+                Utils.sendMessage(world, player, new TextComponentString("Cannot remove this checkpoint!")
+                    .setStyle(new Style().setColor(TextFormatting.RED)));
+              } else {
+                Utils.sendMessage(world, player, new TextComponentString(
+                    String.format("Removed %d checkpoint%s.", nbRemoved, s))
+                    .setStyle(new Style().setColor(TextFormatting.DARK_GREEN)));
+              }
             } else {
-              Utils.sendMessage(world, player, new TextComponentString(
-                  String.format("Removed %d checkpoint%s.", nbRemoved, s))
-                  .setStyle(new Style().setColor(TextFormatting.DARK_GREEN)));
+              success = false;
             }
           } else {
-            success = false;
+            controller.addCheckpoint(pos.offset(facing), true, 0);
           }
-        } else {
-          controller.addCheckpoint(pos.offset(facing), true, 0);
-        }
-        if (success) {
-          return EnumActionResult.SUCCESS;
+          if (success) {
+            return EnumActionResult.SUCCESS;
+          }
         }
       }
     }
@@ -99,6 +101,7 @@ public class ItemLightOrbTweaker extends Item {
         for (PathCheckpoint checkpoint : te.getCheckpoints()) {
           BlockPos pos = checkpoint.getPos();
           EnumParticleTypes particleType = checkpoint.isStop() ? EnumParticleTypes.REDSTONE : EnumParticleTypes.DRAGON_BREATH;
+          // TODO remove once tile entity renderer is operational
           world.spawnParticle(particleType, true, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 0, 0, 0);
         }
       } else if (te == null && stack.getTagCompound() != null && stack.getTagCompound().hasKey(CONTROLLER_POS_TAG_KEY)) {

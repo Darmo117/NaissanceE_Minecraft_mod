@@ -12,6 +12,7 @@ import net.darmo_creations.naissancee.tile_entities.TileEntityFloatingVariableLi
 import net.darmo_creations.naissancee.tile_entities.TileEntityInvisibleLightSource;
 import net.darmo_creations.naissancee.tile_entities.TileEntityLightOrbController;
 import net.darmo_creations.naissancee.tile_entities.render.TileEntityInvisibleLightSourceRenderer;
+import net.darmo_creations.naissancee.tile_entities.render.TileEntityLightOrbControllerRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
@@ -75,6 +76,7 @@ public class NaissanceE {
 
     if (event.getSide() == Side.CLIENT) {
       ClientRegistry.bindTileEntitySpecialRenderer(TileEntityInvisibleLightSource.class, new TileEntityInvisibleLightSourceRenderer());
+      ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLightOrbController.class, new TileEntityLightOrbControllerRenderer());
       RenderingRegistry.registerEntityRenderingHandler(EntityLightOrb.class, RenderLightOrb::new); // Does not actually render anything
     }
   }

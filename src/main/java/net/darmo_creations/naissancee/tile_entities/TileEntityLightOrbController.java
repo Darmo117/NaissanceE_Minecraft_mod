@@ -356,5 +356,4 @@ public class TileEntityLightOrbController extends TileEntity {
   public NBTTagCompound getUpdateTag() {
     return this.writeToNBT(new NBTTagCompound());
   }
-
 }
