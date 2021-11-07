@@ -19,6 +19,7 @@ import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +38,7 @@ public class ItemCreativeWand extends Item {
   private static final String STATE_TAG_KEY = "BlockState";
 
   // Maximum number of blocks that can be filled at the same time
-  private static final int AREA_SIZE_LIMIT = 32768;
+  private static final int VOLUME_LIMIT = 32768;
 
   public ItemCreativeWand() {
     this.setMaxStackSize(1);
@@ -55,29 +56,16 @@ public class ItemCreativeWand extends Item {
       result = EnumActionResult.SUCCESS;
     } else {
       if (data.isReady()) {
-        BlockPos pos1 = data.firstPosition;
-        BlockPos pos2 = data.secondPosition;
         IBlockState state = data.blockState;
-        BlockPos posMin = new BlockPos(
-            Math.min(pos1.getX(), pos2.getX()),
-            Math.min(pos1.getY(), pos2.getY()),
-            Math.min(pos1.getZ(), pos2.getZ())
-        );
-        BlockPos posMax = new BlockPos(
-            Math.max(pos1.getX(), pos2.getX()),
-            Math.max(pos1.getY(), pos2.getY()),
-            Math.max(pos1.getZ(), pos2.getZ())
-        );
-        int areaSize = (posMax.getX() - posMin.getX() + 1)
+        Pair<BlockPos, BlockPos> positions = Utils.normalizePositions(data.firstPosition, data.secondPosition);
+        BlockPos posMin = positions.getLeft();
+        BlockPos posMax = positions.getRight();
+        int volume = (posMax.getX() - posMin.getX() + 1)
             * (posMax.getY() - posMin.getY() + 1)
             * (posMax.getZ() - posMin.getZ() + 1);
 
-        if (areaSize > AREA_SIZE_LIMIT) {
-          String message = String.format(
-              "Too many blocks in the specified area (%d > %d)!",
-              areaSize,
-              AREA_SIZE_LIMIT
-          );
+        if (volume > VOLUME_LIMIT) {
+          String message = String.format("Too many blocks in the specified volume (%d > %d)!", volume, VOLUME_LIMIT);
           Utils.sendMessage(world, player, new TextComponentString(message)
               .setStyle(new Style().setColor(TextFormatting.RED)));
           result = EnumActionResult.FAIL;
@@ -104,9 +92,9 @@ public class ItemCreativeWand extends Item {
           heldItem.setTagCompound(data.toTag());
           String message = String.format(
               "Filled area with %d %s block%s.",
-              areaSize,
+              volume,
               Utils.getBlockID(state.getBlock()),
-              areaSize > 1 ? "s" : ""
+              volume > 1 ? "s" : ""
           );
           Utils.sendMessage(world, player, new TextComponentString(message)
               .setStyle(new Style().setColor(TextFormatting.DARK_GREEN)));
@@ -175,7 +163,7 @@ public class ItemCreativeWand extends Item {
   }
 
   /**
-   * Class holding data for the wand and that can serialize/deserialize NBT tags.
+   * Class holding data for the wand that can serialize/deserialize NBT tags.
    */
   private static class WandData {
     /**

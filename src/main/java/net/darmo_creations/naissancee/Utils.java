@@ -6,9 +6,12 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.Map;
 import java.util.Optional;
@@ -88,6 +91,67 @@ public final class Utils {
     if (!world.isRemote) {
       player.sendMessage(text);
     }
+  }
+
+  /**
+   * Get the blocks length along each axis of the volume defined by the given positions.
+   *
+   * @return A {@link Vec3i} object. Each axis holds the number of blocks along itself.
+   */
+  public static Vec3i getLengths(BlockPos pos1, BlockPos pos2) {
+    Pair<BlockPos, BlockPos> positions = normalizePositions(pos1, pos2);
+    BlockPos posMin = positions.getLeft();
+    BlockPos posMax = positions.getRight();
+
+    return new Vec3i(
+        posMax.getX() - posMin.getX() + 1,
+        posMax.getY() - posMin.getY() + 1,
+        posMax.getZ() - posMin.getZ() + 1
+    );
+  }
+
+  /**
+   * Get the blocks area of each face of the volume defined by the given positions.
+   *
+   * @return A {@link Vec3i} object. Each axis holds the area of the face perpendicular to itself.
+   */
+  public static Vec3i getAreas(BlockPos pos1, BlockPos pos2) {
+    Vec3i size = getLengths(pos1, pos2);
+
+    return new Vec3i(
+        size.getZ() * size.getY(),
+        size.getX() * size.getZ(),
+        size.getX() * size.getY()
+    );
+  }
+
+  /**
+   * Get the total number of blocks inside the volume defined by the given positions.
+   */
+  public static int getVolume(BlockPos pos1, BlockPos pos2) {
+    Vec3i size = getLengths(pos1, pos2);
+    return size.getX() * size.getY() * size.getZ();
+  }
+
+  /**
+   * Return the highest and lowest block coordinates for the volume defined by the given two positions.
+   *
+   * @param pos1 First position.
+   * @param pos2 Second position.
+   * @return A pair with the lowest and highest positions.
+   */
+  public static Pair<BlockPos, BlockPos> normalizePositions(BlockPos pos1, BlockPos pos2) {
+    BlockPos posMin = new BlockPos(
+        Math.min(pos1.getX(), pos2.getX()),
+        Math.min(pos1.getY(), pos2.getY()),
+        Math.min(pos1.getZ(), pos2.getZ())
+    );
+    BlockPos posMax = new BlockPos(
+        Math.max(pos1.getX(), pos2.getX()),
+        Math.max(pos1.getY(), pos2.getY()),
+        Math.max(pos1.getZ(), pos2.getZ())
+    );
+    return new ImmutablePair<>(posMin, posMax);
   }
 
   private Utils() {
