@@ -97,6 +97,7 @@ tile.naissancee.light_gray_ladder.name=Light Gray Ladder
 tile.naissancee.light_gray_half_ladder.name=Light Gray Half Ladder
 # Technical
 tile.naissancee.light_orb_controller.name=Light Orb Controller
+tile.naissancee.laser_telemeter.name=Laser Telemeter
 
 # Items #
 
@@ -134,3 +135,12 @@ gui.naissancee.light_orb_controller.checkpoint_list.entry.stop_button.label.inac
 gui.naissancee.light_orb_controller.checkpoint_list.entry.delete_button.label=X
 gui.naissancee.light_orb_controller.checkpoint_list.entry.move_up_button.label=/\
 gui.naissancee.light_orb_controller.checkpoint_list.entry.move_down_button.label=\/
+
+# Laser Telemeter
+gui.naissancee.laser_telemeter.title=Laser Telemeter
+gui.naissancee.laser_telemeter.length_x_field.label=Length X
+gui.naissancee.laser_telemeter.length_y_field.label=Length Y
+gui.naissancee.laser_telemeter.length_z_field.label=Length Z
+gui.naissancee.laser_telemeter.x_offset_field.label=X Offset
+gui.naissancee.laser_telemeter.y_offset_field.label=Y Offset
+gui.naissancee.laser_telemeter.z_offset_field.label=Z Offset

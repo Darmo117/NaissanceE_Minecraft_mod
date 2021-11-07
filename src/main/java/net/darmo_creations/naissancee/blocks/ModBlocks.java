@@ -65,6 +65,8 @@ public final class ModBlocks {
   public static final Block LIGHT_ORB_SOURCE = new BlockLightOrbSource().setRegistryName("light_orb_source");
   public static final Block LIGHT_ORB_CONTROLLER = new BlockLightOrbController().setRegistryName("light_orb_controller").setCreativeTab(NaissanceE.CREATIVE_TAB);
 
+  public static final Block LASER_TELEMETER = new BlockLaserTelemeter().setRegistryName("laser_telemeter").setCreativeTab(NaissanceE.CREATIVE_TAB);
+
   public static final Block LIGHT_GRAY_FRAMED_DOOR = new BlockFramedDoor().setRegistryName("light_gray_framed_door").setCreativeTab(NaissanceE.CREATIVE_TAB);
 
   public static final Block LIGHT_GRAY_LADDER = new BlockTwoPartLadder().setRegistryName("light_gray_ladder").setCreativeTab(NaissanceE.CREATIVE_TAB);

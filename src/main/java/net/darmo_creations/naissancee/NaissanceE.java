@@ -7,11 +7,14 @@ import net.darmo_creations.naissancee.entities.ModEntities;
 import net.darmo_creations.naissancee.entities.render.RenderLightOrb;
 import net.darmo_creations.naissancee.gui.NaissanceETab;
 import net.darmo_creations.naissancee.items.ModItems;
+import net.darmo_creations.naissancee.network.PacketLaserTelemeterData;
 import net.darmo_creations.naissancee.network.PacketLightOrbControllerData;
 import net.darmo_creations.naissancee.tile_entities.TileEntityFloatingVariableLightBlock;
 import net.darmo_creations.naissancee.tile_entities.TileEntityInvisibleLightSource;
+import net.darmo_creations.naissancee.tile_entities.TileEntityLaserTelemeter;
 import net.darmo_creations.naissancee.tile_entities.TileEntityLightOrbController;
 import net.darmo_creations.naissancee.tile_entities.render.TileEntityInvisibleLightSourceRenderer;
+import net.darmo_creations.naissancee.tile_entities.render.TileEntityLaserTelemeterRenderer;
 import net.darmo_creations.naissancee.tile_entities.render.TileEntityLightOrbControllerRenderer;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -69,6 +72,7 @@ public class NaissanceE {
 
     network = NetworkRegistry.INSTANCE.newSimpleChannel(MODID);
     network.registerMessage(PacketLightOrbControllerData.Handler.class, PacketLightOrbControllerData.class, 0, Side.SERVER);
+    network.registerMessage(PacketLaserTelemeterData.Handler.class, PacketLaserTelemeterData.class, 1, Side.SERVER);
 
     for (EntityEntry e : ModEntities.ENTITIES) {
       EntityRegistry.registerModEntity(e.getRegistryName(), e.getEntityClass(), e.getName(), this.entitiesID++, this, 100, 3, true, 0xffffff, 0xffffff);
@@ -77,6 +81,7 @@ public class NaissanceE {
     if (event.getSide() == Side.CLIENT) {
       ClientRegistry.bindTileEntitySpecialRenderer(TileEntityInvisibleLightSource.class, new TileEntityInvisibleLightSourceRenderer());
       ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLightOrbController.class, new TileEntityLightOrbControllerRenderer());
+      ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLaserTelemeter.class, new TileEntityLaserTelemeterRenderer());
       RenderingRegistry.registerEntityRenderingHandler(EntityLightOrb.class, RenderLightOrb::new); // Does not actually render anything
     }
   }
@@ -89,6 +94,7 @@ public class NaissanceE {
       GameRegistry.registerTileEntity(TileEntityInvisibleLightSource.class, new ResourceLocation(MODID, "invisible_light_source"));
       GameRegistry.registerTileEntity(TileEntityLightOrbController.class, new ResourceLocation(MODID, "light_orb_controller"));
       GameRegistry.registerTileEntity(TileEntityFloatingVariableLightBlock.class, new ResourceLocation(MODID, "floating_variable_light_block"));
+      GameRegistry.registerTileEntity(TileEntityLaserTelemeter.class, new ResourceLocation(MODID, "laser_telemeter"));
     }
 
     @SubscribeEvent
