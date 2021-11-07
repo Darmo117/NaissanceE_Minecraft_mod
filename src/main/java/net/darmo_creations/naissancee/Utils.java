@@ -21,6 +21,10 @@ import java.util.stream.Collectors;
  * This class defines various utility functions.
  */
 public final class Utils {
+  public static final int WHITE = 0xffffff;
+  public static final int GRAY = 0xa0a0a0;
+  public static final int RED = 0xff0000;
+
   /**
    * Returns the tile entity of the given class at the given position.
    *

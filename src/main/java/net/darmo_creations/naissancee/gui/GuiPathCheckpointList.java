@@ -198,11 +198,10 @@ public class GuiPathCheckpointList extends GuiListExtended {
       this.ticksTextField.drawTextBox();
 
       int textY = y + (slotHeight - mc.fontRenderer.FONT_HEIGHT) / 2;
-      int textColor = 0xffffff;
       String text = Utils.blockPosToString(this.checkpoint.getPos()) + " » "
           + I18n.format("gui.naissancee.light_orb_controller.checkpoint_list.entry.wait_field.label");
       xOffset -= mc.fontRenderer.getStringWidth(text) + 4;
-      mc.fontRenderer.drawString(text, x + xOffset, textY, textColor);
+      mc.fontRenderer.drawString(text, x + xOffset, textY, Utils.WHITE);
     }
 
     /**
@@ -219,10 +218,10 @@ public class GuiPathCheckpointList extends GuiListExtended {
         } catch (NumberFormatException ignored) {
         }
         if (i < 0) {
-          this.ticksTextField.setTextColor(0xff0000);
+          this.ticksTextField.setTextColor(Utils.RED);
         } else {
           this.checkpoint.setTicksToWait(i);
-          this.ticksTextField.setTextColor(0xffffff);
+          this.ticksTextField.setTextColor(Utils.WHITE);
         }
       }
     }

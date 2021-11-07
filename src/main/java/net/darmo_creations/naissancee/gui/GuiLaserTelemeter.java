@@ -1,6 +1,7 @@
 package net.darmo_creations.naissancee.gui;
 
 import net.darmo_creations.naissancee.NaissanceE;
+import net.darmo_creations.naissancee.Utils;
 import net.darmo_creations.naissancee.network.PacketLaserTelemeterData;
 import net.darmo_creations.naissancee.tile_entities.TileEntityLaserTelemeter;
 import net.minecraft.client.gui.GuiButton;
@@ -146,10 +147,10 @@ public class GuiLaserTelemeter extends GuiScreen {
     } catch (NumberFormatException ignored) {
     }
     if (i == null || Math.abs(i) > maxValue) {
-      lengthTextField.setTextColor(0xff0000);
+      lengthTextField.setTextColor(Utils.RED);
       return Optional.empty();
     } else {
-      lengthTextField.setTextColor(0xffffff);
+      lengthTextField.setTextColor(Utils.WHITE);
       return Optional.of(i);
     }
   }
@@ -187,26 +188,26 @@ public class GuiLaserTelemeter extends GuiScreen {
     this.drawDefaultBackground();
 
     this.drawCenteredString(this.fontRenderer, I18n.format("gui.naissancee.laser_telemeter.title"),
-        middle, (TITLE_MARGIN - fontHeight) / 2, 0xffffff);
+        middle, (TITLE_MARGIN - fontHeight) / 2, Utils.WHITE);
 
     int y = this.height / 2 - 2 * BUTTON_HEIGHT - MARGIN / 2 - fontHeight - 1;
 
     int btnW = (int) (BUTTON_WIDTH * 0.75);
     this.drawString(this.fontRenderer, I18n.format("gui.naissancee.laser_telemeter.length_x_field.label"),
-        (int) (middle - btnW * 1.5), y, 0xa0a0a0);
+        (int) (middle - btnW * 1.5), y, Utils.GRAY);
     this.drawString(this.fontRenderer, I18n.format("gui.naissancee.laser_telemeter.length_y_field.label"),
-        middle - btnW / 2, y, 0xa0a0a0);
+        middle - btnW / 2, y, Utils.GRAY);
     this.drawString(this.fontRenderer, I18n.format("gui.naissancee.laser_telemeter.length_z_field.label"),
-        middle + btnW / 2, y, 0xa0a0a0);
+        middle + btnW / 2, y, Utils.GRAY);
 
     y += 3 * BUTTON_HEIGHT + MARGIN + fontHeight;
 
     this.drawString(this.fontRenderer, I18n.format("gui.naissancee.laser_telemeter.x_offset_field.label"),
-        (int) (middle - btnW * 1.5), y, 0xa0a0a0);
+        (int) (middle - btnW * 1.5), y, Utils.GRAY);
     this.drawString(this.fontRenderer, I18n.format("gui.naissancee.laser_telemeter.y_offset_field.label"),
-        middle - btnW / 2, y, 0xa0a0a0);
+        middle - btnW / 2, y, Utils.GRAY);
     this.drawString(this.fontRenderer, I18n.format("gui.naissancee.laser_telemeter.z_offset_field.label"),
-        middle + btnW / 2, y, 0xa0a0a0);
+        middle + btnW / 2, y, Utils.GRAY);
 
     this.lengthXTextField.drawTextBox();
     this.lengthYTextField.drawTextBox();

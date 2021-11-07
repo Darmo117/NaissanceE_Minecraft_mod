@@ -1,6 +1,7 @@
 package net.darmo_creations.naissancee.gui;
 
 import net.darmo_creations.naissancee.NaissanceE;
+import net.darmo_creations.naissancee.Utils;
 import net.darmo_creations.naissancee.network.PacketLightOrbControllerData;
 import net.darmo_creations.naissancee.tile_entities.PathCheckpoint;
 import net.darmo_creations.naissancee.tile_entities.TileEntityLightOrbController;
@@ -245,9 +246,9 @@ public class GuiLightOrbController extends GuiScreen {
 
     this.checkpointList.drawScreen(mouseX, mouseY, partialTicks);
     this.drawCenteredString(this.fontRenderer, I18n.format("gui.naissancee.light_orb_controller.title"),
-        middle, (TITLE_MARGIN - fontHeight) / 2, 0xffffff);
+        middle, (TITLE_MARGIN - fontHeight) / 2, Utils.WHITE);
     this.drawCenteredString(this.fontRenderer, I18n.format("gui.naissancee.light_orb_controller.checkpoint_list.title", this.checkpointList.getSize()),
-        middle, this.checkpointList.top - MARGIN - fontHeight, 0xffffff);
+        middle, this.checkpointList.top - MARGIN - fontHeight, Utils.WHITE);
 
     super.drawScreen(mouseX, mouseY, partialTicks);
   }
