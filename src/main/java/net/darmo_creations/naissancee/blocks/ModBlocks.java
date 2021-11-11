@@ -23,6 +23,10 @@ public final class ModBlocks {
   public static final Block LIGHT_GRAY_GRATE = new BlockGrate(Material.ROCK).setRegistryName("light_gray_grate").setCreativeTab(NaissanceE.CREATIVE_TAB);
   public static final Block GRAY_GRATE = new BlockGrate(Material.ROCK).setRegistryName("gray_grate").setCreativeTab(NaissanceE.CREATIVE_TAB);
 
+  public static final Block WHITE_VENT_GRATE = new BlockVentGrate().setRegistryName("white_vent_grate").setCreativeTab(NaissanceE.CREATIVE_TAB);
+  public static final Block LIGHT_GRAY_VENT_GRATE = new BlockVentGrate().setRegistryName("light_gray_vent_grate").setCreativeTab(NaissanceE.CREATIVE_TAB);
+  public static final Block GRAY_VENT_GRATE = new BlockVentGrate().setRegistryName("gray_vent_grate").setCreativeTab(NaissanceE.CREATIVE_TAB);
+
   public static final Block WHITE_VERTICAL_SLAB = new BlockVerticalSlab(Material.ROCK).setRegistryName("white_vertical_slab").setCreativeTab(NaissanceE.CREATIVE_TAB);
   public static final Block LIGHT_GRAY_VERTICAL_SLAB = new BlockVerticalSlab(Material.ROCK).setRegistryName("light_gray_vertical_slab").setCreativeTab(NaissanceE.CREATIVE_TAB);
   public static final Block GRAY_VERTICAL_SLAB = new BlockVerticalSlab(Material.ROCK).setRegistryName("gray_vertical_slab").setCreativeTab(NaissanceE.CREATIVE_TAB);

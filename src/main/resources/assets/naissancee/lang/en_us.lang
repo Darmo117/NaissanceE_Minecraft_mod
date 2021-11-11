@@ -66,6 +66,10 @@ tile.naissancee.gray_grate.name=Gray Grate
 tile.naissancee.white_wall_grate.name=White Wall Grate
 tile.naissancee.light_gray_wall_grate.name=Light Gray Wall Grate
 tile.naissancee.gray_wall_grate.name=Gray Wall Grate
+# Vent Grates
+tile.naissancee.white_vent_grate.name=White Vent Grate
+tile.naissancee.light_gray_vent_grate.name=Light Gray Vent Grate
+tile.naissancee.gray_vent_grate.name=Gray Vent Grate
 # Verticale Slabs
 tile.naissancee.white_vertical_slab.name=White Vertical Slab
 tile.naissancee.light_gray_vertical_slab.name=Light Gray Vertical Slab

@@ -1,0 +1,6 @@
+{
+  "parent": "naissancee:block/vent_grate",
+  "textures": {
+    "all": "minecraft:blocks/concrete_silver"
+  }
+}
