@@ -162,9 +162,10 @@ public class Scope {
    * @param name  Variable’s name.
    * @param value Variable’s value.
    * @return Variable’s previous value if it was already defined.
+   * @throws MaxDefinitionsException If the maximum quota of variables definitions has been reached.
    */
   @SuppressWarnings("UnusedReturnValue")
-  public Optional<Double> setVariable(String name, double value) {
+  public Optional<Double> setVariable(String name, double value) throws MaxDefinitionsException {
     if (this.variables.size() == this.maxAllowedDefinitions
         && !this.variables.containsKey(name)) {
       throw new MaxDefinitionsException(this.maxAllowedDefinitions);
@@ -249,9 +250,10 @@ public class Scope {
    *
    * @param function The function.
    * @return The function with the same name that was overwritten by the given function if any.
+   * @throws MaxDefinitionsException If the maximum quota of functions definitions has been reached.
    */
   @SuppressWarnings("UnusedReturnValue")
-  public Optional<Function> setFunction(Function function) {
+  public Optional<Function> setFunction(Function function) throws MaxDefinitionsException {
     if (this.functions.size() == this.maxAllowedDefinitions
         && !this.functions.containsKey(function.getName())) {
       throw new MaxDefinitionsException(this.maxAllowedDefinitions);

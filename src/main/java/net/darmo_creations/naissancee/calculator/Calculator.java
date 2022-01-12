@@ -5,6 +5,7 @@ import net.darmo_creations.naissancee.calculator.exceptions.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * A calculator that can parse and evaluate simple mathematical expressions and declare variables and functions.
@@ -62,31 +63,44 @@ public class Calculator {
   }
 
   /**
+   * Set the value of a variable.
+   *
+   * @param name  Variable’s name.
+   * @param value Variable’s value.
+   * @return Variable’s previous value if it was already defined.
+   * @throws MaxDefinitionsException If the maximum quota of variables definitions has been reached.
+   */
+  @SuppressWarnings("UnusedReturnValue")
+  public Optional<Double> setVariable(String name, double value) throws MaxDefinitionsException {
+    return this.scope.setVariable(name, value);
+  }
+
+  /**
    * Delete the variable that has the given name.
    *
-   * @param identifier Name of the variable.
+   * @param name Name of the variable.
    * @return The value of the variable.
    * @throws UndefinedVariableException              If no variable with this name exists.
    * @throws BuiltinConstantDeletionAttemptException If the identifier corresponds to a builtin variable.
    */
   @SuppressWarnings("UnusedReturnValue")
-  public double deleteVariable(String identifier)
+  public double deleteVariable(String name)
       throws UndefinedVariableException, BuiltinConstantDeletionAttemptException {
-    return this.scope.deleteVariable(identifier);
+    return this.scope.deleteVariable(name);
   }
 
   /**
    * Delete the function that has the given name.
    *
-   * @param identifier Name of the function.
+   * @param name Name of the function.
    * @return The function.
    * @throws UndefinedVariableException              If no function with this name exists.
    * @throws BuiltinFunctionDeletionAttemptException If the identifier corresponds to a builtin function.
    */
   @SuppressWarnings("UnusedReturnValue")
-  public Function deleteFunction(String identifier)
+  public Function deleteFunction(String name)
       throws UndefinedVariableException, BuiltinFunctionDeletionAttemptException {
-    return this.scope.deleteFunction(identifier);
+    return this.scope.deleteFunction(name);
   }
 
   /**

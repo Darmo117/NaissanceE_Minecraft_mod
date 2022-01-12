@@ -1,6 +1,8 @@
 package net.darmo_creations.naissancee.items;
 
 import net.darmo_creations.naissancee.Utils;
+import net.darmo_creations.naissancee.calculator.Calculator;
+import net.darmo_creations.naissancee.commands.CalculatorCommand;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -46,6 +48,15 @@ public class ItemRuler extends Item {
           "Selected second position: " + Utils.blockPosToString(pos))
           .setStyle(new Style().setColor(TextFormatting.DARK_AQUA)));
 
+      Calculator calculator = CalculatorCommand.getCalculatorForPlayer(player.getUniqueID());
+      // Declare variables storing the positions in the player’s calculator
+      calculator.setVariable("ruler_x1", data.position.getX());
+      calculator.setVariable("ruler_y1", data.position.getY());
+      calculator.setVariable("ruler_z1", data.position.getZ());
+      calculator.setVariable("ruler_x2", pos.getX());
+      calculator.setVariable("ruler_y2", pos.getY());
+      calculator.setVariable("ruler_z2", pos.getZ());
+
       Vec3i lengths = Utils.getLengths(data.position, pos);
       int lengthX = lengths.getX();
       int lengthY = lengths.getY();
@@ -53,6 +64,10 @@ public class ItemRuler extends Item {
       Utils.sendMessage(world, player, new TextComponentString(
           String.format("Size (XYZ): %d x %d x %d", lengthX, lengthY, lengthZ))
           .setStyle(new Style().setColor(TextFormatting.GREEN)));
+      // Declare variables storing the lengths
+      calculator.setVariable("ruler_lx", lengthX);
+      calculator.setVariable("ruler_ly", lengthY);
+      calculator.setVariable("ruler_lz", lengthZ);
 
       // Do not display any area if at least two dimensions have a length of 1 (single line of blocks selected)
       if (lengthX + lengthY != 2 && lengthX + lengthZ != 2 && lengthY + lengthZ != 2) {
@@ -73,10 +88,16 @@ public class ItemRuler extends Item {
           Utils.sendMessage(world, player, new TextComponentString(
               String.format("Area: %d", area))
               .setStyle(new Style().setColor(TextFormatting.DARK_GREEN)));
+          // Declare variables storing the area
+          calculator.setVariable("ruler_area", area);
         } else {
           Utils.sendMessage(world, player, new TextComponentString(
               String.format("Areas (XYZ): %d, %d, %d", areaX, areaY, areaZ))
               .setStyle(new Style().setColor(TextFormatting.DARK_GREEN)));
+          // Declare variables storing the areas
+          calculator.setVariable("ruler_ax", areaX);
+          calculator.setVariable("ruler_ay", areaY);
+          calculator.setVariable("ruler_az", areaZ);
         }
       }
 
@@ -84,6 +105,8 @@ public class ItemRuler extends Item {
       Utils.sendMessage(world, player, new TextComponentString(
           String.format("Volume: %d", volume))
           .setStyle(new Style().setColor(TextFormatting.GOLD)));
+      // Declare variables storing the volume
+      calculator.setVariable("ruler_vol", volume);
 
       data.position = null;
     }

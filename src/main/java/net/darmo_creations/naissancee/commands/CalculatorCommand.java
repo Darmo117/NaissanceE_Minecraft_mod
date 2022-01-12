@@ -32,7 +32,20 @@ public class CalculatorCommand extends CommandBase {
   /**
    * Calculators associated to each player that ran this command.
    */
-  public static final Map<UUID, Calculator> CALCULATORS = new HashMap<>();
+  private static final Map<UUID, Calculator> CALCULATORS = new HashMap<>();
+
+  /**
+   * Return a calculator for the given player. Create a new instance if none were found.
+   *
+   * @param uuid Player’s UUID.
+   * @return The calculator.
+   */
+  public static Calculator getCalculatorForPlayer(UUID uuid) {
+    if (!CALCULATORS.containsKey(uuid)) {
+      CALCULATORS.put(uuid, new Calculator(MAX_VARS_PER_PLAYER));
+    }
+    return CALCULATORS.get(uuid);
+  }
 
   @Override
   public String getName() {
@@ -56,11 +69,7 @@ public class CalculatorCommand extends CommandBase {
     boolean useGlobal = args[0].equals("global");
 
     if (entity.isPresent() && !useGlobal) {
-      UUID playerUUID = entity.get().getUniqueID();
-      if (!CALCULATORS.containsKey(playerUUID)) {
-        CALCULATORS.put(playerUUID, new Calculator(MAX_VARS_PER_PLAYER));
-      }
-      calculator = CALCULATORS.get(playerUUID);
+      calculator = getCalculatorForPlayer(entity.get().getUniqueID());
     } else {
       calculator = GLOBAL_CALCULATOR;
       if (useGlobal) {
