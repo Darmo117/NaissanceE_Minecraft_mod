@@ -23,3 +23,7 @@ run
 
 # Files from Forge MDK
 forge*changelog.txt
+
+# ANTLR4 generated files
+src/main/java/net/darmo_creations/naissancee/calculator/antlr4_parser/*.interp
+src/main/java/net/darmo_creations/naissancee/calculator/antlr4_parser/*.tokens

@@ -85,6 +85,17 @@ public final class Utils {
   }
 
   /**
+   * Performs a true modulo operation using the mathematical definition of "a mod b".
+   *
+   * @param a Value to get the modulo of.
+   * @param b The divisor.
+   * @return a mod b
+   */
+  public static double trueModulo(double a, double b) {
+    return ((a % b) + b) % b;
+  }
+
+  /**
    * Sends a chat message to a player. Does nothing if the world is remote (i.e. client-side).
    *
    * @param world  The world the player is in.

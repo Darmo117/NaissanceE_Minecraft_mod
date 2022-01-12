@@ -148,3 +148,26 @@ gui.naissancee.laser_telemeter.length_z_field.label=Length Z
 gui.naissancee.laser_telemeter.x_offset_field.label=X Offset
 gui.naissancee.laser_telemeter.y_offset_field.label=Y Offset
 gui.naissancee.laser_telemeter.z_offset_field.label=Z Offset
+
+# Commands #
+
+commands.calculator.usage=/calculator [global] <expression> OR /calculator [global] <variable name> := <expression> OR /calculator [global] <function name>(<parameters>) := <expression> OR /calculator [global] delete {variable|function} <variable or function name> OR /calculator [global] reset OR /calculator [global] list {all|my|builtin} {variables|functions}
+commands.calculator.feedback.list.all_variables=Variables:
+commands.calculator.feedback.list.builtin_variables=Builtin variables:
+commands.calculator.feedback.list.my_variables=My variables:
+commands.calculator.feedback.list.all_functions=Functions:
+commands.calculator.feedback.list.builtin_functions=Builtin functions:
+commands.calculator.feedback.list.my_functions=My functions:
+commands.calculator.feedback.variable_deleted=Variable "%s" has been deleted.
+commands.calculator.feedback.function_deleted=Function "%s" has been deleted.
+commands.calculator.feedback.reset=Calculator has been reset.
+commands.calculator.error.invalid_list_param=Invalid option(s) for "list" argument!
+commands.calculator.error.invalid_delete_param=Invalid option(s) for "delete" argument!
+commands.calculator.error.undefined_variable=Undefined variable "%s"!
+commands.calculator.error.undefined_function=Undefined function "%s"!
+commands.calculator.error.math_error=Math error: %s
+commands.calculator.error.invalid_function_params=Function "%s" expects %d argument(s), got %d!
+commands.calculator.error.delete_builtin_constant=Cannot delete builtin constant "%s"!
+commands.calculator.error.delete_builtin_function=Cannot delete builtin function "%s"!
+commands.calculator.error.max_depth_reached=Maximum recursion depth of %d reached!
+commands.calculator.error.syntax_error=Syntax error!

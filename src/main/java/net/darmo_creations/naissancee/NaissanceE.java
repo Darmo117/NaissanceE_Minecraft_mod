@@ -2,6 +2,7 @@ package net.darmo_creations.naissancee;
 
 import net.darmo_creations.naissancee.blocks.IModBlock;
 import net.darmo_creations.naissancee.blocks.ModBlocks;
+import net.darmo_creations.naissancee.commands.CalculatorCommand;
 import net.darmo_creations.naissancee.entities.EntityLightOrb;
 import net.darmo_creations.naissancee.entities.ModEntities;
 import net.darmo_creations.naissancee.entities.render.RenderLightOrb;
@@ -31,6 +32,7 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
@@ -84,6 +86,11 @@ public class NaissanceE {
       ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLaserTelemeter.class, new TileEntityLaserTelemeterRenderer());
       RenderingRegistry.registerEntityRenderingHandler(EntityLightOrb.class, RenderLightOrb::new); // Does not actually render anything
     }
+  }
+
+  @Mod.EventHandler
+  public void serverStarting(FMLServerStartingEvent event) {
+    event.registerServerCommand(new CalculatorCommand());
   }
 
   @Mod.EventBusSubscriber

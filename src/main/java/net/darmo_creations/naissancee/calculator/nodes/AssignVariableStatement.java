@@ -1,0 +1,62 @@
+package net.darmo_creations.naissancee.calculator.nodes;
+
+import net.darmo_creations.naissancee.calculator.Scope;
+import net.darmo_creations.naissancee.calculator.exceptions.EvaluationException;
+import net.darmo_creations.naissancee.calculator.nodes.expr.Node;
+
+import java.util.Objects;
+
+/**
+ * A statement that assigns a value to a variable.
+ */
+public class AssignVariableStatement extends Statement {
+  private final String variableName;
+  private final Node node;
+
+  /**
+   * Create an variable assignment statement.
+   *
+   * @param variableName Variable’s name.
+   * @param node         Expression {@link Node} tree to evaluate then store into variable.
+   */
+  public AssignVariableStatement(final String variableName, final Node node) {
+    this.variableName = Objects.requireNonNull(variableName);
+    this.node = Objects.requireNonNull(node);
+  }
+
+  /**
+   * Evaluates the expression then stores its value in the variable in the given scope.
+   *
+   * @return A status message indicating what values was assigned to the variable.
+   * @throws EvaluationException If an error occured during {@link Node} evaluation.
+   * @throws ArithmeticException If a math error occured.
+   */
+  @Override
+  public String execute(Scope scope) throws EvaluationException, ArithmeticException {
+    double value = this.node.evaluate(scope);
+    scope.setVariable(this.variableName, value);
+    return String.format("%s <- %f", this.variableName, value);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || this.getClass() != o.getClass()) {
+      return false;
+    }
+    AssignVariableStatement that = (AssignVariableStatement) o;
+    return this.variableName.equals(that.variableName) && this.node.equals(that.node);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(this.variableName, this.node);
+  }
+
+  @Override
+  public String toString() {
+    return String.format("%s := %s", this.variableName, this.node);
+  }
+}
