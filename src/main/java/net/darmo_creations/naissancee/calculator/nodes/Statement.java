@@ -12,7 +12,7 @@ public abstract class Statement {
    * @param scope Scope to use.
    * @return The result of the statement.
    */
-  public abstract String execute(Scope scope);
+  public abstract StatementResult execute(Scope scope);
 
   @Override
   public abstract boolean equals(Object o);

@@ -33,13 +33,12 @@ public class DefineFunctionStatement extends Statement {
   /**
    * Defines the function in the given scope.
    *
-   * @return A status message indicating the expression of the function that was defined.
    * @throws EvaluationException If an error occured during {@link Node} evaluation.
    */
   @Override
-  public String execute(Scope scope) throws EvaluationException {
+  public StatementResult execute(Scope scope) throws EvaluationException {
     scope.setFunction(new UserFunction(this.functionName, this.parameterNames, this.node));
-    return scope.getFunction(this.functionName).toString();
+    return new StatementResult(scope.getFunction(this.functionName).toString(), null);
   }
 
   @Override

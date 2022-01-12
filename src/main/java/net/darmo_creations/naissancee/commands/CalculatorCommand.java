@@ -3,6 +3,7 @@ package net.darmo_creations.naissancee.commands;
 import net.darmo_creations.naissancee.calculator.Calculator;
 import net.darmo_creations.naissancee.calculator.Function;
 import net.darmo_creations.naissancee.calculator.exceptions.*;
+import net.darmo_creations.naissancee.calculator.nodes.StatementResult;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -192,7 +193,8 @@ public class CalculatorCommand extends CommandBase {
   }
 
   /**
-   * Evaluates an expression then displays its result.
+   * Evaluates a statement then displays its result. If the statement is a single expression,
+   * its value is stored in a variable named “_“.
    *
    * @param sender     Player who ran the command.
    * @param args       Command’s arguments.
@@ -201,11 +203,11 @@ public class CalculatorCommand extends CommandBase {
    */
   private void evaluate(final ICommandSender sender, final String[] args, Calculator calculator) throws CommandException {
     String expression = String.join(" ", args);
-    Optional<String> result = Optional.empty();
+    StatementResult result = null;
     String errorMessage = null;
 
     try {
-      result = Optional.of(calculator.evaluate(expression));
+      result = calculator.evaluate(expression);
     } catch (MaxDefinitionsException e) {
       errorMessage = this.translate(sender, "commands.calculator.error.max_declare_quota_reached", e.getNumber());
     } catch (SyntaxErrorException e) {
@@ -227,8 +229,10 @@ public class CalculatorCommand extends CommandBase {
     if (errorMessage != null) {
       throw new CommandException(errorMessage);
     } else {
-      result.ifPresent(operationResult -> sender.sendMessage(new TextComponentString(operationResult)
-          .setStyle(new Style().setColor(TextFormatting.GREEN))));
+      sender.sendMessage(new TextComponentString(result.getStatus())
+          .setStyle(new Style().setColor(TextFormatting.GREEN)));
+      // Store result in a special variable
+      result.getValue().ifPresent(v -> calculator.setVariable("_", v));
     }
   }
 

@@ -1,6 +1,7 @@
 package net.darmo_creations.naissancee.calculator;
 
 import net.darmo_creations.naissancee.calculator.exceptions.*;
+import net.darmo_creations.naissancee.calculator.nodes.StatementResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,12 +55,12 @@ public class Calculator {
    * Evaluate an expression then return its result.
    *
    * @param expression The expression to parse and evaluate.
-   * @return The value of the expression.
+   * @return A {@link StatementResult} object containing the status and value of the execution.
    * @throws ArithmeticException If any math error occurs.
    */
-  public String evaluate(final String expression)
+  public StatementResult evaluate(final String expression)
       throws SyntaxErrorException, ArithmeticException, EvaluationException {
-    return "" + Parser.parse(expression).execute(this.scope);
+    return Parser.parse(expression).execute(this.scope);
   }
 
   /**

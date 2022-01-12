@@ -24,13 +24,13 @@ public class ExpressionStatement extends Statement {
   /**
    * Evaluates the expression then returns its value.
    *
-   * @return The value of the expression.
    * @throws EvaluationException If an error occured during {@link Node} evaluation.
    * @throws ArithmeticException If a math error occured.
    */
   @Override
-  public String execute(final Scope scope) throws EvaluationException, ArithmeticException {
-    return "" + this.node.evaluate(scope);
+  public StatementResult execute(final Scope scope) throws EvaluationException, ArithmeticException {
+    double value = this.node.evaluate(scope);
+    return new StatementResult("" + value, value);
   }
 
   @Override

@@ -27,15 +27,14 @@ public class AssignVariableStatement extends Statement {
   /**
    * Evaluates the expression then stores its value in the variable in the given scope.
    *
-   * @return A status message indicating what values was assigned to the variable.
    * @throws EvaluationException If an error occured during {@link Node} evaluation.
    * @throws ArithmeticException If a math error occured.
    */
   @Override
-  public String execute(Scope scope) throws EvaluationException, ArithmeticException {
+  public StatementResult execute(Scope scope) throws EvaluationException, ArithmeticException {
     double value = this.node.evaluate(scope);
     scope.setVariable(this.variableName, value);
-    return String.format("%s <- %f", this.variableName, value);
+    return new StatementResult(String.format("%s <- %f", this.variableName, value), null);
   }
 
   @Override
