@@ -102,17 +102,29 @@ public interface CalculatorListener extends ParseTreeListener {
 	 */
 	void exitNumber(CalculatorParser.NumberContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code Plus}
+	 * Enter a parse tree produced by the {@code UnaryOperator}
 	 * labeled alternative in {@link CalculatorParser#exp}.
 	 * @param ctx the parse tree
 	 */
-	void enterPlus(CalculatorParser.PlusContext ctx);
+	void enterUnaryOperator(CalculatorParser.UnaryOperatorContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code Plus}
+	 * Exit a parse tree produced by the {@code UnaryOperator}
 	 * labeled alternative in {@link CalculatorParser#exp}.
 	 * @param ctx the parse tree
 	 */
-	void exitPlus(CalculatorParser.PlusContext ctx);
+	void exitUnaryOperator(CalculatorParser.UnaryOperatorContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Boolean}
+	 * labeled alternative in {@link CalculatorParser#exp}.
+	 * @param ctx the parse tree
+	 */
+	void enterBoolean(CalculatorParser.BooleanContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Boolean}
+	 * labeled alternative in {@link CalculatorParser#exp}.
+	 * @param ctx the parse tree
+	 */
+	void exitBoolean(CalculatorParser.BooleanContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code Parentheses}
 	 * labeled alternative in {@link CalculatorParser#exp}.
@@ -125,16 +137,4 @@ public interface CalculatorListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitParentheses(CalculatorParser.ParenthesesContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code Minus}
-	 * labeled alternative in {@link CalculatorParser#exp}.
-	 * @param ctx the parse tree
-	 */
-	void enterMinus(CalculatorParser.MinusContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code Minus}
-	 * labeled alternative in {@link CalculatorParser#exp}.
-	 * @param ctx the parse tree
-	 */
-	void exitMinus(CalculatorParser.MinusContext ctx);
 }

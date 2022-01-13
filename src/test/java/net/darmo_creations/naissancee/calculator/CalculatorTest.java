@@ -18,7 +18,8 @@ class CalculatorTest {
 
   @Test
   void testEvaluate() {
-    assertEquals("2.0", this.c.evaluate("1 + 1"));
+    //noinspection OptionalGetWithoutIsPresent
+    assertEquals(2.0, this.c.evaluate("1 + 1").getValue().get());
   }
 
   @Test

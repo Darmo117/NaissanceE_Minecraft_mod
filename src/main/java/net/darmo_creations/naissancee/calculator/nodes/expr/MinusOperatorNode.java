@@ -1,33 +1,20 @@
 package net.darmo_creations.naissancee.calculator.nodes.expr;
 
-import java.util.Collections;
-import java.util.List;
-
 /**
- * A {@link Node} representing the unary minus operator.
+ * A {@link Node} representing the unary minus operator (-a).
  */
-public class MinusOperatorNode extends OperatorNode {
+public class MinusOperatorNode extends UnaryOperatorNode {
   /**
-   * Create a unary minus operator.
+   * Create a unary minus operator: -operand.
    *
-   * @param operand The expression to negate.
+   * @param operand The expression to compute the opposite of.
    */
   public MinusOperatorNode(final Node operand) {
-    super("-", 1, Collections.singletonList(operand));
+    super("-", operand);
   }
 
   @Override
-  protected double evaluateImpl(final List<Double> values) {
-    return -values.get(0);
-  }
-
-  @Override
-  public String toString() {
-    Node operand = this.operands.get(0);
-    if (operand instanceof OperatorNode) {
-      return String.format("-(%s)", operand);
-    } else {
-      return "-" + this.operands.get(0);
-    }
+  protected double evaluateImpl(final double value) {
+    return -value;
   }
 }

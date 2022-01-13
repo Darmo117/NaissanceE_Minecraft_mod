@@ -66,12 +66,19 @@ public interface CalculatorVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitNumber(CalculatorParser.NumberContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Plus}
+	 * Visit a parse tree produced by the {@code UnaryOperator}
 	 * labeled alternative in {@link CalculatorParser#exp}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitPlus(CalculatorParser.PlusContext ctx);
+	T visitUnaryOperator(CalculatorParser.UnaryOperatorContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Boolean}
+	 * labeled alternative in {@link CalculatorParser#exp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBoolean(CalculatorParser.BooleanContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code Parentheses}
 	 * labeled alternative in {@link CalculatorParser#exp}.
@@ -79,11 +86,4 @@ public interface CalculatorVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitParentheses(CalculatorParser.ParenthesesContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code Minus}
-	 * labeled alternative in {@link CalculatorParser#exp}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitMinus(CalculatorParser.MinusContext ctx);
 }

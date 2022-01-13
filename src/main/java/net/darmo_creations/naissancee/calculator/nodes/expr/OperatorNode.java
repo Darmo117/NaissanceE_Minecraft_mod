@@ -40,7 +40,7 @@ public abstract class OperatorNode extends FunctionNode {
   }
 
   /**
-   * Return the result of the operator.
+   * Delegate method that returns the result of the operator.
    *
    * @param values Values of the operands.
    * @return Operator’s result.

@@ -1,24 +1,36 @@
 package net.darmo_creations.naissancee.calculator.nodes.expr;
 
-import net.darmo_creations.naissancee.calculator.exceptions.SyntaxErrorException;
-
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * A {@link Node} representing an operator with two operands.
  */
 public abstract class BiOperatorNode extends OperatorNode {
   /**
-   * Create an operator with two operands.
+   * Create a binary operator with two operands.
    *
    * @param symbol Operator’s symbol.
    * @param left   Left operand.
    * @param right  Right operand.
-   * @throws SyntaxErrorException If the number of operands does not match the arity.
    */
-  public BiOperatorNode(final String symbol, final Node left, final Node right) throws SyntaxErrorException {
+  public BiOperatorNode(final String symbol, final Node left, final Node right) {
     super(symbol, 2, Arrays.asList(left, right));
   }
+
+  @Override
+  protected final double evaluateImpl(final List<Double> values) {
+    return this.evaluateImpl(values.get(0), values.get(1));
+  }
+
+  /**
+   * Delegate method that returns the result of the operator.
+   *
+   * @param left  Value of the left operand.
+   * @param right Value of the right operand.
+   * @return Operator’s result.
+   */
+  protected abstract double evaluateImpl(final double left, final double right);
 
   @Override
   public String toString() {

@@ -112,13 +112,25 @@ public class CalculatorBaseListener implements CalculatorListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPlus(CalculatorParser.PlusContext ctx) { }
+	@Override public void enterUnaryOperator(CalculatorParser.UnaryOperatorContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitPlus(CalculatorParser.PlusContext ctx) { }
+	@Override public void exitUnaryOperator(CalculatorParser.UnaryOperatorContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterBoolean(CalculatorParser.BooleanContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBoolean(CalculatorParser.BooleanContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -131,18 +143,6 @@ public class CalculatorBaseListener implements CalculatorListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitParentheses(CalculatorParser.ParenthesesContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterMinus(CalculatorParser.MinusContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitMinus(CalculatorParser.MinusContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

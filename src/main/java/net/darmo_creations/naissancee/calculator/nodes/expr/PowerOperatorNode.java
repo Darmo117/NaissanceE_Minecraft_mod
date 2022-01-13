@@ -1,7 +1,5 @@
 package net.darmo_creations.naissancee.calculator.nodes.expr;
 
-import java.util.List;
-
 /**
  * A {@link Node} representing the exponent operator (a<sup>b</sup>).
  */
@@ -17,7 +15,7 @@ public class PowerOperatorNode extends BiOperatorNode {
   }
 
   @Override
-  protected double evaluateImpl(final List<Double> values) {
-    return Math.pow(values.get(0), values.get(1));
+  protected double evaluateImpl(final double left, final double right) {
+    return Math.pow(left, right);
   }
 }

@@ -26,24 +26,16 @@ public class Parser {
     CalculatorParser parser = new CalculatorParser(new CommonTokenStream(lexer));
     ErrorListener errorListener = new ErrorListener();
     parser.addErrorListener(errorListener);
-    Statement statement = new StatementVisitor().visit(parser.start());
-    if (errorListener.errors) {
-      throw new SyntaxErrorException(errorListener.symbol);
-    }
-    return statement;
+    return new StatementVisitor().visit(parser.start());
   }
 
   /**
-   * Simple error listener to report syntax errors.
+   * Simple error listener to throw syntax errors instead of just logging them.
    */
   private static class ErrorListener implements ANTLRErrorListener {
-    public boolean errors;
-    public String symbol;
-
     @Override
     public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine, String msg, RecognitionException e) {
-      this.errors = true;
-      this.symbol = msg;
+      throw new SyntaxErrorException(msg);
     }
 
     @Override

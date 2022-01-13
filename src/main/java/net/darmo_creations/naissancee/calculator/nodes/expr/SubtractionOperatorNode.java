@@ -1,7 +1,5 @@
 package net.darmo_creations.naissancee.calculator.nodes.expr;
 
-import java.util.List;
-
 /**
  * A {@link Node} representing the subtraction operator (a - b).
  */
@@ -17,7 +15,7 @@ public class SubtractionOperatorNode extends BiOperatorNode {
   }
 
   @Override
-  protected double evaluateImpl(final List<Double> values) {
-    return values.get(0) - values.get(1);
+  protected double evaluateImpl(final double left, final double right) {
+    return left - right;
   }
 }

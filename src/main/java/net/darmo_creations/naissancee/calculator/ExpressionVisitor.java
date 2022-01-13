@@ -15,17 +15,32 @@ import java.util.stream.Collectors;
  */
 public class ExpressionVisitor extends CalculatorBaseVisitor<Node> {
   /**
-   * Maps operator symbols to the corresponding {@link Node} provider.
+   * Maps unary operator symbols to the corresponding {@link Node} provider.
    */
-  public static final Map<String, BiFunction<Node, Node, OperatorNode>> OPERATORS = new HashMap<>();
+  public static final Map<String, java.util.function.Function<Node, OperatorNode>> UNARY_OPERATORS = new HashMap<>();
+  /**
+   * Maps binary operator symbols to the corresponding {@link Node} provider.
+   */
+  public static final Map<String, BiFunction<Node, Node, OperatorNode>> BINARY_OPERATORS = new HashMap<>();
 
   static {
-    OPERATORS.put("*", MultiplicationOperatorNode::new);
-    OPERATORS.put("/", DivisionOperatorNode::new);
-    OPERATORS.put("%", ModuloOperatorNode::new);
-    OPERATORS.put("+", AdditionOperatorNode::new);
-    OPERATORS.put("-", SubtractionOperatorNode::new);
-    OPERATORS.put("^", PowerOperatorNode::new);
+    UNARY_OPERATORS.put("-", MinusOperatorNode::new);
+    UNARY_OPERATORS.put("!", NotOperatorNode::new);
+
+    BINARY_OPERATORS.put("*", MultiplicationOperatorNode::new);
+    BINARY_OPERATORS.put("/", DivisionOperatorNode::new);
+    BINARY_OPERATORS.put("%", ModuloOperatorNode::new);
+    BINARY_OPERATORS.put("+", AdditionOperatorNode::new);
+    BINARY_OPERATORS.put("-", SubtractionOperatorNode::new);
+    BINARY_OPERATORS.put("^", PowerOperatorNode::new);
+    BINARY_OPERATORS.put("&", AndOperatorNode::new);
+    BINARY_OPERATORS.put("|", OrOperatorNode::new);
+    BINARY_OPERATORS.put("=", EqualToOperatorNode::new);
+    BINARY_OPERATORS.put("!=", NotEqualToOperatorNode::new);
+    BINARY_OPERATORS.put(">", GreaterThanOperatorNode::new);
+    BINARY_OPERATORS.put(">=", GreaterThanOrEqualToOperatorNode::new);
+    BINARY_OPERATORS.put("<", LessThanOperatorNode::new);
+    BINARY_OPERATORS.put("<=", LessThanOrEqualToOperatorNode::new);
   }
 
   @Override
@@ -38,17 +53,18 @@ public class ExpressionVisitor extends CalculatorBaseVisitor<Node> {
     Node left = this.visit(ctx.left);
     Node right = this.visit(ctx.right);
     String operator = ctx.operator.getText();
-    return OPERATORS.get(operator).apply(left, right);
+    return BINARY_OPERATORS.get(operator).apply(left, right);
   }
 
   @Override
-  public Node visitMinus(CalculatorParser.MinusContext ctx) {
-    return new MinusOperatorNode(this.visit(ctx.operand));
-  }
-
-  @Override
-  public Node visitPlus(CalculatorParser.PlusContext ctx) {
-    return this.visit(ctx.operand);
+  public Node visitUnaryOperator(CalculatorParser.UnaryOperatorContext ctx) {
+    String operator = ctx.operator.getText();
+    Node operand = this.visit(ctx.operand);
+    if (operator.equals("+")) {
+      return operand;
+    } else {
+      return UNARY_OPERATORS.get(operator).apply(operand);
+    }
   }
 
   @Override
@@ -59,12 +75,18 @@ public class ExpressionVisitor extends CalculatorBaseVisitor<Node> {
   }
 
   @Override
+  public Node visitVariable(CalculatorParser.VariableContext ctx) {
+    return new VariableNode(ctx.getText());
+  }
+
+  @Override
   public Node visitNumber(CalculatorParser.NumberContext ctx) {
     return new NumberNode(Double.parseDouble(ctx.getText()));
   }
 
   @Override
-  public Node visitVariable(CalculatorParser.VariableContext ctx) {
-    return new VariableNode(ctx.getText());
+  public Node visitBoolean(CalculatorParser.BooleanContext ctx) {
+    String value = ctx.value.getText();
+    return new NumberNode(value.equals("true") ? 1 : 0);
   }
 }
