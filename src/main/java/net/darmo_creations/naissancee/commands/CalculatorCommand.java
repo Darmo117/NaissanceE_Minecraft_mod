@@ -64,6 +64,11 @@ public class CalculatorCommand extends CommandBase {
   }
 
   @Override
+  public int getRequiredPermissionLevel() {
+    return 0; // Any player and command blocks can use this command
+  }
+
+  @Override
   public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
     Optional<Entity> entity = Optional.ofNullable(sender.getCommandSenderEntity());
     Calculator calculator;
