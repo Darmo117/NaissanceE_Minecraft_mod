@@ -1,9 +1,13 @@
 package net.darmo_creations.naissancee.calculator.nodes.expr;
 
+import net.minecraft.nbt.NBTTagCompound;
+
 /**
  * A {@link Node} representing the unary minus operator (-a).
  */
 public class MinusOperatorNode extends UnaryOperatorNode {
+  public static final int ID = 300;
+
   /**
    * Create a unary minus operator: -operand.
    *
@@ -13,8 +17,22 @@ public class MinusOperatorNode extends UnaryOperatorNode {
     super("-", operand);
   }
 
+  /**
+   * Create a unary minus operator from an NBT tag.
+   *
+   * @param tag The tag to deserialize.
+   */
+  public MinusOperatorNode(final NBTTagCompound tag) {
+    super(tag);
+  }
+
   @Override
   protected double evaluateImpl(final double value) {
     return -value;
+  }
+
+  @Override
+  public int getID() {
+    return ID;
   }
 }

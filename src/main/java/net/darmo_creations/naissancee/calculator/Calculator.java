@@ -1,7 +1,10 @@
 package net.darmo_creations.naissancee.calculator;
 
+import net.darmo_creations.naissancee.DataManager;
+import net.darmo_creations.naissancee.ManagedData;
 import net.darmo_creations.naissancee.calculator.exceptions.*;
 import net.darmo_creations.naissancee.calculator.nodes.StatementResult;
+import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,16 +14,19 @@ import java.util.Optional;
 /**
  * A calculator that can parse and evaluate simple mathematical expressions and declare variables and functions.
  */
-public class Calculator {
-  private final Scope scope;
+public class Calculator implements ManagedData<Calculator> {
+  public static final int MAX_VARS_PER_PLAYER = 100;
+
+  private static final String SCOPE_KEY = "Scope";
+
+  private DataManager<Calculator> manager;
+  private Scope scope;
 
   /**
    * Create a calculator.
-   *
-   * @param maxAllowedDefinitions The maximum allowed number of variables and functions.
    */
-  public Calculator(final int maxAllowedDefinitions) {
-    this.scope = new Scope(maxAllowedDefinitions);
+  public Calculator() {
+    this.scope = new Scope(MAX_VARS_PER_PLAYER);
   }
 
   /**
@@ -60,7 +66,9 @@ public class Calculator {
    */
   public StatementResult evaluate(final String expression)
       throws SyntaxErrorException, ArithmeticException, EvaluationException {
-    return Parser.parse(expression).execute(this.scope);
+    StatementResult execute = Parser.parse(expression).execute(this.scope);
+    this.manager.markDirty();
+    return execute;
   }
 
   /**
@@ -73,7 +81,9 @@ public class Calculator {
    */
   @SuppressWarnings("UnusedReturnValue")
   public Optional<Double> setVariable(String name, double value) throws MaxDefinitionsException {
-    return this.scope.setVariable(name, value);
+    Optional<Double> oldValue = this.scope.setVariable(name, value);
+    this.manager.markDirty();
+    return oldValue;
   }
 
   /**
@@ -87,7 +97,9 @@ public class Calculator {
   @SuppressWarnings("UnusedReturnValue")
   public double deleteVariable(String name)
       throws UndefinedVariableException, BuiltinConstantDeletionAttemptException {
-    return this.scope.deleteVariable(name);
+    double oldValue = this.scope.deleteVariable(name);
+    this.manager.markDirty();
+    return oldValue;
   }
 
   /**
@@ -101,7 +113,9 @@ public class Calculator {
   @SuppressWarnings("UnusedReturnValue")
   public Function deleteFunction(String name)
       throws UndefinedVariableException, BuiltinFunctionDeletionAttemptException {
-    return this.scope.deleteFunction(name);
+    Function function = this.scope.deleteFunction(name);
+    this.manager.markDirty();
+    return function;
   }
 
   /**
@@ -109,5 +123,24 @@ public class Calculator {
    */
   public void reset() {
     this.scope.reset();
+    this.manager.markDirty();
+  }
+
+  @Override
+  public NBTTagCompound writeToNBT() {
+    NBTTagCompound tag = new NBTTagCompound();
+    tag.setTag(SCOPE_KEY, this.scope.writeToNBT());
+    return tag;
+  }
+
+  @Override
+  public void readFromNBT(NBTTagCompound tag) {
+    this.scope = new Scope(MAX_VARS_PER_PLAYER);
+    this.scope.readFromNBT(tag.getCompoundTag(SCOPE_KEY));
+  }
+
+  @Override
+  public void setManager(DataManager<Calculator> manager) {
+    this.manager = manager;
   }
 }

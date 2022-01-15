@@ -13,7 +13,7 @@ class CalculatorTest {
 
   @BeforeEach
   void setUp() {
-    this.c = new Calculator(2);
+    this.c = new Calculator();
   }
 
   @Test
@@ -47,9 +47,11 @@ class CalculatorTest {
 
   @Test
   void testMaxVarsReached() {
-    assertDoesNotThrow(() -> this.c.evaluate("a := 1"));
-    assertDoesNotThrow(() -> this.c.evaluate("b := 1"));
-    assertThrows(MaxDefinitionsException.class, () -> this.c.evaluate("c := 1"));
+    for (int i = 0; i < Calculator.MAX_VARS_PER_PLAYER; i++) {
+      final String statement = String.format("a%d := 1", i);
+      assertDoesNotThrow(() -> this.c.evaluate(statement));
+    }
+    assertThrows(MaxDefinitionsException.class, () -> this.c.evaluate("excess := 1"));
   }
 
   @Test

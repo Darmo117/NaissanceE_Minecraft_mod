@@ -2,6 +2,8 @@ package net.darmo_creations.naissancee.calculator.nodes.expr;
 
 import net.darmo_creations.naissancee.calculator.Scope;
 import net.darmo_creations.naissancee.calculator.exceptions.EvaluationException;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +14,11 @@ import java.util.stream.Collectors;
  * A {@link Node} representing the call to a function.
  */
 public class FunctionNode extends Node {
+  public static final int ID = 2;
+
+  private static final String NAME_KEY = "Name";
+  private static final String OPERANDS_KEY = "Operands";
+
   private final String name;
   protected final List<Node> operands;
 
@@ -24,6 +31,21 @@ public class FunctionNode extends Node {
   public FunctionNode(final String name, final List<Node> operands) {
     this.name = Objects.requireNonNull(name);
     this.operands = new ArrayList<>(operands);
+  }
+
+  /**
+   * Create a function {@link Node} from an NBT tag.
+   *
+   * @param tag The tag to deserialize.
+   */
+  public FunctionNode(final NBTTagCompound tag) {
+    this(tag.getString(NAME_KEY), deserializeOperands(tag.getTagList(OPERANDS_KEY, new NBTTagCompound().getId())));
+  }
+
+  private static List<Node> deserializeOperands(NBTTagList tagList) {
+    List<Node> list = new ArrayList<>();
+    tagList.forEach(tag -> list.add(NodeNBTHelper.getNodeForTag((NBTTagCompound) tag)));
+    return list;
   }
 
   /**
@@ -44,6 +66,21 @@ public class FunctionNode extends Node {
   public double evaluate(final Scope scope) throws EvaluationException, ArithmeticException {
     return scope.getFunction(this.name).evaluate(scope, this.operands.stream()
         .map(node -> node.evaluate(scope)).collect(Collectors.toList()));
+  }
+
+  @Override
+  public NBTTagCompound writeToNBT() {
+    NBTTagCompound tag = super.writeToNBT();
+    tag.setString(NAME_KEY, this.name);
+    NBTTagList list = new NBTTagList();
+    this.operands.forEach(node -> list.appendTag(node.writeToNBT()));
+    tag.setTag(OPERANDS_KEY, list);
+    return tag;
+  }
+
+  @Override
+  public int getID() {
+    return ID;
   }
 
   @Override

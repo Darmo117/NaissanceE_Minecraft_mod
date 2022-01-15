@@ -1,10 +1,14 @@
 package net.darmo_creations.naissancee.calculator.nodes.expr;
 
+import net.minecraft.nbt.NBTTagCompound;
+
 /**
  * A {@link Node} representing the difference operator (a ≠ b).
  * Returns 1 if a ≠ b; otherwise 0.
  */
 public class NotEqualToOperatorNode extends BiOperatorNode {
+  public static final int ID = 409;
+
   /**
    * Create a difference operator: left ≠ right.
    *
@@ -15,8 +19,22 @@ public class NotEqualToOperatorNode extends BiOperatorNode {
     super("!=", left, right);
   }
 
+  /**
+   * Create a difference operator from an NBT tag.
+   *
+   * @param tag The tag to deserialize.
+   */
+  public NotEqualToOperatorNode(final NBTTagCompound tag) {
+    super(tag);
+  }
+
   @Override
   protected double evaluateImpl(final double left, final double right) {
     return left != right ? 1 : 0;
+  }
+
+  @Override
+  public int getID() {
+    return ID;
   }
 }

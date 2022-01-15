@@ -2,6 +2,7 @@ package net.darmo_creations.naissancee;
 
 import net.darmo_creations.naissancee.blocks.IModBlock;
 import net.darmo_creations.naissancee.blocks.ModBlocks;
+import net.darmo_creations.naissancee.calculator.CalculatorsManager;
 import net.darmo_creations.naissancee.commands.CalculatorCommand;
 import net.darmo_creations.naissancee.entities.EntityLightOrb;
 import net.darmo_creations.naissancee.entities.ModEntities;
@@ -28,6 +29,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
@@ -54,6 +56,9 @@ public class NaissanceE {
   public static final String VERSION = "1.0";
 
   public static SimpleNetworkWrapper network;
+
+  public static CalculatorsManager CALCULATORS_MANAGER;
+//  public static ToDoListManager TODO_LISTS_MANAGER;
 
   /**
    * This mod’s creative tab.
@@ -91,10 +96,21 @@ public class NaissanceE {
   @Mod.EventHandler
   public void serverStarting(FMLServerStartingEvent event) {
     event.registerServerCommand(new CalculatorCommand());
+//    event.registerServerCommand(new ToDoListCommand());
   }
 
   @Mod.EventBusSubscriber
   static class EventsHandler {
+    @SubscribeEvent
+    public static void onWorldLoad(WorldEvent.Load event) {
+      if (CALCULATORS_MANAGER == null) { // Prevent reloading for each dimension (Nether, End, etc.)
+        CALCULATORS_MANAGER = CalculatorsManager.attachToWorld(event.getWorld());
+      }
+//      if (TODO_LISTS_MANAGER == null) { // Prevent reloading for each dimension (Nether, End, etc.)
+//        TODO_LISTS_MANAGER = ToDoListManager.attachToWorld(event.getWorld());
+//      }
+    }
+
     @SubscribeEvent
     public static void registerBlocks(RegistryEvent.Register<Block> event) {
       event.getRegistry().registerAll(ModBlocks.BLOCKS.toArray(new Block[0]));

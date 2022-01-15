@@ -1,9 +1,13 @@
 package net.darmo_creations.naissancee.calculator.nodes.expr;
 
+import net.minecraft.nbt.NBTTagCompound;
+
 /**
  * A {@link Node} representing the division operator (a / b).
  */
 public class DivisionOperatorNode extends BiOperatorNode {
+  public static final int ID = 403;
+
   /**
    * Create a division operator: left / right.
    *
@@ -12,6 +16,15 @@ public class DivisionOperatorNode extends BiOperatorNode {
    */
   public DivisionOperatorNode(final Node left, final Node right) {
     super("/", left, right);
+  }
+
+  /**
+   * Create a division operator from an NBT tag.
+   *
+   * @param tag The tag to deserialize.
+   */
+  public DivisionOperatorNode(final NBTTagCompound tag) {
+    super(tag);
   }
 
   /**
@@ -25,5 +38,10 @@ public class DivisionOperatorNode extends BiOperatorNode {
       throw new ArithmeticException("division by 0");
     }
     return left / right;
+  }
+
+  @Override
+  public int getID() {
+    return ID;
   }
 }

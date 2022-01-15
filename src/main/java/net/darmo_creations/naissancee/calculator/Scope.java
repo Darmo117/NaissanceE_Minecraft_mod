@@ -1,6 +1,10 @@
 package net.darmo_creations.naissancee.calculator;
 
+import net.darmo_creations.naissancee.NBTSerializable;
 import net.darmo_creations.naissancee.calculator.exceptions.*;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 
 import java.util.*;
 
@@ -8,8 +12,15 @@ import java.util.*;
  * The scope holds the definitions of builtin constants and functions,
  * and user-defined variables and functions.
  */
-public class Scope {
+public class Scope implements NBTSerializable {
   public static final int MAX_CALL_DEPTH = 100;
+
+  private static final String VARIABLES_KEY = "Variables";
+  private static final String VARIABLE_NAME_KEY = "Name";
+  private static final String VARIABLE_VALUE_KEY = "Value";
+  private static final String FUNCTIONS_KEY = "Functions";
+  private static final String FUNCTION_NAME_KEY = "Name";
+  private static final String FUNCTION_EXPRESSION_KEY = "Expression";
 
   private final String name;
   private final int maxAllowedDefinitions;
@@ -33,9 +44,9 @@ public class Scope {
       throw new IllegalArgumentException("maxAllowedDefinitions must be >= 0");
     }
     this.name = "<global>";
+    this.maxAllowedDefinitions = maxAllowedDefinitions;
     this.globalScope = Optional.empty();
     this.parentScope = Optional.empty();
-    this.maxAllowedDefinitions = maxAllowedDefinitions;
     this.variables = new HashMap<>();
     this.functions = new HashMap<>();
     this.builtinConstants = new HashMap<>();
@@ -344,5 +355,47 @@ public class Scope {
     }
     trace.add(this.name);
     return trace;
+  }
+
+  @Override
+  public NBTTagCompound writeToNBT() {
+    if (!this.isGlobal()) {
+      throw new UnsupportedOperationException("cannot serialize non-global scope");
+    }
+    NBTTagCompound tag = new NBTTagCompound();
+    NBTTagList variables = new NBTTagList();
+    for (Map.Entry<String, Double> entry : this.variables.entrySet()) {
+      NBTTagCompound item = new NBTTagCompound();
+      item.setString(VARIABLE_NAME_KEY, entry.getKey());
+      item.setDouble(VARIABLE_VALUE_KEY, entry.getValue());
+      variables.appendTag(item);
+    }
+    tag.setTag(VARIABLES_KEY, variables);
+    NBTTagList functions = new NBTTagList();
+    for (Map.Entry<String, Function> entry : this.functions.entrySet()) {
+      NBTTagCompound item = new NBTTagCompound();
+      item.setString(FUNCTION_NAME_KEY, entry.getKey());
+      item.setTag(FUNCTION_EXPRESSION_KEY, entry.getValue().writeToNBT());
+      functions.appendTag(item);
+    }
+    tag.setTag(FUNCTIONS_KEY, functions);
+    return tag;
+  }
+
+  @Override
+  public void readFromNBT(NBTTagCompound tag) {
+    if (!this.isGlobal()) {
+      throw new UnsupportedOperationException("cannot deserialize non-global scope");
+    }
+    this.variables.clear();
+    for (NBTBase item : tag.getTagList(VARIABLES_KEY, new NBTTagCompound().getId())) {
+      NBTTagCompound c = (NBTTagCompound) item;
+      this.variables.put(c.getString(VARIABLE_NAME_KEY), c.getDouble(VARIABLE_VALUE_KEY));
+    }
+    this.functions.clear();
+    for (NBTBase item : tag.getTagList(FUNCTIONS_KEY, new NBTTagCompound().getId())) {
+      NBTTagCompound c = (NBTTagCompound) item;
+      this.functions.put(c.getString(FUNCTION_NAME_KEY), new UserFunction(c.getCompoundTag(FUNCTION_EXPRESSION_KEY)));
+    }
   }
 }

@@ -3,6 +3,7 @@ package net.darmo_creations.naissancee.calculator.nodes.expr;
 import net.darmo_creations.naissancee.calculator.Scope;
 import net.darmo_creations.naissancee.calculator.exceptions.EvaluationException;
 import net.darmo_creations.naissancee.calculator.exceptions.SyntaxErrorException;
+import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,6 +26,15 @@ public abstract class OperatorNode extends FunctionNode {
     if (this.operands.size() != arity) {
       throw new SyntaxErrorException(String.format("operator %s expected %d arguments, got %d", symbol, arity, operands.size()));
     }
+  }
+
+  /**
+   * Create an operator from an NBT tag.
+   *
+   * @param tag The tag to deserialize.
+   */
+  public OperatorNode(final NBTTagCompound tag) {
+    super(tag);
   }
 
   /**

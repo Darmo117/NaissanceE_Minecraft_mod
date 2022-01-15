@@ -1,9 +1,13 @@
 package net.darmo_creations.naissancee.calculator.nodes.expr;
 
+import net.minecraft.nbt.NBTTagCompound;
+
 /**
  * A {@link Node} representing the subtraction operator (a - b).
  */
 public class SubtractionOperatorNode extends BiOperatorNode {
+  public static final int ID = 401;
+
   /**
    * Create a subtraction operator: left - right.
    *
@@ -14,8 +18,22 @@ public class SubtractionOperatorNode extends BiOperatorNode {
     super("-", left, right);
   }
 
+  /**
+   * Create a subtraction operator from an NBT tag.
+   *
+   * @param tag The tag to deserialize.
+   */
+  public SubtractionOperatorNode(final NBTTagCompound tag) {
+    super(tag);
+  }
+
   @Override
   protected double evaluateImpl(final double left, final double right) {
     return left - right;
+  }
+
+  @Override
+  public int getID() {
+    return ID;
   }
 }

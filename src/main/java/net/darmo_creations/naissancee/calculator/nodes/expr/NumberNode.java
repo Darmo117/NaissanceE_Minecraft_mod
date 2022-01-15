@@ -1,6 +1,7 @@
 package net.darmo_creations.naissancee.calculator.nodes.expr;
 
 import net.darmo_creations.naissancee.calculator.Scope;
+import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.Objects;
 
@@ -8,6 +9,10 @@ import java.util.Objects;
  * A {@link Node} representing a number.
  */
 public class NumberNode extends Node {
+  public static final int ID = 0;
+
+  private static final String VALUE_KEY = "Value";
+
   private final double value;
 
   /**
@@ -20,6 +25,15 @@ public class NumberNode extends Node {
   }
 
   /**
+   * Create a number {@link Node} from an NBT tag.
+   *
+   * @param tag The tag to deserialize.
+   */
+  public NumberNode(final NBTTagCompound tag) {
+    this(tag.getDouble(VALUE_KEY));
+  }
+
+  /**
    * Return the value of this node.
    *
    * @return The associated number.
@@ -27,6 +41,18 @@ public class NumberNode extends Node {
   @Override
   public double evaluate(final Scope scope) {
     return this.value;
+  }
+
+  @Override
+  public NBTTagCompound writeToNBT() {
+    NBTTagCompound tag = super.writeToNBT();
+    tag.setDouble(VALUE_KEY, this.value);
+    return tag;
+  }
+
+  @Override
+  public int getID() {
+    return ID;
   }
 
   @Override

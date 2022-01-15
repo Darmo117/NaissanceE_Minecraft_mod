@@ -1,5 +1,7 @@
 package net.darmo_creations.naissancee.calculator.nodes.expr;
 
+import net.minecraft.nbt.NBTTagCompound;
+
 import java.util.Collections;
 import java.util.List;
 
@@ -15,6 +17,15 @@ public abstract class UnaryOperatorNode extends OperatorNode {
    */
   public UnaryOperatorNode(final String symbol, final Node operand) {
     super(symbol, 1, Collections.singletonList(operand));
+  }
+
+  /**
+   * Create a unary operator from an NBT tag.
+   *
+   * @param tag The tag to deserialize.
+   */
+  public UnaryOperatorNode(final NBTTagCompound tag) {
+    super(tag);
   }
 
   @Override

@@ -1,5 +1,7 @@
 package net.darmo_creations.naissancee.calculator.nodes.expr;
 
+import net.minecraft.nbt.NBTTagCompound;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,6 +18,15 @@ public abstract class BiOperatorNode extends OperatorNode {
    */
   public BiOperatorNode(final String symbol, final Node left, final Node right) {
     super(symbol, 2, Arrays.asList(left, right));
+  }
+
+  /**
+   * Create a binary operator from an NBT tag.
+   *
+   * @param tag The tag to deserialize.
+   */
+  public BiOperatorNode(final NBTTagCompound tag) {
+    super(tag);
   }
 
   @Override

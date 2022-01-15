@@ -1,8 +1,8 @@
 package net.darmo_creations.naissancee.items;
 
+import net.darmo_creations.naissancee.NaissanceE;
 import net.darmo_creations.naissancee.Utils;
 import net.darmo_creations.naissancee.calculator.Calculator;
-import net.darmo_creations.naissancee.commands.CalculatorCommand;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -48,7 +48,7 @@ public class ItemRuler extends Item {
           "Selected second position: " + Utils.blockPosToString(pos))
           .setStyle(new Style().setColor(TextFormatting.DARK_AQUA)));
 
-      Calculator calculator = CalculatorCommand.getCalculatorForPlayer(player.getUniqueID());
+      Calculator calculator = NaissanceE.CALCULATORS_MANAGER.getOrCreatePlayerData(player);
       // Declare variables storing the positions in the player’s calculator
       calculator.setVariable("ruler_x1", data.position.getX());
       calculator.setVariable("ruler_y1", data.position.getY());

@@ -1,11 +1,14 @@
 package net.darmo_creations.naissancee.calculator.nodes.expr;
 
 import net.darmo_creations.naissancee.Utils;
+import net.minecraft.nbt.NBTTagCompound;
 
 /**
  * A {@link Node} representing the modulo operator, i.e the remainder of the division of a / b.
  */
 public class ModuloOperatorNode extends BiOperatorNode {
+  public static final int ID = 404;
+
   /**
    * Create a modulo operator: remainder of a / b.
    *
@@ -14,6 +17,15 @@ public class ModuloOperatorNode extends BiOperatorNode {
    */
   public ModuloOperatorNode(final Node left, final Node right) {
     super("%", left, right);
+  }
+
+  /**
+   * Create a modulo operator from an NBT tag.
+   *
+   * @param tag The tag to deserialize.
+   */
+  public ModuloOperatorNode(final NBTTagCompound tag) {
+    super(tag);
   }
 
   /**
@@ -27,5 +39,10 @@ public class ModuloOperatorNode extends BiOperatorNode {
       throw new ArithmeticException("division by 0");
     }
     return Utils.trueModulo(left, right);
+  }
+
+  @Override
+  public int getID() {
+    return ID;
   }
 }

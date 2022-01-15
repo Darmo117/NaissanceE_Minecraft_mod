@@ -2,6 +2,9 @@ package net.darmo_creations.naissancee.calculator;
 
 import net.darmo_creations.naissancee.calculator.exceptions.InvalidFunctionArguments;
 import net.darmo_creations.naissancee.calculator.exceptions.MaxDepthReachedException;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +14,9 @@ import java.util.Objects;
  * The base class for calculator functions.
  */
 public abstract class Function {
+  private static final String NAME_KEY = "Name";
+  private static final String PARAMETERS_KEY = "Parameters";
+
   private final String name;
   private final List<String> parameterNames;
 
@@ -23,6 +29,18 @@ public abstract class Function {
   public Function(final String name, final List<String> parameterNames) {
     this.name = Objects.requireNonNull(name);
     this.parameterNames = new ArrayList<>(parameterNames);
+  }
+
+  /**
+   * Create a function from an NBT tag.
+   *
+   * @param tag The tag to deserialize.
+   */
+  public Function(NBTTagCompound tag) {
+    this.name = tag.getString(NAME_KEY);
+    this.parameterNames = new ArrayList<>();
+    tag.getTagList(PARAMETERS_KEY, new NBTTagString().getId())
+        .forEach(t -> this.parameterNames.add(((NBTTagString) t).getString()));
   }
 
   /**
@@ -73,4 +91,18 @@ public abstract class Function {
    * @return The result of the function.
    */
   protected abstract double evaluateImpl(final Scope scope);
+
+  /**
+   * Serializes this function into an NBT tag.
+   *
+   * @return The tag.
+   */
+  public NBTTagCompound writeToNBT() {
+    NBTTagCompound tag = new NBTTagCompound();
+    tag.setString(NAME_KEY, this.name);
+    NBTTagList paramsList = new NBTTagList();
+    this.parameterNames.forEach(p -> paramsList.appendTag(new NBTTagString(p)));
+    tag.setTag(PARAMETERS_KEY, paramsList);
+    return tag;
+  }
 }
