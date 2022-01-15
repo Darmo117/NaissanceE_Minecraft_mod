@@ -50,7 +50,6 @@ public class CalculatorCommand extends CommandBase {
     return 0; // Any player and command blocks can use this command
   }
 
-  // TODO auto-completion
   @Override
   public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
     if (args.length == 0) {
@@ -87,7 +86,49 @@ public class CalculatorCommand extends CommandBase {
 
   @Override
   public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
-    return super.getTabCompletions(server, sender, args, targetPos);
+    if (args.length == 1) {
+      return getListOfStringsMatchingLastWord(args, Arrays.asList("delete", "list", "reset", "global"));
+
+    } else if (args.length == 2 && args[0].equals("global")) {
+      return getListOfStringsMatchingLastWord(args, Arrays.asList("delete", "list", "reset"));
+
+    } else {
+      Optional<Entity> entity = Optional.ofNullable(sender.getCommandSenderEntity());
+      Calculator calculator;
+      boolean useGlobal = args[0].equals("global");
+
+      if (entity.isPresent() && entity.get() instanceof EntityPlayer && !useGlobal) {
+        EntityPlayer player = (EntityPlayer) entity.get();
+        calculator = NaissanceE.CALCULATORS_MANAGER.getOrCreatePlayerData(player);
+      } else {
+        calculator = NaissanceE.CALCULATORS_MANAGER.getGlobalData();
+        if (useGlobal) {
+          args = Arrays.copyOfRange(args, 1, args.length);
+        }
+      }
+
+      if (args[0].equals("list")) {
+        if (args.length == 2) {
+          return getListOfStringsMatchingLastWord(args,
+              Arrays.stream(ListType.values()).map(e -> e.name().toLowerCase()).collect(Collectors.toList()));
+        } else if (args.length == 3 && ListType.getType(args[1]) != null) {
+          return getListOfStringsMatchingLastWord(args, Arrays.asList("variables", "functions"));
+        }
+
+      } else if (args[0].equals("delete")) {
+        if (args.length == 2) {
+          return getListOfStringsMatchingLastWord(args, Arrays.asList("variable", "function"));
+        } else if (args.length == 3 && args[1].equals("variable")) {
+          return getListOfStringsMatchingLastWord(args,
+              calculator.getVariables().keySet().stream().sorted().collect(Collectors.toList()));
+        } else if (args.length == 3 && args[1].equals("function")) {
+          return getListOfStringsMatchingLastWord(args,
+              calculator.getFunctions().stream().map(Function::getName).sorted().collect(Collectors.toList()));
+        }
+      }
+    }
+
+    return Collections.emptyList();
   }
 
   /**
