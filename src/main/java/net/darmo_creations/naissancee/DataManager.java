@@ -11,6 +11,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * A {@link DataManager} manages a global and per-player data objects.
+ * These objects are saved on the server alongside world data.
+ *
+ * @param <T> Type of managed data.
+ */
 public abstract class DataManager<T extends ManagedData<T>> extends WorldSavedData {
   private static final String GLOBAL_DATA_KEY = "GlobalData";
   private static final String PLAYERS_DATA_KEY = "PlayersData";
@@ -20,6 +26,11 @@ public abstract class DataManager<T extends ManagedData<T>> extends WorldSavedDa
   private T globalData;
   private final Map<UUID, T> playerData;
 
+  /**
+   * Create a manager with the given name.
+   *
+   * @param name Manager’s name.
+   */
   public DataManager(String name) {
     super(name);
     this.globalData = this.getDefaultDataValue();
@@ -27,18 +38,32 @@ public abstract class DataManager<T extends ManagedData<T>> extends WorldSavedDa
     this.playerData = new HashMap<>();
   }
 
+  /**
+   * Return a default data object.
+   */
   protected abstract T getDefaultDataValue();
 
+  /**
+   * Return the global data object.
+   */
   public T getGlobalData() {
     return this.globalData;
   }
 
+  /**
+   * Return the data object associated to the given data object.
+   * If no data object for the player exists, a new one is created then returned.
+   *
+   * @param player The player.
+   * @return The associated data object.
+   */
   public T getOrCreatePlayerData(final EntityPlayer player) {
     UUID playerUUID = player.getGameProfile().getId();
     if (!this.playerData.containsKey(playerUUID)) {
       T data = this.getDefaultDataValue();
       data.setManager(this);
       this.playerData.put(playerUUID, data);
+      this.markDirty();
     }
     return this.playerData.get(playerUUID);
   }
