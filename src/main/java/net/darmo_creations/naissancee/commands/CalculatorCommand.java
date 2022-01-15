@@ -30,6 +30,8 @@ import java.util.stream.Collectors;
  * A new calculator instance is created for each entity that executes the command.
  */
 public class CalculatorCommand extends CommandBase {
+  private static final Style BUILTINS_STYLE = new Style().setColor(TextFormatting.AQUA);
+
   @Override
   public String getName() {
     return "calculator";
@@ -247,48 +249,36 @@ public class CalculatorCommand extends CommandBase {
   private void evaluate(final ICommandSender sender, final String[] args, Calculator calculator) throws CommandException {
     String expression = String.join(" ", args);
     StatementResult result = null;
-    String errorMessage = null;
+    CommandException exception = null;
 
     try {
       result = calculator.evaluate(expression);
     } catch (MaxDefinitionsException e) {
-      errorMessage = translate(sender, "error.max_declare_quota_reached", e.getNumber());
+      exception = new CommandException("commands.calculator.error.max_declaration_quota_reached", e.getNumber());
     } catch (SyntaxErrorException e) {
-      errorMessage = translate(sender, "error.syntax_error");
+      exception = new CommandException("commands.calculator.error.syntax_error");
     } catch (UndefinedVariableException e) {
-      errorMessage = translate(sender, "error.undefined_variable", e.getMessage());
+      exception = new CommandException("commands.calculator.error.undefined_variable", e.getMessage());
     } catch (UndefinedFunctionException e) {
-      errorMessage = translate(sender, "error.undefined_function", e.getMessage());
+      exception = new CommandException("commands.calculator.error.undefined_function", e.getMessage());
     } catch (InvalidFunctionArguments e) {
-      errorMessage = translate(sender, "error.invalid_function_params", e.getFunctionName(), e.getExpected(), e.getActual());
+      exception = new CommandException("commands.calculator.error.invalid_function_params", e.getFunctionName(), e.getExpected(), e.getActual());
     } catch (MaxDepthReachedException e) {
-      errorMessage = translate(sender, "error.max_depth_reached", e.getDepth());
+      exception = new CommandException("commands.calculator.error.max_depth_reached", e.getDepth());
     } catch (ArithmeticException e) {
-      errorMessage = translate(sender, "error.math_error", e.getMessage());
+      exception = new CommandException("commands.calculator.error.math_error", e.getMessage());
     }
 
     // Display what the player just typed
     sender.sendMessage(new TextComponentString("$ " + expression));
-    if (errorMessage != null) {
-      throw new CommandException(errorMessage);
+    if (exception != null) {
+      throw exception;
     } else {
       sender.sendMessage(new TextComponentString(result.getStatus())
           .setStyle(new Style().setColor(TextFormatting.GREEN)));
       // Store result in a special variable
       result.getValue().ifPresent(v -> calculator.setVariable("_", v));
     }
-  }
-
-  /**
-   * Translate the given key.
-   *
-   * @param sender The player who ran the command.
-   * @param key    Key to translate.
-   * @param args   Optional formatting arguments.
-   * @return The translated text.
-   */
-  private static String translate(final ICommandSender sender, final String key, final Object... args) {
-    return TextComponentHelper.createComponentTranslation(sender, "commands.calculator." + key, args).getUnformattedText();
   }
 
   /**
@@ -329,12 +319,10 @@ public class CalculatorCommand extends CommandBase {
   private static ITextComponent getTextComponent(final String text, final boolean builtin) {
     TextComponentString component = new TextComponentString(text);
     if (builtin) {
-      component.setStyle(BUILTIN_STYLE);
+      component.setStyle(BUILTINS_STYLE);
     }
     return component;
   }
-
-  private static final Style BUILTIN_STYLE = new Style().setColor(TextFormatting.AQUA);
 
   /**
    * Options for the “list” parameter.
