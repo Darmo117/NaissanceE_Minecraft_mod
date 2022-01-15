@@ -9,7 +9,7 @@ import java.util.function.Function;
 /**
  * Utility class for deserializing {@link Node}s from NBT tags.
  */
-public class NodeNBTHelper {
+public final class NodeNBTHelper {
   private static final Map<Integer, Function<NBTTagCompound, Node>> NODE_PROVIDERS = new HashMap<>();
 
   static {
