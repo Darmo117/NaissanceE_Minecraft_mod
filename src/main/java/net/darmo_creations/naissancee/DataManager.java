@@ -85,14 +85,14 @@ public abstract class DataManager<T extends ManagedData<T>> extends WorldSavedDa
   @Override
   public void readFromNBT(NBTTagCompound tag) {
     this.globalData = this.getDefaultDataValue();
-    this.globalData.readFromNBT(tag.getCompoundTag(GLOBAL_DATA_KEY));
     this.globalData.setManager(this);
+    this.globalData.readFromNBT(tag.getCompoundTag(GLOBAL_DATA_KEY));
     this.playerData.clear();
     for (NBTBase item : tag.getTagList(PLAYERS_DATA_KEY, new NBTTagCompound().getId())) {
       NBTTagCompound c = (NBTTagCompound) item;
       T playerData = this.getDefaultDataValue();
-      playerData.readFromNBT(c.getCompoundTag(PLAYER_DATA_KEY));
       playerData.setManager(this);
+      playerData.readFromNBT(c.getCompoundTag(PLAYER_DATA_KEY));
       this.playerData.put(c.getUniqueId(UUID_KEY), playerData);
     }
   }
