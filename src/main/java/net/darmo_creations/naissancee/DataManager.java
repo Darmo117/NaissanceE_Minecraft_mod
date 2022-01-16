@@ -4,7 +4,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.nbt.NBTUtil;
 import net.minecraft.world.storage.WorldSavedData;
 
 import java.util.HashMap;
@@ -74,7 +73,7 @@ public abstract class DataManager<T extends ManagedData<T>> extends WorldSavedDa
     NBTTagList list = new NBTTagList();
     for (Map.Entry<UUID, T> item : this.playerData.entrySet()) {
       NBTTagCompound itemTag = new NBTTagCompound();
-      itemTag.setTag(UUID_KEY, NBTUtil.createUUIDTag(item.getKey()));
+      itemTag.setUniqueId(UUID_KEY, item.getKey());
       itemTag.setTag(PLAYER_DATA_KEY, item.getValue().writeToNBT());
       list.appendTag(itemTag);
     }
