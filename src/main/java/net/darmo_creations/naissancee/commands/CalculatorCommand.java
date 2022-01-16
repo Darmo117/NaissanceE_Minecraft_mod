@@ -113,7 +113,7 @@ public class CalculatorCommand extends CommandBase {
         if (args.length == 2) {
           return getListOfStringsMatchingLastWord(args,
               Arrays.stream(ListType.values()).map(e -> e.name().toLowerCase()).collect(Collectors.toList()));
-        } else if (args.length == 3 && ListType.getType(args[1]) != null) {
+        } else if (args.length == 3 && ListType.getType(args[1]).isPresent()) {
           return getListOfStringsMatchingLastWord(args, Arrays.asList("variables", "functions"));
         }
 
@@ -189,16 +189,16 @@ public class CalculatorCommand extends CommandBase {
    * @throws CommandException If arguments are incorrect.
    */
   private void list(final ICommandSender sender, final String[] args, final String username, final Calculator calculator) throws CommandException {
-    ListType type = ListType.getType(args[1]);
+    Optional<ListType> type = ListType.getType(args[1]);
 
-    if (type == null) {
+    if (!type.isPresent()) {
       throw new WrongUsageException("commands.calculator.usage");
     }
 
     List<ITextComponent> list = new ArrayList<>();
 
     if (args[2].equals("variables")) {
-      switch (type) {
+      switch (type.get()) {
         case ALL:
           list = listVariables(calculator.getBuiltinConstants(), true);
           list.addAll(listVariables(calculator.getVariables(), false));
@@ -212,7 +212,7 @@ public class CalculatorCommand extends CommandBase {
       }
 
     } else if (args[2].equals("functions")) {
-      switch (type) {
+      switch (type.get()) {
         case ALL:
           list = listFunctions(calculator.getBuiltinFunctions(), true);
           list.addAll(listFunctions(calculator.getFunctions(), false));
@@ -333,13 +333,13 @@ public class CalculatorCommand extends CommandBase {
     /**
      * Return a list type for the given text.
      */
-    public static ListType getType(final String name) {
+    public static Optional<ListType> getType(final String name) {
       for (ListType t : values()) {
         if (t.name().toLowerCase().equals(name)) {
-          return t;
+          return Optional.of(t);
         }
       }
-      return null;
+      return Optional.empty();
     }
   }
 }
