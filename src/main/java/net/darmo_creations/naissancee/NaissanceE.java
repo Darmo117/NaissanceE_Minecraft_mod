@@ -4,9 +4,11 @@ import net.darmo_creations.naissancee.blocks.IModBlock;
 import net.darmo_creations.naissancee.blocks.ModBlocks;
 import net.darmo_creations.naissancee.calculator.CalculatorsManager;
 import net.darmo_creations.naissancee.commands.CalculatorCommand;
+import net.darmo_creations.naissancee.commands.ToDoListCommand;
 import net.darmo_creations.naissancee.entities.EntityLightOrb;
 import net.darmo_creations.naissancee.entities.ModEntities;
 import net.darmo_creations.naissancee.entities.render.RenderLightOrb;
+import net.darmo_creations.naissancee.gui.GuiToDoList;
 import net.darmo_creations.naissancee.gui.NaissanceETab;
 import net.darmo_creations.naissancee.items.ModItems;
 import net.darmo_creations.naissancee.network.PacketLaserTelemeterData;
@@ -18,7 +20,9 @@ import net.darmo_creations.naissancee.tile_entities.TileEntityLightOrbController
 import net.darmo_creations.naissancee.tile_entities.render.TileEntityInvisibleLightSourceRenderer;
 import net.darmo_creations.naissancee.tile_entities.render.TileEntityLaserTelemeterRenderer;
 import net.darmo_creations.naissancee.tile_entities.render.TileEntityLightOrbControllerRenderer;
+import net.darmo_creations.naissancee.todo_list.ToDoListManager;
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -28,6 +32,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -58,7 +63,7 @@ public class NaissanceE {
   public static SimpleNetworkWrapper network;
 
   public static CalculatorsManager CALCULATORS_MANAGER;
-//  public static ToDoListManager TODO_LISTS_MANAGER;
+  public static ToDoListManager TODO_LISTS_MANAGER;
 
   /**
    * This mod’s creative tab.
@@ -90,13 +95,14 @@ public class NaissanceE {
       ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLightOrbController.class, new TileEntityLightOrbControllerRenderer());
       ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLaserTelemeter.class, new TileEntityLaserTelemeterRenderer());
       RenderingRegistry.registerEntityRenderingHandler(EntityLightOrb.class, RenderLightOrb::new); // Does not actually render anything
+      MinecraftForge.EVENT_BUS.register(new GuiToDoList(Minecraft.getMinecraft()));
     }
   }
 
   @Mod.EventHandler
   public void serverStarting(FMLServerStartingEvent event) {
     event.registerServerCommand(new CalculatorCommand());
-//    event.registerServerCommand(new ToDoListCommand());
+    event.registerServerCommand(new ToDoListCommand());
   }
 
   @Mod.EventBusSubscriber
@@ -104,11 +110,11 @@ public class NaissanceE {
     @SubscribeEvent
     public static void onWorldLoad(WorldEvent.Load event) {
       if (CALCULATORS_MANAGER == null) { // Prevent reloading for each dimension (Nether, End, etc.)
-        CALCULATORS_MANAGER = CalculatorsManager.attachToWorld(event.getWorld());
+        CALCULATORS_MANAGER = CalculatorsManager.attachToGlobalStorage(event.getWorld());
       }
-//      if (TODO_LISTS_MANAGER == null) { // Prevent reloading for each dimension (Nether, End, etc.)
-//        TODO_LISTS_MANAGER = ToDoListManager.attachToWorld(event.getWorld());
-//      }
+      if (TODO_LISTS_MANAGER == null) { // Same as above
+        TODO_LISTS_MANAGER = ToDoListManager.attachToGlobalStorage(event.getWorld());
+      }
     }
 
     @SubscribeEvent
