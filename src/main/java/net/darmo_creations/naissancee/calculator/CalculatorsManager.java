@@ -37,7 +37,7 @@ public class CalculatorsManager extends DataManager<Calculator> {
    * @param world The world used to access the global storage.
    * @return The manager instance.
    */
-  public static CalculatorsManager attachToWorld(World world) {
+  public static CalculatorsManager attachToGlobalStorage(World world) {
     MapStorage storage = world.getMapStorage();
     //noinspection ConstantConditions
     CalculatorsManager instance = (CalculatorsManager) storage.getOrLoadData(CalculatorsManager.class, DATA_NAME);
