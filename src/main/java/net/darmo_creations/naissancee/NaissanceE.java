@@ -6,8 +6,10 @@ import net.darmo_creations.naissancee.calculator.CalculatorsManager;
 import net.darmo_creations.naissancee.commands.CalculatorCommand;
 import net.darmo_creations.naissancee.commands.ToDoListCommand;
 import net.darmo_creations.naissancee.entities.EntityLightOrb;
+import net.darmo_creations.naissancee.entities.EntityPlayerPusher;
 import net.darmo_creations.naissancee.entities.ModEntities;
 import net.darmo_creations.naissancee.entities.render.RenderLightOrb;
+import net.darmo_creations.naissancee.entities.render.RenderPlayerPusher;
 import net.darmo_creations.naissancee.gui.GuiToDoList;
 import net.darmo_creations.naissancee.gui.NaissanceETab;
 import net.darmo_creations.naissancee.items.ModItems;
@@ -95,6 +97,7 @@ public class NaissanceE {
       ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLightOrbController.class, new TileEntityLightOrbControllerRenderer());
       ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLaserTelemeter.class, new TileEntityLaserTelemeterRenderer());
       RenderingRegistry.registerEntityRenderingHandler(EntityLightOrb.class, RenderLightOrb::new); // Does not actually render anything
+      RenderingRegistry.registerEntityRenderingHandler(EntityPlayerPusher.class, RenderPlayerPusher::new); // Does not actually render anything
       MinecraftForge.EVENT_BUS.register(new GuiToDoList(Minecraft.getMinecraft()));
     }
   }

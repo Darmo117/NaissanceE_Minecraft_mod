@@ -13,6 +13,7 @@ import java.util.List;
 @SuppressWarnings("unused")
 public final class ModEntities {
   public static final EntityEntry MOVING_LIGHT = new EntityEntry(EntityLightOrb.class, NaissanceE.MODID + ".light_orb").setRegistryName("light_orb");
+  public static final EntityEntry PLAYER_PUSHER = new EntityEntry(EntityPlayerPusher.class, NaissanceE.MODID + ".player_pusher").setRegistryName("player_pusher");
 
   /**
    * The list of all declared entities for this mod.
