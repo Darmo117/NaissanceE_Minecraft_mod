@@ -18,7 +18,6 @@ import net.minecraft.util.text.Style;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.server.command.TextComponentHelper;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -87,7 +86,7 @@ public class CalculatorCommand extends CommandBase {
   }
 
   @Override
-  public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, @Nullable BlockPos targetPos) {
+  public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender, String[] args, BlockPos targetPos) {
     if (args.length == 1) {
       return getListOfStringsMatchingLastWord(args, Arrays.asList("delete", "list", "reset", "global"));
 
