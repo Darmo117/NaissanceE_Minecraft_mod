@@ -30,7 +30,7 @@ public class ToDoList implements ManagedData<ToDoList>, Iterable<ToDoListItem> {
    * Create an empty list.
    */
   public ToDoList() {
-    this.visible = true;
+    this.visible = false; // Hidden by default
     this.autoDeleteChecked = true;
     this.items = new ArrayList<>();
   }
