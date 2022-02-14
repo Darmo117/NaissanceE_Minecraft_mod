@@ -23,6 +23,7 @@ import net.darmo_creations.naissancee.tile_entities.render.TileEntityInvisibleLi
 import net.darmo_creations.naissancee.tile_entities.render.TileEntityLaserTelemeterRenderer;
 import net.darmo_creations.naissancee.tile_entities.render.TileEntityLightOrbControllerRenderer;
 import net.darmo_creations.naissancee.todo_list.ToDoListManager;
+import net.darmo_creations.naissancee.world.CustomWorldProviderSurface;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
@@ -32,6 +33,8 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.DimensionType;
+import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.MinecraftForge;
@@ -50,6 +53,9 @@ import net.minecraftforge.fml.common.registry.EntityRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import org.apache.logging.log4j.Logger;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 
 /**
  * This mod adds blocks, items and entities that mimic some features from the game NaissanceE.
@@ -92,6 +98,17 @@ public class NaissanceE {
       EntityRegistry.registerModEntity(e.getRegistryName(), e.getEntityClass(), e.getName(), this.entitiesID++, this, 100, 3, true, 0xffffff, 0xffffff);
     }
 
+    // Replace default world provider class of Overworld dimension by custom one to alter skybox
+    try {
+      Field field = getDimensionTypeClazzField();
+      Field modifiersField = Field.class.getDeclaredField("modifiers");
+      modifiersField.setAccessible(true);
+      modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+      field.set(DimensionType.OVERWORLD, CustomWorldProviderSurface.class);
+    } catch (NoSuchFieldException | IllegalAccessException e) {
+      e.printStackTrace();
+    }
+
     if (event.getSide() == Side.CLIENT) {
       ClientRegistry.bindTileEntitySpecialRenderer(TileEntityInvisibleLightSource.class, new TileEntityInvisibleLightSourceRenderer());
       ClientRegistry.bindTileEntitySpecialRenderer(TileEntityLightOrbController.class, new TileEntityLightOrbControllerRenderer());
@@ -100,6 +117,27 @@ public class NaissanceE {
       RenderingRegistry.registerEntityRenderingHandler(EntityPlayerPusher.class, RenderPlayerPusher::new); // Does not actually render anything
       MinecraftForge.EVENT_BUS.register(new GuiToDoList(Minecraft.getMinecraft()));
     }
+  }
+
+  /**
+   * Return the clazz field of {@link DimensionType} enum.
+   * <p>
+   * Works for de-obfuscated and some re-obfuscated versions.
+   */
+  private static Field getDimensionTypeClazzField() {
+    String[] names = {
+        "field_186077_g", // Obfuscated Forge 1.12.2-14.23.5.2854, mappings 20171003-1.12
+        "clazz", // De-obfuscatted
+    };
+    for (String name : names) {
+      try {
+        Field field = DimensionType.class.getDeclaredField(name);
+        field.setAccessible(true);
+        return field;
+      } catch (NoSuchFieldException ignored) {
+      }
+    }
+    throw new RuntimeException("DimensionType.clazz field not found!");
   }
 
   @Mod.EventHandler
@@ -112,11 +150,12 @@ public class NaissanceE {
   static class EventsHandler {
     @SubscribeEvent
     public static void onWorldLoad(WorldEvent.Load event) {
+      World world = event.getWorld();
       if (CALCULATORS_MANAGER == null) { // Prevent reloading for each dimension (Nether, End, etc.)
-        CALCULATORS_MANAGER = CalculatorsManager.attachToGlobalStorage(event.getWorld());
+        CALCULATORS_MANAGER = CalculatorsManager.attachToGlobalStorage(world);
       }
       if (TODO_LISTS_MANAGER == null) { // Same as above
-        TODO_LISTS_MANAGER = ToDoListManager.attachToGlobalStorage(event.getWorld());
+        TODO_LISTS_MANAGER = ToDoListManager.attachToGlobalStorage(world);
       }
     }
 
