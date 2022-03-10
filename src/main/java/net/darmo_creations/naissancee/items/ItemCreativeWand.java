@@ -87,8 +87,6 @@ public class ItemCreativeWand extends Item {
             world.notifyNeighborsRespectDebug(blockpos5, block2, false);
           }
 
-          data.firstPosition = null;
-          data.secondPosition = null;
           heldItem.setTagCompound(data.toTag());
           String message = String.format(
               "Filled area with %d %s block%s.",
